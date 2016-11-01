@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Medion</string>
+    <string name="action_settings">Settings</string>
+    <string name="Signup_title">SIGN UP</string>
+    <string name="Signup_email">Email</string>
+    <string name="Signup_name">Name</string>
+    <string name="Signup_username">Username</string>
+    <string name="Signup_password">Password</string>
+    <string name="Signup_reenterpassword">Re-Enter Password</string>
+    <string name="Signup_phone">Phone</string>
+    <string name="Signup_address">Address</string>
+    <string name="Signup_gender">Gender</string>
+</resources>
