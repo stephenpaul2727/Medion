@@ -10,4 +10,8 @@
     <string name="Signup_phone">Phone</string>
     <string name="Signup_address">Address</string>
     <string name="Signup_gender">Gender</string>
+    <string name="title_activity_navigation_menu">NavigationMenu</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
