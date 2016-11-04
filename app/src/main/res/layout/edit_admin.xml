@@ -24,25 +24,6 @@
         android:textAlignment="center" />
 
 
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_admin_contactlist"
-        android:layout_below="@+id/edit_admin_add_members_text"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="35dp" />
-
-
-    <Button
-        android:text="Create Event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_admin_createevent"
-        android:layout_marginTop="16dp"
-        android:layout_below="@+id/edit_admin_contactlist"
-        android:layout_centerHorizontal="true" />
-
     <Button
         android:id="@+id/edit_admin_select_date"
         android:layout_width="wrap_content"
@@ -57,17 +38,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="SELECT TIME"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/edit_admin_select_date"
-        android:layout_alignStart="@+id/edit_admin_select_date" />
+        android:layout_below="@+id/edit_admin_select_date"
+        android:layout_alignRight="@+id/edit_admin_select_date"
+        android:layout_alignEnd="@+id/edit_admin_select_date"
+        android:layout_marginTop="31dp" />
 
-    <TextView
-        android:text="Add Members"
+    <Button
+        android:text="Select Members"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/edit_admin_add_members_text"
-        android:layout_marginTop="18dp"
+        android:id="@+id/edit_admin_addMembers"
         android:layout_below="@+id/edit_admin_select_time"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginTop="27dp"
+        android:layout_alignRight="@+id/edit_admin_select_time"
+        android:layout_alignEnd="@+id/edit_admin_select_time"
+        android:layout_alignLeft="@+id/edit_admin_select_time"
+        android:layout_alignStart="@+id/edit_admin_select_time" />
+
+    <Button
+        android:text="Create Event"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit_admin_createevent"
+        android:layout_marginTop="39dp"
+        android:layout_below="@+id/edit_admin_addMembers"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
