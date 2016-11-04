@@ -94,7 +94,10 @@ public class NavigationMenu extends AppCompatActivity
 //
 //        } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.admin_edit_event) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_navigation_menu,new EditAdmin())
+                    .commit();
 
         } else if (id == R.id.nav_send) {
 
