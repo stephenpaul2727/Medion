@@ -99,7 +99,10 @@ public class NavigationMenu extends AppCompatActivity
                     .replace(R.id.content_navigation_menu,new EditAdmin())
                     .commit();
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.edit_members) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_navigation_menu,new EditMembers())
+                    .commit();
 
         }
 

@@ -1,67 +1,55 @@
 package com.starters.medion;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Spinner;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.net.Uri;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.HashMap;
-
-
-import org.w3c.dom.Text;
-
-import java.util.Calendar;
 
 import static android.app.Activity.RESULT_OK;
 
+
 /**
- * Created by stephenpaul on 03/11/16.
+ * Created by stephenpaul on 04/11/16.
  */
 
-public class EditAdmin extends Fragment{
-    ArrayAdapter<String> adapter;
-    public ListView contact_list = null;
-    public HashMap<String,String> myMap;
-    public ArrayList<String> contactsarray = new ArrayList<String>();
-    public ImageButton imageButton;
-    private int RESULT_LOAD_IMG =1;
-    private String decodableImage;
+public class EditMembers extends Fragment {
 
+    public ListView contact_list = null;
+    private static int RESULT_LOAD_IMG=1;
+    public HashMap<String,String> myMap;
+    String decodableImage;
+    public ImageButton imageButton;
+    public ArrayList<String> contactsarray = new ArrayList<String>();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =inflater.inflate(R.layout.edit_admin, container, false);
-        final Button datepicker = (Button)view.findViewById(R.id.edit_admin_select_date);
-        final Button timepicker = (Button) view.findViewById(R.id.edit_admin_select_time);
-        imageButton = (ImageButton) view.findViewById(R.id.edit_imagebutton);
-        final Button membersButton = (Button) view.findViewById(R.id.edit_admin_addMembers);
+        View view = inflater.inflate(R.layout.edit_members,container,false);
+
+        imageButton = (ImageButton) view.findViewById(R.id.edit_members_imageButton);
+        final Button saveButton = (Button) view.findViewById(R.id.edit_members_save);
+        final Button addMembersButton = (Button) view.findViewById(R.id.edit_members_addmembers);
+
         populateContactList();
         contact_list = new ListView(getActivity());
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.contact_list,R.id.contacts,contactsarray);
@@ -74,53 +62,34 @@ public class EditAdmin extends Fragment{
                 Toast.makeText(getActivity(), contactstxt.getText().toString(),Toast.LENGTH_LONG).show();
             }
         });
-        membersButton.setOnClickListener(new View.OnClickListener() {
+
+        saveButton.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v) {
-                if(v==membersButton)
-                {
-                    showDialogListView(v);
-                }
+            public void onClick(View v)
+            {
+                //add the save Functionality
             }
+
         });
-
-
-
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(v==imageButton)
-                {
-                    Intent gallery_opener = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivity(gallery_opener);
-                }
+                Intent gallery_opener = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivity(gallery_opener);
             }
         });
 
-        datepicker.setOnClickListener(new View.OnClickListener() {
+        addMembersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(v==datepicker){
-                    Picker pickerDialogs= new Picker();
-                    pickerDialogs.show(getFragmentManager(),"date_picker");
-                }
-            }
-        });
-        timepicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(v==timepicker){
-                    TimePicker timepickerdialog = new TimePicker();
-                    timepickerdialog.show(getFragmentManager(),"time_picker");
-                }
+                showDialogListView(v);
 
             }
         });
-
-
 
         return view;
+
     }
 
     @Override
@@ -153,6 +122,7 @@ public class EditAdmin extends Fragment{
             Toast.makeText(getActivity(),"unknown Error retreiving image",Toast.LENGTH_LONG).show();
         }
     }
+
     public void showDialogListView(View view)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -162,7 +132,6 @@ public class EditAdmin extends Fragment{
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
 
     public void populateContactList()
     {
@@ -186,9 +155,4 @@ public class EditAdmin extends Fragment{
             }
         }
     }
-
-
-
-
-
 }
