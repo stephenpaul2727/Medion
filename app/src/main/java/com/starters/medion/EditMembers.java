@@ -22,6 +22,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.net.Uri;
+
+import com.gc.materialdesign.views.ButtonRectangle;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -47,8 +50,8 @@ public class EditMembers extends Fragment {
         View view = inflater.inflate(R.layout.edit_members,container,false);
 
         imageButton = (ImageButton) view.findViewById(R.id.edit_members_imageButton);
-        final Button saveButton = (Button) view.findViewById(R.id.edit_members_save);
-        final Button addMembersButton = (Button) view.findViewById(R.id.edit_members_addmembers);
+        final ButtonRectangle saveButton = (ButtonRectangle) view.findViewById(R.id.edit_members_save);
+        final ButtonRectangle addMembersButton = (ButtonRectangle) view.findViewById(R.id.edit_members_addmembers);
 
         populateContactList();
         contact_list = new ListView(getActivity());

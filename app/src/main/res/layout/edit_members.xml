@@ -21,23 +21,28 @@
         android:layout_centerHorizontal="true"
         android:layout_height="25dp"
         android:textAlignment="center"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:fontFamily="sans-serif-thin"/>
 
-    <Button
+    <com.gc.materialdesign.views.ButtonRectangle
         android:text="Add Members"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/edit_members_eventname"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="47dp"
+        android:background="#9ad3de"
+        android:textColor="#2e2f30"
         android:id="@+id/edit_members_addmembers" />
 
-    <Button
+    <com.gc.materialdesign.views.ButtonRectangle
         android:text="Save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/edit_members_addmembers"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="58dp"
+        android:background="#9ad3de"
+        android:textColor="#2e2f30"
         android:id="@+id/edit_members_save" />
 </RelativeLayout>

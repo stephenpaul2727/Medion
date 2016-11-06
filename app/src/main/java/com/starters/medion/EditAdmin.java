@@ -28,6 +28,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gc.materialdesign.views.ButtonRectangle;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
@@ -58,10 +60,10 @@ public class EditAdmin extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =inflater.inflate(R.layout.edit_admin, container, false);
-        final Button datepicker = (Button)view.findViewById(R.id.edit_admin_select_date);
-        final Button timepicker = (Button) view.findViewById(R.id.edit_admin_select_time);
+        final ButtonRectangle datepicker = (ButtonRectangle) view.findViewById(R.id.edit_admin_select_date);
+        final ButtonRectangle timepicker = (ButtonRectangle) view.findViewById(R.id.edit_admin_select_time);
         imageButton = (ImageButton) view.findViewById(R.id.edit_imagebutton);
-        final Button membersButton = (Button) view.findViewById(R.id.edit_admin_addMembers);
+        final ButtonRectangle membersButton = (ButtonRectangle) view.findViewById(R.id.edit_admin_addMembers);
         populateContactList();
         contact_list = new ListView(getActivity());
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.contact_list,R.id.contacts,contactsarray);
