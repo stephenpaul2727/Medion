@@ -200,8 +200,8 @@
         />
 
     <com.gc.materialdesign.views.ButtonRectangle
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:text="Register"
         android:id="@+id/Signup_register"
         android:layout_below="@+id/Signup_edit_address"
