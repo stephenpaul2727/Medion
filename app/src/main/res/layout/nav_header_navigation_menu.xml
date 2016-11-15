@@ -19,7 +19,7 @@
         android:layout_width="111dp"
         android:layout_height="78dp"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@drawable/medion_logo"
+        android:src="@drawable/medion_logo"
         android:layout_weight="0.43" />
 
     <TextView
