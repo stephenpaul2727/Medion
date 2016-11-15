@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.starters.medion.MainActivity"
     tools:showIn="@layout/activity_main"
-    android:background="#0e6db1"
+    android:background="#a8b6bf"
     android:foregroundTint="#deafaf">
 
     <ImageView
@@ -26,7 +26,7 @@
         android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:inputType="textPersonName|text"
-        android:text="Username"
+        android:hint="Username"
         android:ems="10"
         android:id="@+id/ConnectStage_Username"
         android:foreground="#ffffff"
@@ -38,7 +38,6 @@
         android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Password"
         android:ems="10"
         android:id="@+id/ConnectStage_Password"
         android:foreground="#ffffff"
@@ -47,7 +46,7 @@
         android:layout_alignLeft="@+id/ConnectStage_Username"
         android:layout_alignStart="@+id/ConnectStage_Username"
         android:textColor="#ffffff"
-        android:password="true" />
+        android:hint="password" />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -68,48 +67,43 @@
         android:id="@+id/ConnectStage_newuser"
         android:textColor="#ffffff"
         android:layout_below="@+id/Connectstage_login"
-        android:layout_alignLeft="@+id/ConnectStage_Logo"
-        android:layout_alignStart="@+id/ConnectStage_Logo"
-        android:layout_marginTop="29dp" />
+        android:layout_centerHorizontal="true"
+        />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <com.gc.materialdesign.views.ButtonRectangle
+
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:text="Sign Up"
         android:id="@+id/ConnectStage_SignUp"
-        android:background="#0e6db1"
+        android:background="#9ad3de"
         android:textStyle="bold"
-        android:textColor="#ffffff"
+        android:textColor="#2e2f30"
         android:gravity="bottom"
-        android:textSize="18dp"
         android:textAllCaps="false"
-        android:layout_above="@+id/Connectstage_ForgotPassword"
-        android:layout_alignRight="@+id/ConnectStage_Logo"
-        android:layout_alignEnd="@+id/ConnectStage_Logo"
-        android:layout_alignTop="@+id/ConnectStage_newuser" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/ConnectStage_newuser"
+       />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <com.gc.materialdesign.views.ButtonRectangle
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:text="Forgot Password"
         android:id="@+id/Connectstage_ForgotPassword"
-        android:background="#0e6db1"
-        android:textColor="#ffffff"
-        android:textSize="18dp"
+        android:background="#9ad3de"
+        android:textColor="#2e2f30"
         android:textAllCaps="false"
-        android:layout_below="@+id/ConnectStage_newuser"
+        android:layout_below="@+id/ConnectStage_SignUp"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
+    <com.gc.materialdesign.views.ButtonRectangle
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:text="Login"
         android:id="@+id/Connectstage_login"
         android:textStyle="bold"
-        android:textColor="#000000"
-        android:background="#ffffff"
+        android:textColor="#2e2f30"
+        android:background="#9ad3de"
         android:layout_below="@+id/ConnectStage_Rememberme"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

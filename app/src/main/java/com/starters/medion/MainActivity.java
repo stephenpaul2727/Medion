@@ -23,6 +23,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.starters.medion.constants.config;
 import com.starters.medion.utils.NotificationUtils;
 
+import com.gc.materialdesign.views.ButtonRectangle;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -61,13 +63,14 @@ public class MainActivity extends AppCompatActivity {
     }
     public void addLoginClickListener()
     {
-        Button login = (Button)findViewById(R.id.Connectstage_login);
+        ButtonRectangle login = (ButtonRectangle) findViewById(R.id.Connectstage_login);
         login.setFocusable(true);
         login.setFocusableInTouchMode(true);
         login.requestFocus();
         login.setOnClickListener(new OnClickListener() {
                                      public void onClick(View v) {
-                                         //login button code goes here...
+                                         Intent intent = new Intent(getApplicationContext(),NavigationMenu.class);
+                                         startActivity(intent);
                                      }
                                  }
 
@@ -76,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void addSignupClickListener()
     {
-        Button signup = (Button)findViewById(R.id.ConnectStage_SignUp);
+        ButtonRectangle signup = (ButtonRectangle) findViewById(R.id.ConnectStage_SignUp);
         signup.setFocusable(true);
         signup.setFocusableInTouchMode(true);
         signup.requestFocus();
