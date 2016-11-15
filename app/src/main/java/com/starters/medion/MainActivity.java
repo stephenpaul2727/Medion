@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.content.Intent;
 
+import com.gc.materialdesign.views.ButtonRectangle;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -22,13 +24,14 @@ public class MainActivity extends AppCompatActivity {
     }
     public void addLoginClickListener()
     {
-        Button login = (Button)findViewById(R.id.Connectstage_login);
+        ButtonRectangle login = (ButtonRectangle) findViewById(R.id.Connectstage_login);
         login.setFocusable(true);
         login.setFocusableInTouchMode(true);
         login.requestFocus();
         login.setOnClickListener(new OnClickListener() {
                                      public void onClick(View v) {
-                                         //login button code goes here...
+                                         Intent intent = new Intent(getApplicationContext(),NavigationMenu.class);
+                                         startActivity(intent);
                                      }
                                  }
 
@@ -37,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void addSignupClickListener()
     {
-        Button signup = (Button)findViewById(R.id.ConnectStage_SignUp);
+        ButtonRectangle signup = (ButtonRectangle) findViewById(R.id.ConnectStage_SignUp);
         signup.setFocusable(true);
         signup.setFocusableInTouchMode(true);
         signup.requestFocus();
