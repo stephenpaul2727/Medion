@@ -107,6 +107,11 @@ public class NavigationMenu extends AppCompatActivity
                     .replace(R.id.content_navigation_menu,new EditMembers())
                     .commit();
 
+        }else if(id==R.id.getMap)
+        {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_navigation_menu,new PlacesMap())
+                    .commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

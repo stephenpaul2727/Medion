@@ -29,6 +29,9 @@
             <item
                 android:id="@+id/edit_members"
                 android:title="edit For Members" />
+            <item
+                android:id="@+id/getMap"
+                android:title="Get Map"/>
         </menu>
     </item>
 
