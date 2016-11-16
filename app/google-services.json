@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "649262799240",
+    "firebase_url": "https://medion-99777.firebaseio.com",
+    "project_id": "medion-99777",
+    "storage_bucket": "medion-99777.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649262799240:android:25eaca7dc6ff2127",
+        "android_client_info": {
+          "package_name": "com.starters.medion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "649262799240-4sn4tvhevvvchv4t9eupj56r83gbv57a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEgG4ZkZUKhfk9BXFQe0KMWQ2ZUmsza9Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
