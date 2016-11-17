@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -13,6 +15,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyArlFSwNUDpAMmcm7CD6iGXy8zCcWoBF1g"/>
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +27,7 @@
         <activity
             android:name=".SignUp"
             android:label="Sign Up"></activity>
+
         <activity
             android:name=".NavigationMenu"
             android:label="@string/app_name"
@@ -47,6 +52,11 @@
             </intent-filter>
         </service>
         <!-- ./Firebase Notifications -->
+
+        <activity
+            android:name=".PlacesMap"
+            android:label="Choose Place">
+        </activity>
 
     </application>
 

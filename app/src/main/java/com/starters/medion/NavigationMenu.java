@@ -1,5 +1,6 @@
 package com.starters.medion;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -107,6 +108,10 @@ public class NavigationMenu extends AppCompatActivity
                     .replace(R.id.content_navigation_menu,new EditMembers())
                     .commit();
 
+        }else if(id == R.id.getMap)
+        {
+            Intent intent=new Intent(getApplicationContext(),PlacesMap.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

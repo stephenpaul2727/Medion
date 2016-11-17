@@ -3,12 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/extlib/MaterialDesign/MaterialDesign.iml" filepath="$PROJECT_DIR$/extlib/MaterialDesign/MaterialDesign.iml" />
-      <module fileurl="file://$PROJECT_DIR$/extlib/MaterialDesign/MaterialDesign.iml" filepath="$PROJECT_DIR$/extlib/MaterialDesign/MaterialDesign.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Medion.iml" filepath="$PROJECT_DIR$/Medion.iml" />
       <module fileurl="file://$PROJECT_DIR$/Medion.iml" filepath="$PROJECT_DIR$/Medion.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/extlib/extlib.iml" filepath="$PROJECT_DIR$/extlib/extlib.iml" />
       <module fileurl="file://$PROJECT_DIR$/extlib/extlib.iml" filepath="$PROJECT_DIR$/extlib/extlib.iml" />
     </modules>
   </component>
