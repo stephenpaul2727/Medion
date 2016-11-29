@@ -184,7 +184,7 @@ public class EditAdmin extends Fragment{
             {
                 String phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                 myMap.put(name,phoneNumber);
-                contactsarray.add(name + " "+ phoneNumber);
+                contactsarray.add(phoneNumber);
             }
         }
     }

@@ -44,38 +44,13 @@
         android:id="@+id/Signup_edit_name"
         android:layout_below="@+id/Signup_name"
         android:fontFamily="verdana"
-        android:textColor="#e6dfdf"
+        android:textColor="#000000"
         android:textStyle="bold"
         android:foreground="#e6dfdf"
         android:width="20dp"
         />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/Signup_username"
-        android:id="@+id/Signup_username"
-        android:fontFamily="verdana"
-        android:layout_marginTop="10dp"
-        android:textColor="#e6dfdf"
-        android:textStyle="bold"
-        android:layout_below="@+id/Signup_edit_name"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/Signup_edit_username"
-        android:layout_below="@+id/Signup_username"
-        android:fontFamily="verdana"
-        android:textColor="#e6dfdf"
-        android:textStyle="bold"
-        android:foreground="#e6dfdf"
-        android:width="20dp"
-        />
 
     <TextView
         android:layout_width="match_parent"
@@ -84,7 +59,7 @@
         android:text="@string/Signup_email"
         android:id="@+id/Signup_email"
         android:layout_marginTop="10dp"
-        android:layout_below="@+id/Signup_edit_username"
+        android:layout_below="@+id/Signup_edit_name"
         android:fontFamily="verdana"
         android:textColor="#e6dfdf"
         android:textStyle="bold"
@@ -99,7 +74,34 @@
         android:id="@+id/Signup_edit_email"
         android:layout_below="@+id/Signup_email"
         android:fontFamily="verdana"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:foreground="#e6dfdf"
+        android:width="20dp"
+        android:inputType="textEmailAddress" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/Signup_phonenumber"
+        android:id="@+id/Signup_phonenumber"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/Signup_edit_email"
+        android:fontFamily="verdana"
         android:textColor="#e6dfdf"
+        android:textStyle="bold"
+        android:layout_centerVertical="true"
+         />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/Signup_edit_phonenumber"
+        android:layout_below="@+id/Signup_phonenumber"
+        android:fontFamily="verdana"
+        android:textColor="#000000"
         android:textStyle="bold"
         android:foreground="#e6dfdf"
         android:width="20dp"
@@ -112,7 +114,7 @@
         android:text="@string/Signup_password"
         android:id="@+id/Signup_password"
         android:layout_marginTop="10dp"
-        android:layout_below="@+id/Signup_edit_email"
+        android:layout_below="@+id/Signup_edit_phonenumber"
         android:fontFamily="verdana"
         android:textColor="#e6dfdf"
         android:textStyle="bold"
@@ -125,11 +127,11 @@
         android:id="@+id/Signup_edit_password"
         android:layout_below="@+id/Signup_password"
         android:fontFamily="verdana"
-        android:textColor="#e6dfdf"
+        android:textColor="#000000"
         android:textStyle="bold"
         android:foreground="#e6dfdf"
         android:width="20dp"
-        android:password="true" />
+        android:inputType="textPassword" />
 
     <TextView
         android:layout_width="match_parent"
@@ -146,65 +148,27 @@
         />
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_marginTop="15dp"
+        android:layout_height="40dp"
+
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/Signup_edit_reenterpassword"
         android:layout_below="@+id/Signup_reenterpassword"
         android:fontFamily="verdana"
-        android:textColor="#e6dfdf"
+        android:textColor="#000000"
         android:textStyle="bold"
         android:foreground="#e6dfdf"
         android:width="20dp"
-        android:password="true" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/Signup_gender"
-        android:layout_marginTop="10dp"
-        android:id="@+id/Signup_gender"
-        android:layout_below="@+id/Signup_edit_reenterpassword"
-        android:fontFamily="verdana"
-        android:textColor="#e6dfdf"
-        android:textStyle="bold"
-
-        />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/Signup_address"
-        android:layout_marginTop="15dp"
-        android:id="@+id/Signup_address"
-        android:layout_below="@+id/Signup_gender"
-        android:fontFamily="verdana"
-        android:textColor="#e6dfdf"
-        android:textStyle="bold"
-
-        />
+        android:inputType="textPassword" />
 
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/Signup_edit_address"
-        android:layout_below="@+id/Signup_address"
-        android:fontFamily="verdana"
-        android:textColor="#e6dfdf"
-        android:textStyle="bold"
-        android:foreground="#e6dfdf"
-        />
+
 
     <com.gc.materialdesign.views.ButtonRectangle
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="Register"
         android:id="@+id/Signup_register"
-        android:layout_below="@+id/Signup_edit_address"
+        android:layout_below="@+id/Signup_edit_reenterpassword"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:fontFamily="verdana"
@@ -215,35 +179,6 @@
         android:background="#9ad3de"
         android:textColor="#2e2f30" />
 
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Male"
-        android:id="@+id/Signup_male"
-        android:layout_alignTop="@+id/Signup_gender"
-        android:layout_alignRight="@+id/Signup_title"
-        android:layout_alignEnd="@+id/Signup_title"
-        android:textColor="#e6dfdf"
-        android:checked="true"
-        android:clickable="true"
-        android:focusable="true"
-        android:enabled="true" />
-
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Female"
-        android:layout_marginTop="10dp"
-        android:id="@+id/Signup_female"
-        android:layout_alignTop="@+id/Signup_gender"
-        android:layout_alignRight="@+id/Signup_gender"
-        android:layout_alignEnd="@+id/Signup_gender"
-        android:textColor="#e6dfdf"
-        android:enabled="true"
-        android:focusable="true"
-        android:clickable="true"
-        android:checked="false" />
 
 
 </RelativeLayout>

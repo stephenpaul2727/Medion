@@ -68,9 +68,9 @@ public class PlacesMap extends AppCompatActivity implements GoogleApiClient.Conn
         mapphonenumber= (TextView)findViewById(R.id.map_Phonenumber);
         LocationManager lm =(LocationManager)getSystemService(Context.LOCATION_SERVICE);
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        latitude=location.getLatitude();
-        longitude=location.getLongitude();
-        final LatLngBounds bounds = new LatLngBounds(new LatLng(latitude,longitude),new LatLng(latitude+0.4,longitude+0.4));
+//        latitude=location.getLatitude();
+//        longitude=location.getLongitude();
+//        final LatLngBounds bounds = new LatLngBounds(new LatLng(latitude,longitude),new LatLng(latitude+0.4,longitude+0.4));
 
         final GoogleApiClient mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
@@ -112,7 +112,7 @@ public class PlacesMap extends AppCompatActivity implements GoogleApiClient.Conn
                     }
                 });
                 PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                builder.setLatLngBounds(bounds);
+//                builder.setLatLngBounds(bounds);
                 Intent intent;
                 try {
                     intent = builder.build(PlacesMap.this);
