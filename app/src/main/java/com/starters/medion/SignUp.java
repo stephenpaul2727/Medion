@@ -163,7 +163,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
             user.setEmail(args[1]);
             user.setPhone(args[2]);
             user.setPassword(args[3]);
-            user.setFcmToken("XXX");
+
+            user.setFcmToken(MainActivity.fcmToken);
 
             System.out.println(args[4]);
             return POST(args[4],user);

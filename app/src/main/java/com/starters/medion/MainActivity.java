@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private BroadcastReceiver mRegistrationBroadcastReceiver;
-
+    public static String fcmToken = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
+        displayFirebaseRegId();
     }
     public void addLoginClickListener()
     {
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
     private void displayFirebaseRegId() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences(config.SHARED_PREF, 0);
         String regId = pref.getString("regId", null);
-
+        fcmToken = regId;
         Log.e(TAG, "Firebase reg id: " + regId);
 
     }
