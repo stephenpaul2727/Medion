@@ -54,8 +54,9 @@ public class MainActivity extends AppCompatActivity {
 
                     String message = intent.getStringExtra("message");
 
-                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
 
+                    Log.d("FIREBASE sent:",message);
 //                    txtMessage.setText(message);
                 }
             }

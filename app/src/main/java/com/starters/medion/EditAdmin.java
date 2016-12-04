@@ -147,8 +147,8 @@ public class EditAdmin extends Fragment{
                     System.out.println(contactsarray.get(i));
                 }
                 ArrayList<String> mem = new ArrayList<String>();
-                mem.add(0,"1234567890");
-                mem.add(1,"0987654321");
+                mem.add(0,"(123) 456-7890");
+                mem.add(1,"(098) 765-4321");
                 String members = TextUtils.join(",", mem);
                 //To get it back to ArrayList,
                 //List<String> myList = new ArrayList<String>(Arrays.asList(members.split(",")));
@@ -256,14 +256,14 @@ public class EditAdmin extends Fragment{
             OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
 
             // 3. build jsonObject
-            JSONObject userJson = new JSONObject();
-            userJson.accumulate("eventName", event.getEventName());
-            userJson.accumulate("eventDate", event.getEventDate());
-            userJson.accumulate("eventTime", event.getEventTime());
-            userJson.accumulate("memberList", event.getMemberList());
+            JSONObject eventJson = new JSONObject();
+            eventJson.accumulate("eventName", event.getEventName());
+            eventJson.accumulate("eventDate", event.getEventDate());
+            eventJson.accumulate("eventTime", event.getEventTime());
+            eventJson.accumulate("memberList", event.getMemberList());
 
             // 4. convert JSONObject to JSON to String and send json content
-            out.write(userJson.toString());
+            out.write(eventJson.toString());
             out.flush();
             out.close();
 
