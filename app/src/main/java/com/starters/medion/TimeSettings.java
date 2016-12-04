@@ -12,6 +12,10 @@ import android.widget.TimePicker;
 public class TimeSettings implements TimePickerDialog.OnTimeSetListener{
 
     Context context;
+
+    private String hh;
+    private String mm;
+    private String time;
     public TimeSettings(Context context)
     {
         this.context=context;
@@ -19,6 +23,15 @@ public class TimeSettings implements TimePickerDialog.OnTimeSetListener{
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         Toast.makeText(context,"selected time: "+hourOfDay+":"+minute,Toast.LENGTH_LONG).show();
+        hh= Integer.toString(hourOfDay);
+        mm = Integer.toString(minute);
+        time = hh+":"+mm;
+
+    }
+
+    public String ret_Time_String()
+    {
+        return time;
 
     }
 }

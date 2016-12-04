@@ -57,6 +57,7 @@ public class EditAdmin extends Fragment{
     private String decodableImage;
     private String tempDate;
     private String tempTime;
+    private EditText eventname;
 
 
     private ButtonRectangle saveButton;
@@ -69,7 +70,7 @@ public class EditAdmin extends Fragment{
         View view =inflater.inflate(R.layout.edit_admin, container, false);
         final ButtonRectangle datepicker = (ButtonRectangle) view.findViewById(R.id.edit_admin_select_date);
         final ButtonRectangle timepicker = (ButtonRectangle) view.findViewById(R.id.edit_admin_select_time);
-        final EditText eventname = (EditText)view.findViewById(R.id.edit_admin_event_name);
+        eventname = (EditText)view.findViewById(R.id.edit_admin_event_name);
         imageButton = (ImageButton) view.findViewById(R.id.edit_imagebutton);
         saveButton = (ButtonRectangle) view.findViewById(R.id.edit_admin_save);
         final ButtonRectangle membersButton = (ButtonRectangle) view.findViewById(R.id.edit_admin_addMembers);
@@ -116,6 +117,7 @@ public class EditAdmin extends Fragment{
                 if(v==datepicker){
                     Picker pickerDialogs= new Picker();
                     pickerDialogs.show(getFragmentManager(),"date_picker");
+                    tempDate=pickerDialogs.dateCalc();
 
                 }
             }
@@ -126,6 +128,7 @@ public class EditAdmin extends Fragment{
                 if(v==timepicker){
                     TimePicker timepickerdialog = new TimePicker();
                     timepickerdialog.show(getFragmentManager(),"time_picker");
+                    tempTime=timepickerdialog.timeCalc();
                 }
 
             }
@@ -137,17 +140,12 @@ public class EditAdmin extends Fragment{
             public void onClick(View view) {
 
                 System.out.println(eventname.getText());
-//                System.out.println(datepicker.getText());
-//                System.out.println(timepicker.getText());
+                System.out.println("Time is: "+tempTime);
+                System.out.println("date is :"+tempDate);
                 for(int i=0;i<contactsarray.size();i++)
                 {
                     System.out.println(contactsarray.get(i));
                 }
-
-                //eventName
-                //date
-                //time
-                //ArrayList of member phone numbers
                 ArrayList<String> mem = new ArrayList<String>();
                 mem.add(0,"1234567890");
                 mem.add(1,"0987654321");
@@ -161,19 +159,16 @@ public class EditAdmin extends Fragment{
         return view;
     }
 
-    public void setTempDate(int day,int month,int year)
+    public void setTempDate(String x)
     {
-        String dd = Integer.toString(day);
-        String mm = Integer.toString(month);
-        String yy = Integer.toString(year);
-        StringBuilder sb = new StringBuilder(mm);
-        sb.append("-");sb.append(dd);sb.append("-");sb.append(yy);
+
+        tempDate = x;
 
     }
 
-    public void setTempTime(String tempTime)
+    public void setTempTime(String y)
     {
-        this.tempTime = tempTime;
+        tempTime =y;
     }
 
 

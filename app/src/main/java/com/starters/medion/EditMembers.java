@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -41,8 +42,12 @@ public class EditMembers extends Fragment {
     private static int RESULT_LOAD_IMG=1;
     public HashMap<String,String> myMap;
     String decodableImage;
+    private String timeString;
+    private String dateString;
     public ImageButton imageButton;
     public ArrayList<String> contactsarray = new ArrayList<String>();
+    private EditText eventname;
+
 
     @Nullable
     @Override
@@ -52,7 +57,7 @@ public class EditMembers extends Fragment {
         imageButton = (ImageButton) view.findViewById(R.id.edit_members_imageButton);
         final ButtonRectangle saveButton = (ButtonRectangle) view.findViewById(R.id.edit_members_save);
         final ButtonRectangle addMembersButton = (ButtonRectangle) view.findViewById(R.id.edit_members_addmembers);
-
+        eventname = (EditText)view.findViewById(R.id.edit_admin_event_name);
         populateContactList();
         contact_list = new ListView(getActivity());
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.contact_list,R.id.contacts,contactsarray);
@@ -70,7 +75,14 @@ public class EditMembers extends Fragment {
             @Override
             public void onClick(View v)
             {
-                //add the save Functionality
+                System.out.println(eventname.getText());
+                for(int i=0;i<contactsarray.size();i++)
+                {
+                    System.out.println(contactsarray.get(i));
+                }
+                System.out.println("time is:"+timeString);
+                System.out.println("date is :"+dateString);
+
             }
 
         });
@@ -94,6 +106,20 @@ public class EditMembers extends Fragment {
         return view;
 
     }
+
+
+    public void setTimeString(String x)
+    {
+
+        timeString =x;
+    }
+
+    public void setDateString(String y)
+    {
+
+        dateString = y;
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

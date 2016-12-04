@@ -11,6 +11,9 @@ import android.os.Bundle;
 import java.util.Calendar;
 
 public class Picker extends DialogFragment{
+
+    String s;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         DateSettings dateSettings = new DateSettings(getActivity());
@@ -20,6 +23,14 @@ public class Picker extends DialogFragment{
         int year = cal.get(Calendar.YEAR);
         DatePickerDialog datePickerDialog;
         datePickerDialog = new DatePickerDialog(getActivity(), dateSettings,year,month,day);
+        s =dateSettings.ret_Date_String();
+        System.out.println(s);
         return datePickerDialog;
     }
+
+    public String dateCalc()
+    {
+        return s;
+    }
+
 }

@@ -100,12 +100,12 @@ public class NavigationMenu extends AppCompatActivity
 
         } else if (id == R.id.admin_edit_event) {
             fragmentManager.beginTransaction()
-                            .replace(R.id.content_navigation_menu,new EditAdmin())
+                            .replace(R.id.content_navigation_menu,new EditAdmin(),"edit_admin_tag")
                             .commit();
 
         } else if (id == R.id.edit_members) {
             fragmentManager.beginTransaction()
-                    .replace(R.id.content_navigation_menu,new EditMembers())
+                    .replace(R.id.content_navigation_menu,new EditMembers(),"edit_members_tag")
                     .commit();
 
         }else if(id == R.id.getMap)

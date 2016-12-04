@@ -14,6 +14,8 @@ import android.os.Bundle;
 import java.util.Calendar;
 
 public class TimePicker extends DialogFragment{
+
+    String s;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         TimeSettings timeSettings=new TimeSettings(getActivity());
@@ -22,7 +24,15 @@ public class TimePicker extends DialogFragment{
         int mins = cal.get(Calendar.MINUTE);
         TimePickerDialog timePickerDialog;
         timePickerDialog=new TimePickerDialog(getActivity(),timeSettings,hours,mins,true);
+        s = timeSettings.ret_Time_String();
+        System.out.println(s);
         return timePickerDialog;
 
     }
+
+    public String timeCalc()
+    {
+        return s;
+    }
+
 }
