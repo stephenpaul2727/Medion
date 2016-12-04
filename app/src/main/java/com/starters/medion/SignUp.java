@@ -64,7 +64,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                 if (!validate())
                     Toast.makeText(getBaseContext(), "Please fill All Fields or Make sure your Password matches", Toast.LENGTH_LONG).show();
                 else
-                    new HttpAsyncTask().execute(name, email, phone, password, "http://149.161.149.223:8080/Medion/api/addTheUser");
+                    new HttpAsyncTask().execute(name, email, phone, password, "https://whispering-everglades-62915.herokuapp.com/api/addUser");
             }
         });
     }

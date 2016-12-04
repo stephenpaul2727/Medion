@@ -1,6 +1,5 @@
 package com.starters.medion;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.ContentResolver;
@@ -8,37 +7,39 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Spinner;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.starters.medion.model.Event;
+import com.starters.medion.model.User;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.HashMap;
 
-
-import org.w3c.dom.Text;
-
-import java.util.Calendar;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -54,6 +55,12 @@ public class EditAdmin extends Fragment{
     public ImageButton imageButton;
     private int RESULT_LOAD_IMG =1;
     private String decodableImage;
+    private String tempDate;
+    private String tempTime;
+
+
+    private ButtonRectangle saveButton;
+    private Event event;
 
 
     @Nullable
@@ -62,7 +69,9 @@ public class EditAdmin extends Fragment{
         View view =inflater.inflate(R.layout.edit_admin, container, false);
         final ButtonRectangle datepicker = (ButtonRectangle) view.findViewById(R.id.edit_admin_select_date);
         final ButtonRectangle timepicker = (ButtonRectangle) view.findViewById(R.id.edit_admin_select_time);
+        final EditText eventname = (EditText)view.findViewById(R.id.edit_admin_event_name);
         imageButton = (ImageButton) view.findViewById(R.id.edit_imagebutton);
+        saveButton = (ButtonRectangle) view.findViewById(R.id.edit_admin_save);
         final ButtonRectangle membersButton = (ButtonRectangle) view.findViewById(R.id.edit_admin_addMembers);
         populateContactList();
         contact_list = new ListView(getActivity());
@@ -76,6 +85,7 @@ public class EditAdmin extends Fragment{
                 Toast.makeText(getActivity(), contactstxt.getText().toString(),Toast.LENGTH_LONG).show();
             }
         });
+
         membersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,6 +116,7 @@ public class EditAdmin extends Fragment{
                 if(v==datepicker){
                     Picker pickerDialogs= new Picker();
                     pickerDialogs.show(getFragmentManager(),"date_picker");
+
                 }
             }
         });
@@ -121,9 +132,51 @@ public class EditAdmin extends Fragment{
         });
 
 
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                System.out.println(eventname.getText());
+//                System.out.println(datepicker.getText());
+//                System.out.println(timepicker.getText());
+                for(int i=0;i<contactsarray.size();i++)
+                {
+                    System.out.println(contactsarray.get(i));
+                }
+
+                //eventName
+                //date
+                //time
+                //ArrayList of member phone numbers
+                ArrayList<String> mem = new ArrayList<String>();
+                mem.add(0,"1234567890");
+                mem.add(1,"0987654321");
+                String members = TextUtils.join(",", mem);
+                //To get it back to ArrayList,
+                //List<String> myList = new ArrayList<String>(Arrays.asList(members.split(",")));
+                new EditAdmin.HttpAsyncTask().execute("TasteOFIndia","12-04-16","18:00",members,"http://149.161.150.185:8080/api/notifyMembers");
+            }
+        });
 
         return view;
     }
+
+    public void setTempDate(int day,int month,int year)
+    {
+        String dd = Integer.toString(day);
+        String mm = Integer.toString(month);
+        String yy = Integer.toString(year);
+        StringBuilder sb = new StringBuilder(mm);
+        sb.append("-");sb.append(dd);sb.append("-");sb.append(yy);
+
+    }
+
+    public void setTempTime(String tempTime)
+    {
+        this.tempTime = tempTime;
+    }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -189,8 +242,68 @@ public class EditAdmin extends Fragment{
         }
     }
 
+    public static String POST(String stringURL, Event event) {
+        String result = "";
+        try {
 
+            // 1. create URL
+            URL url = new URL(stringURL);
 
+            // 2. create connection to given URL
+            URLConnection connection = url.openConnection();
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setUseCaches(false);
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            connection.connect();
+            OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
+
+            // 3. build jsonObject
+            JSONObject userJson = new JSONObject();
+            userJson.accumulate("eventName", event.getEventName());
+            userJson.accumulate("eventDate", event.getEventDate());
+            userJson.accumulate("eventTime", event.getEventTime());
+            userJson.accumulate("memberList", event.getMemberList());
+
+            // 4. convert JSONObject to JSON to String and send json content
+            out.write(userJson.toString());
+            out.flush();
+            out.close();
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+            while (in.readLine() != null) {
+                System.out.println(in);
+            }
+            System.out.println("\nMedion notify REST Service Invoked Successfully..");
+            in.close();
+        } catch (Exception e) {
+            Log.d("InputStream", e.getLocalizedMessage());
+        }
+
+        return result;
+    }
+
+    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... args) {
+            event = new Event();
+            event.setEventName(args[0]);
+            event.setEventDate(args[1]);
+            event.setEventTime(args[2]);
+            event.setMemberList(args[3]);
+
+            return POST(args[4],event);
+        }
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(getActivity().getBaseContext(), "Event Created!", Toast.LENGTH_LONG).show();
+        }
+    }
 
 
 }

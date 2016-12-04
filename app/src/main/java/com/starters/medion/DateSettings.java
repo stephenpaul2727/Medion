@@ -11,6 +11,9 @@ import android.widget.Toast;
 
 public class DateSettings implements DatePickerDialog.OnDateSetListener {
     Context context;
+    public int day;
+    public int month;
+    public int yearofcreation;
     public DateSettings(Context context)
     {
         this.context = context;
@@ -19,6 +22,11 @@ public class DateSettings implements DatePickerDialog.OnDateSetListener {
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         Toast.makeText(context,"selected date: "+dayOfMonth+"/ "+monthOfYear+"/ "+year,Toast.LENGTH_LONG).show();
+        EditAdmin editAdmin = new EditAdmin();
+        day = dayOfMonth;
+        month = monthOfYear;
+        yearofcreation = year;
+        editAdmin.setTempDate(day,month,yearofcreation);
 
     }
 }

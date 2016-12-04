@@ -11,7 +11,7 @@ public class GeoCoordinates {
     public GeoCoordinates(){
 
     }
-    
+
     public GeoCoordinates(double latitute, double longitude){
         this.latitude = latitute;
         this.longitude = longitude;
