@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_height="100dp"
+        android:layout_width="150dp"
+        android:id="@+id/t_eventname"
+        android:layout_alignParentLeft="true"
+        android:text="Name"
+        android:paddingLeft="20dp"/>
+    <TextView
+        android:layout_height="match_parent"
+        android:layout_width="100dp"
+        android:id="@+id/t_date"
+        android:layout_toRightOf="@id/t_eventname"
+        android:text="02/21/2017"
+        />
+
+    <TextView
+        android:layout_height="match_parent"
+        android:layout_width="50dp"
+        android:id="@+id/t_time"
+        android:layout_toRightOf="@id/t_date"
+        android:text="10am"
+        android:gravity="center"/>
+
+
+</RelativeLayout>

@@ -19,6 +19,8 @@ import android.view.MenuItem;
 import android.widget.RelativeLayout;
 import android.view.animation.Animation;
 
+import com.starters.medion.utils.ViewEventsList;
+
 
 public class NavigationMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -88,9 +90,11 @@ public class NavigationMenu extends AppCompatActivity
         int id = item.getItemId();
         FragmentManager fragmentManager = getFragmentManager();
         if (id == R.id.home_layout) {
-            fragmentManager.beginTransaction()
+          /*  fragmentManager.beginTransaction()
                     .replace(R.id.content_navigation_menu, new Home())
-                    .commit();
+                    .commit();*/
+            Intent intent = new Intent(this, ViewEventsList.class);
+            startActivity(intent);
             // Handle the camera action
 //        } else if (id == R.id.nav_gallery) {
 //

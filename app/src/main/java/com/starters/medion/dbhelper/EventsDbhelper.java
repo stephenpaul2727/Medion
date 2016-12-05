@@ -1,8 +1,11 @@
 package com.starters.medion.dbhelper;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.CalendarContract;
+
 import com.starters.medion.contract.EventsContract.EventsEntry;
 /**
  * Created by Ashish on 12/1/2016.
@@ -50,6 +53,16 @@ public class EventsDbhelper extends SQLiteOpenHelper {
 
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
+    }
+
+    public boolean addData(String item){
+        return false;
+    }
+
+    public Cursor getListContents(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor data = db.rawQuery("SELECT * from " + EventsEntry.TABLE_NAME, null);
+        return data;
     }
 
 
