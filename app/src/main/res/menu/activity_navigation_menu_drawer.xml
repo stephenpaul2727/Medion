@@ -3,10 +3,9 @@
     android:background="#35373a">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/home_layout"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Home" />
+        <!--<item-->
+            <!--android:id="@+id/home_layout"-->
+            <!--android:title="Home" />-->
         <!--<item-->
             <!--android:id="@+id/nav_gallery"-->
             <!--android:icon="@drawable/ic_menu_gallery"-->

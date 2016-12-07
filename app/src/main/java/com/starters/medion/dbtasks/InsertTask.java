@@ -8,7 +8,7 @@ import android.os.AsyncTask;
 import com.starters.medion.contract.EventsContract;
 import com.starters.medion.contract.EventsContract.EventsEntry;
 import com.starters.medion.dbhelper.EventsDbhelper;
-import com.starters.medion.utils.ContextGetter;
+//import com.starters.medion.utils.ContextGetter;
 /**
  * Created by Ashish on 12/1/2016.
  */

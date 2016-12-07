@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         login.requestFocus();
         login.setOnClickListener(new OnClickListener() {
                                      public void onClick(View v) {
-                                         Intent intent = new Intent(getApplicationContext(),NavigationMenu.class);
+                                         Intent intent = new Intent(getApplicationContext(),Home.class);
                                          startActivity(intent);
                                      }
                                  }
