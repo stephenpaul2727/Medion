@@ -1,9 +1,14 @@
 package com.starters.medion;
 
+import android.*;
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -12,6 +17,8 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,6 +55,8 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class EditAdmin extends Fragment{
+    private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 0;
+    private static final int MY_PERMISSIONS_REQUEST_WRITE_CONTACTS = 2;
     ArrayAdapter<String> adapter;
     public ListView contact_list = null;
     public HashMap<String,String> myMap;
@@ -58,8 +67,7 @@ public class EditAdmin extends Fragment{
     private String tempDate;
     private String tempTime;
     private EditText eventname;
-
-
+    private ButtonRectangle membersButton;
     private ButtonRectangle saveButton;
     private Event event;
 
@@ -73,8 +81,8 @@ public class EditAdmin extends Fragment{
         eventname = (EditText)view.findViewById(R.id.edit_admin_event_name);
         imageButton = (ImageButton) view.findViewById(R.id.edit_imagebutton);
         saveButton = (ButtonRectangle) view.findViewById(R.id.edit_admin_save);
-        final ButtonRectangle membersButton = (ButtonRectangle) view.findViewById(R.id.edit_admin_addMembers);
-        populateContactList();
+        membersButton = (ButtonRectangle) view.findViewById(R.id.edit_admin_addMembers);
+        checkContactPermission();
         contact_list = new ListView(getActivity());
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.contact_list,R.id.contacts,contactsarray);
         contact_list.setAdapter(adapter);
@@ -171,7 +179,10 @@ public class EditAdmin extends Fragment{
         tempTime =y;
     }
 
-
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -203,6 +214,45 @@ public class EditAdmin extends Fragment{
             Toast.makeText(getActivity(),"unknown Error retreiving image",Toast.LENGTH_LONG).show();
         }
     }
+
+    public void checkContactPermission()
+    {
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+
+
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.READ_CONTACTS},
+                    MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+        }
+
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.WRITE_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.WRITE_CONTACTS},
+                    MY_PERMISSIONS_REQUEST_WRITE_CONTACTS);  
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                populateContactList();
+            }
+            else
+            {
+                Toast.makeText(this.getActivity(),"until you give permissions, this app cannot function properly",Toast.LENGTH_LONG);
+            }
+        }
+
+
+    }
+
     public void showDialogListView(View view)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

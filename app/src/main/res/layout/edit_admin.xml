@@ -5,7 +5,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:id="@+id/edit_admin_layout"
-    android:scaleType="fitXY">
+
+    android:layout_marginTop="-15dp">
 
 
     <com.gc.materialdesign.views.ButtonRectangle
@@ -60,7 +61,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="SELECT TIME"
-        android:layout_marginTop="16dp"
         android:background="#9ad3de"
         android:layout_below="@+id/edit_admin_select_date"
         android:textColor="#2e2f30"
@@ -71,7 +71,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/edit_admin_addMembers"
-        android:layout_marginTop="18dp"
         android:background="#9ad3de"
         android:layout_below="@+id/edit_admin_select_time"
         android:textColor="#2e2f30"

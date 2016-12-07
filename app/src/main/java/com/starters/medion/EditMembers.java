@@ -1,9 +1,12 @@
 package com.starters.medion;
 
+import android.*;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -11,6 +14,8 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +43,8 @@ import static android.app.Activity.RESULT_OK;
 
 public class EditMembers extends Fragment {
 
+    private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 5 ;
+    private static final int MY_PERMISSIONS_REQUEST_WRITE_CONTACTS = 6 ;
     public ListView contact_list = null;
     private static int RESULT_LOAD_IMG=1;
     public HashMap<String,String> myMap;
@@ -47,6 +54,7 @@ public class EditMembers extends Fragment {
     public ImageButton imageButton;
     public ArrayList<String> contactsarray = new ArrayList<String>();
     private EditText eventname;
+    private ButtonRectangle addMembersButton;
 
 
     @Nullable
@@ -56,9 +64,8 @@ public class EditMembers extends Fragment {
 
         imageButton = (ImageButton) view.findViewById(R.id.edit_members_imageButton);
         final ButtonRectangle saveButton = (ButtonRectangle) view.findViewById(R.id.edit_members_save);
-        final ButtonRectangle addMembersButton = (ButtonRectangle) view.findViewById(R.id.edit_members_addmembers);
+        addMembersButton = (ButtonRectangle) view.findViewById(R.id.edit_members_addmembers);
         eventname = (EditText)view.findViewById(R.id.edit_admin_event_name);
-        populateContactList();
         contact_list = new ListView(getActivity());
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.contact_list,R.id.contacts,contactsarray);
         contact_list.setAdapter(adapter);
@@ -98,7 +105,8 @@ public class EditMembers extends Fragment {
         addMembersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialogListView(v);
+                checkPermission();
+
 
             }
         });
@@ -107,6 +115,32 @@ public class EditMembers extends Fragment {
 
     }
 
+    public void checkPermission()
+    {
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                android.Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{android.Manifest.permission.READ_CONTACTS},
+                    MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+        }
+
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                android.Manifest.permission.WRITE_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{android.Manifest.permission.WRITE_CONTACTS},
+                    MY_PERMISSIONS_REQUEST_WRITE_CONTACTS);
+        }
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
 
     public void setTimeString(String x)
     {
@@ -149,6 +183,19 @@ public class EditMembers extends Fragment {
         catch(Exception e)
         {
             Toast.makeText(getActivity(),"unknown Error retreiving image",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            View v = addMembersButton;
+            populateContactList();
+            showDialogListView(v);
+        }
+        else
+        {
+            Toast.makeText(this.getActivity(),"until you give permissions, this app cannot function properly",Toast.LENGTH_LONG);
         }
     }
 

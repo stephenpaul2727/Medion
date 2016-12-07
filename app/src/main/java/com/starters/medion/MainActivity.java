@@ -21,8 +21,12 @@ import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.starters.medion.constants.config;
+
 import com.starters.medion.model.GeoCoordinates;
 import com.starters.medion.service.TrackGPS;
+
+import com.starters.medion.dbtasks.InsertTask;
+
 import com.starters.medion.utils.NotificationUtils;
 
 import com.gc.materialdesign.views.ButtonRectangle;
@@ -57,10 +61,13 @@ public class MainActivity extends AppCompatActivity {
                     // new push notification is received
 
                     String message = intent.getStringExtra("message");
-
+                    //String message = "Fun Event,02/12/2016,10am,8123456544|5432126879";
+                    String[] parts = message.split(",");
+                    InsertTask insert = new InsertTask(getApplicationContext());
+                    insert.execute(parts);
                     Toast.makeText(getBaseContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
 
-                    Log.d("FIREBASE sent:",message);
+                    Log.d("FIREBASE sent:", message);
 //                    txtMessage.setText(message);
                     geoCoordinates = new GeoCoordinates();
                     trackGPS = new TrackGPS(MainActivity.this);
@@ -82,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         login.requestFocus();
         login.setOnClickListener(new OnClickListener() {
                                      public void onClick(View v) {
-                                         Intent intent = new Intent(getApplicationContext(),NavigationMenu.class);
+                                         Intent intent = new Intent(getApplicationContext(),Home.class);
                                          startActivity(intent);
                                      }
                                  }

@@ -14,7 +14,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <!--<fragment android:name="com.starters.medion.EditAdmin"-->
+        <!--android:id="@+id/edit_admin_fragment"-->
+        <!--android:background="#83a1d1"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent" />-->
 
+    <!--<fragment android:name="com.starters.medion.EditMembers"-->
+        <!--android:id="@+id/edit_members_fragment"-->
+        <!--android:background="#83a1d1"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent" />-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/fragment_container"
+    />
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
