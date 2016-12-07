@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.starters.medion.constants.config;
+import com.starters.medion.model.GeoCoordinates;
+import com.starters.medion.service.TrackGPS;
 import com.starters.medion.utils.NotificationUtils;
 
 import com.gc.materialdesign.views.ButtonRectangle;
@@ -30,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     public static String fcmToken = null;
+    private static GeoCoordinates geoCoordinates;
+    private TrackGPS trackGPS;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +62,13 @@ public class MainActivity extends AppCompatActivity {
 
                     Log.d("FIREBASE sent:",message);
 //                    txtMessage.setText(message);
+                    geoCoordinates = new GeoCoordinates();
+                    trackGPS = new TrackGPS(MainActivity.this);
+                    if(trackGPS.canGetLocation()){
+                        geoCoordinates.setLatitude(trackGPS.getLatitude());
+                        geoCoordinates.setLongitude(trackGPS.getLongitude());
+                    }
+
                 }
             }
         };
