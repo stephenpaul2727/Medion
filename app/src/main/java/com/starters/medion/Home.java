@@ -161,15 +161,22 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         System.out.println("date is:"+" "+pickerMonth+":"+pickerDay+":"+pickerYear);
     }
 
-    @Override
-    public String getDateTime() {
-    String s = pickerDay +"/"+pickerMonth+"/"+pickerYear+" "+pickerHour+":"+pickerMin;
-        return s;
-    }
 
     @Override
     public String getDateTimeMem() {
         String s = pickerDay +"/"+pickerMonth+"/"+pickerYear+" "+pickerHour+":"+pickerMin;
         return s;
+    }
+
+    @Override
+    public String getDate() {
+        String date = pickerDay +"-"+pickerMonth+"-"+pickerYear;
+        return date;
+    }
+
+    @Override
+    public String getTime() {
+        String time = pickerHour+":"+pickerMin;
+        return time;
     }
 }
