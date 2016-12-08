@@ -155,12 +155,14 @@ public class EditAdmin extends Fragment{
                     System.out.println(contactsarray.get(i));
                 }
                 ArrayList<String> mem = new ArrayList<String>();
-                mem.add(0,"(123) 456-7890");
-                mem.add(1,"(098) 765-4321");
+                mem.add(0,"123");
+                mem.add(1,"123");
+//                mem.add(0,"8765433221");
+//                mem.add(1,"8123603159");
                 String members = TextUtils.join(",", mem);
                 //To get it back to ArrayList,
                 //List<String> myList = new ArrayList<String>(Arrays.asList(members.split(",")));
-                new EditAdmin.HttpAsyncTask().execute("TasteOFIndia","12-04-16","18:00",members,"http://149.161.150.185:8080/api/notifyMembers");
+                new EditAdmin.HttpAsyncTask().execute("TasteOFIndia","12-04-16","18:00",members,"http://10.0.0.243:8080/api/notifyMembers");
             }
         });
 
@@ -300,8 +302,8 @@ public class EditAdmin extends Fragment{
             connection.setDoOutput(true);
             connection.setUseCaches(false);
             connection.setRequestProperty("Content-Type", "application/json");
-            connection.setConnectTimeout(5000);
-            connection.setReadTimeout(5000);
+            connection.setConnectTimeout(50000);
+            connection.setReadTimeout(50000);
             connection.connect();
             OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
 
