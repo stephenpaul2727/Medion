@@ -15,12 +15,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="match_parent"
         android:layout_marginTop="20dp"
         android:id="@+id/fragment_container"
-        android:background="#a8b6bf"
+        android:background="#2b2c2d"
         android:clickable="true">
 
         <ListView
@@ -40,6 +42,8 @@
             android:layout_marginRight="24dp"/>
 
     </RelativeLayout>
+
+
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"

@@ -55,7 +55,13 @@ public class EditMembers extends Fragment {
     public ArrayList<String> contactsarray = new ArrayList<String>();
     private EditText eventname;
     private ButtonRectangle addMembersButton;
+    private Home home;
 
+
+    public interface HomeListener
+    {
+        public String getDateTimeMem();
+    }
 
     @Nullable
     @Override
@@ -140,6 +146,7 @@ public class EditMembers extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        home=(Home)getActivity();
     }
 
     public void setTimeString(String x)
@@ -207,6 +214,12 @@ public class EditMembers extends Fragment {
         builder.setView(contact_list);
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+
+    public void passData()
+    {
+        String dateTime=home.getDateTimeMem();
     }
 
     public void populateContactList()
