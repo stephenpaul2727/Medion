@@ -5,6 +5,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -54,7 +55,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by stephenpaul on 03/11/16.
  */
 
-public class EditAdmin extends Fragment{
+public class EditAdmin extends Fragment {
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 0;
     private static final int MY_PERMISSIONS_REQUEST_WRITE_CONTACTS = 2;
     ArrayAdapter<String> adapter;
@@ -70,6 +71,17 @@ public class EditAdmin extends Fragment{
     private ButtonRectangle membersButton;
     private ButtonRectangle saveButton;
     private Event event;
+    private int pickerHour;
+    private int pickerMin;
+    private Home home;
+    private int pickerDay;
+    private int pickerMonth;
+    private int pickerYear;
+
+    public interface HomeListener
+    {
+        public String getDateTime();
+    }
 
 
     @Nullable
@@ -125,7 +137,7 @@ public class EditAdmin extends Fragment{
                 if(v==datepicker){
                     Picker pickerDialogs= new Picker();
                     pickerDialogs.show(getFragmentManager(),"date_picker");
-                    tempDate=pickerDialogs.dateCalc();
+
 
                 }
             }
@@ -136,7 +148,6 @@ public class EditAdmin extends Fragment{
                 if(v==timepicker){
                     TimePicker timepickerdialog = new TimePicker();
                     timepickerdialog.show(getFragmentManager(),"time_picker");
-                    tempTime=timepickerdialog.timeCalc();
                 }
 
             }
@@ -176,14 +187,18 @@ public class EditAdmin extends Fragment{
 
     }
 
+
     public void setTempTime(String y)
     {
         tempTime =y;
     }
 
+
     @Override
     public void onAttach(Context context) {
+
         super.onAttach(context);
+        home = (Home) getActivity();
     }
 
     @Override
@@ -265,6 +280,11 @@ public class EditAdmin extends Fragment{
         dialog.show();
     }
 
+    public void passData()
+    {
+        String dateTime=home.getDateTime();
+    }
+
 
     public void populateContactList()
     {
@@ -332,6 +352,7 @@ public class EditAdmin extends Fragment{
 
         return result;
     }
+
 
     private class HttpAsyncTask extends AsyncTask<String, Void, String> {
 

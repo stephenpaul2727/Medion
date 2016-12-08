@@ -30,7 +30,8 @@
             android:label="Sign Up"></activity>
 
         <activity android:name=".Home"
-            android:label="Home"></activity>
+            android:label="Home"
+            ></activity>
 
         <!-- Firebase Notifications -->
         <service android:name=".service.MyFirebaseMessagingService">
@@ -38,6 +39,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
 
         <service android:name=".service.MyFirebaseInstanceIDService">
             <intent-filter>

@@ -37,6 +37,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     private String fcmToken;
     private User user;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
