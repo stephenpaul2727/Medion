@@ -171,7 +171,7 @@ public class EditAdmin extends Fragment {
                 String members = TextUtils.join(",", mem);
                 //To get it back to ArrayList,
                 //List<String> myList = new ArrayList<String>(Arrays.asList(members.split(",")));
-                new EditAdmin.HttpAsyncTask().execute("TasteOFIndia","12-04-16","18:00",members,"http://149.161.150.185:8080/api/notifyMembers");
+                new EditAdmin.HttpAsyncTask().execute("TasteOFIndia","12-04-16","18:00",members,"http://140.182.202.54:8080/api/notifyMembers");
             }
         });
 

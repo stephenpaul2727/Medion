@@ -49,7 +49,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_layout);
         ActionBar actionBar= getSupportActionBar();
-        actionBar.hide();
 //        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 //
 ////Remove notification bar
@@ -58,7 +57,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 ////set content view AFTER ABOVE sequence (to avoid crash)
 //        this.setContentView(R.layout.home_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +73,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
