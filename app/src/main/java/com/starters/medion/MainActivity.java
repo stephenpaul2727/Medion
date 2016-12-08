@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -23,13 +24,21 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.starters.medion.constants.config;
 
 import com.starters.medion.model.GeoCoordinates;
+import com.starters.medion.model.UserEvent;
 import com.starters.medion.service.TrackGPS;
-
 import com.starters.medion.dbtasks.InsertTask;
-
 import com.starters.medion.utils.NotificationUtils;
 
 import com.gc.materialdesign.views.ButtonRectangle;
+
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     public static String fcmToken = null;
     private static GeoCoordinates geoCoordinates;
     private TrackGPS trackGPS;
+    private UserEvent userEvent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,11 +80,14 @@ public class MainActivity extends AppCompatActivity {
 
                     Log.d("FIREBASE sent:", message);
 //                    txtMessage.setText(message);
-                    geoCoordinates = new GeoCoordinates();
-                    trackGPS = new TrackGPS(MainActivity.this);
-                    if(trackGPS.canGetLocation()){
-                        geoCoordinates.setLatitude(trackGPS.getLatitude());
-                        geoCoordinates.setLongitude(trackGPS.getLongitude());
+                    if(parts[0].equals("EventCreated")) {
+//                        geoCoordinates = new GeoCoordinates();
+                        trackGPS = new TrackGPS(MainActivity.this);
+                        if (trackGPS.canGetLocation()) {
+//                            geoCoordinates.setLatitude(trackGPS.getLatitude());
+//                            geoCoordinates.setLongitude(trackGPS.getLongitude());
+                            new MainActivity.HttpAsyncTask().execute(parts[1], fcmToken, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()), "https://whispering-everglades-62915.herokuapp.com/api/addUserEvent");
+                        }
                     }
 
                 }
@@ -145,4 +159,71 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
     }
+
+    public static String POST(String stringURL, UserEvent userEvent) {
+        InputStream inputStream = null;
+        String result = "";
+        try {
+
+            Log.d("InputStream", "Before Connecting");
+            // 1. create URL
+            URL url = new URL(stringURL);
+
+            // 2. create connection to given URL
+            URLConnection connection = url.openConnection();
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setUseCaches(false);
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            connection.connect();
+            OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
+
+            // 3. build jsonObject
+            JSONObject userEventJson = new JSONObject();
+            userEventJson.accumulate("eventId", userEvent.getEventId());
+            userEventJson.accumulate("userFcmToken", userEvent.getUserFcmToken());
+            userEventJson.accumulate("acceptance", true);
+            userEventJson.accumulate("latitude", userEvent.getLatitude());
+            userEventJson.accumulate("longitude", userEvent.getLongitude());
+
+            // 4. convert JSONObject to JSON to String and send json content
+            out.write(userEventJson.toString());
+            out.flush();
+            out.close();
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+            while (in.readLine() != null) {
+                System.out.println(in);
+            }
+            System.out.println("\nMedion REST Service Invoked Successfully..");
+            in.close();
+        } catch (Exception e) {
+            Log.d("InputStream", e.getLocalizedMessage());
+        }
+
+        return result;
+    }
+
+    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... args) {
+            userEvent = new UserEvent();
+            userEvent.setEventId(Integer.parseInt(args[0]));
+            userEvent.setUserFcmToken(args[1]);
+            userEvent.setLatitude(args[2]);
+            userEvent.setLongitude(args[3]);
+
+            return POST(args[4],userEvent);
+        }
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(getBaseContext(), "You have signed up!", Toast.LENGTH_LONG).show();
+        }
+    }
+
 }
