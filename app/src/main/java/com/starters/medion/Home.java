@@ -24,6 +24,8 @@ import android.widget.ListView;
 import com.starters.medion.dbtasks.InsertTask;
 import com.starters.medion.dbtasks.ReadTask;
 
+
+
 /**
  * Created by KeerthiTejaNuthi on 11/1/16.
  */
@@ -57,7 +59,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 //            }
 //        });
 
-
+        ReadTask read = new ReadTask(this);
+        read.execute();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -66,6 +69,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @Override
