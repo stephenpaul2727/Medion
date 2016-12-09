@@ -169,7 +169,7 @@ public class EditAdmin extends Fragment {
 //                for(int i=0; i<contactsarray.size(); i++) {
 //                    mem.add(i, contactsarray.get(i));
 //                }
-                mem.add(0,"t");
+                mem.add(0,"8129551395");
 //                mem.add(1,"(098) 765-4321");
                 String members = TextUtils.join(",", mem);
                 //To get it back to ArrayList,

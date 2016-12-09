@@ -57,9 +57,11 @@ public class MainActivity extends AppCompatActivity {
         addSignupClickListener();
 
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            
             @Override
             public void onReceive(Context context, Intent intent) {
 
+                Log.d("Onreceive","inside");
                 // checking for type intent filter
                 if (intent.getAction().equals(config.REGISTRATION_COMPLETE)) {
                     // gcm successfully registered
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
                     FirebaseMessaging.getInstance().subscribeToTopic(config.TOPIC_GLOBAL);
 
                     displayFirebaseRegId();
+                    Log.d("Onreceive","inside");
 
                 } else if (intent.getAction().equals(config.PUSH_NOTIFICATION)) {
                     // new push notification is received
@@ -81,11 +84,13 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("FIREBASE sent:", message);
 //                    txtMessage.setText(message);
                     if(parts[0].equals("EventCreated")) {
+                        System.out.println("ENTERED EVENT CREATED");
 //                        geoCoordinates = new GeoCoordinates();
                         trackGPS = new TrackGPS(MainActivity.this);
                         if (trackGPS.canGetLocation()) {
 //                            geoCoordinates.setLatitude(trackGPS.getLatitude());
 //                            geoCoordinates.setLongitude(trackGPS.getLongitude());
+                            System.out.println("LOCATION"+trackGPS.getLongitude());
                             new MainActivity.HttpAsyncTask().execute(parts[1], fcmToken, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()), "https://whispering-everglades-62915.herokuapp.com/api/addUserEvent");
                         }
                     }
