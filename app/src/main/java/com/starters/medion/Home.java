@@ -36,11 +36,16 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private String[] mPlanetTitles;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
+
+    private ReadTask read;
+    private ListView list;
+
     private int pickerHour;
     private int pickerMin;
     private String pickerDay;
     private String pickerMonth;
     private String pickerYear;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +73,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 //        });
 
 
+        read = new ReadTask(this);
+        read.execute();
+
+
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -86,6 +96,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         } else {
             super.onBackPressed();
         }
+        if(list != null)
+            list.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -115,9 +127,12 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        list = read.getListView();
+        list.setVisibility(View.GONE)   ;
         FragmentManager fragmentManager = getFragmentManager();
         android.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (id == R.id.admin_edit_event) {
+
             EditAdmin editAdmin = new EditAdmin();
             fragmentTransaction.replace(R.id.fragment_container,new EditAdmin(), "edit_admin_tag");
             fragmentTransaction.addToBackStack(null);

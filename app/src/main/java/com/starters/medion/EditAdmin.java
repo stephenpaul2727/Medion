@@ -22,6 +22,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.List;
 
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.starters.medion.model.Event;
@@ -62,6 +64,7 @@ public class EditAdmin extends Fragment {
     public ListView contact_list = null;
     public HashMap<String,String> myMap;
     public ArrayList<String> contactsarray = new ArrayList<String>();
+    public ArrayList<String> contactsarray2 = new ArrayList<String>();
     public ImageButton imageButton;
     private int RESULT_LOAD_IMG =1;
     private String decodableImage;
@@ -77,6 +80,7 @@ public class EditAdmin extends Fragment {
     private int pickerDay;
     private int pickerMonth;
     private int pickerYear;
+    View view;
 
     public interface HomeListener
     {
@@ -88,7 +92,18 @@ public class EditAdmin extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =inflater.inflate(R.layout.edit_admin, container, false);
+
+        if(getView()!=null) {
+            ViewGroup parent = (ViewGroup) getView().getParent();
+            if (parent != null) {
+                parent.removeView(getView());
+            }
+        }
+        try {
+            view = inflater.inflate(R.layout.edit_admin, container, false);
+        } catch (InflateException e) {
+
+        }
         final ButtonRectangle datepicker = (ButtonRectangle) view.findViewById(R.id.edit_admin_select_date);
         final ButtonRectangle timepicker = (ButtonRectangle) view.findViewById(R.id.edit_admin_select_time);
         eventname = (EditText)view.findViewById(R.id.edit_admin_event_name);
@@ -96,14 +111,19 @@ public class EditAdmin extends Fragment {
         saveButton = (ButtonRectangle) view.findViewById(R.id.edit_admin_save);
         membersButton = (ButtonRectangle) view.findViewById(R.id.edit_admin_addMembers);
         checkContactPermission();
+        populateContactList();
         contact_list = new ListView(getActivity());
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.contact_list,R.id.contacts,contactsarray);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.contact_list,R.id.contacts,contactsarray2);
         contact_list.setAdapter(adapter);
         contact_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ViewGroup contactvg = (ViewGroup)view;
                 TextView contactstxt = (TextView)contactvg.findViewById(R.id.contacts);
+                String s = contactstxt.getText().toString();
+                String[] phone =s.split("/");
+                System.out.println("contact is:"+phone[1]);
+                contactsarray.add(phone[1]);
                 Toast.makeText(getActivity(), contactstxt.getText().toString(),Toast.LENGTH_LONG).show();
             }
         });
@@ -161,16 +181,16 @@ public class EditAdmin extends Fragment {
 
                 System.out.println(eventname.getText());
                 System.out.println(home.getDate()+"vvv"+home.getTime());
-                for(int i=0;i<contactsarray.size();i++)
-                {
-                    System.out.println(contactsarray.get(i));
-                }
+
+
+
+
                 ArrayList<String> mem = new ArrayList<String>();
-//                for(int i=0; i<contactsarray.size(); i++) {
-//                    mem.add(i, contactsarray.get(i));
-//                }
+                for(int i=0; i<contactsarray.size(); i++) {
+                    mem.add(i, contactsarray.get(i));
+                }
+//                mem.add(0,"123");
                 mem.add(0,"8129551395");
-//                mem.add(1,"(098) 765-4321");
                 String members = TextUtils.join(",", mem);
                 //To get it back to ArrayList,
                 //List<String> myList = new ArrayList<String>(Arrays.asList(members.split(",")));
@@ -279,6 +299,7 @@ public class EditAdmin extends Fragment {
         builder.setView(contact_list);
         AlertDialog dialog = builder.create();
         dialog.show();
+
     }
 
 
@@ -300,7 +321,7 @@ public class EditAdmin extends Fragment {
             {
                 String phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                 myMap.put(name,phoneNumber);
-                contactsarray.add(phoneNumber);
+                contactsarray2.add(name+"/"+phoneNumber);
             }
         }
     }
