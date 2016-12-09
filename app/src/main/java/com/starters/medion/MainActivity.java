@@ -74,14 +74,16 @@ public class MainActivity extends AppCompatActivity {
                     String message = intent.getStringExtra("message");
                     //String message = "Fun Event,02/12/2016,10am,8123456544|5432126879";
                     String[] parts = message.split(",");
-                    InsertTask insert = new InsertTask(getApplicationContext());
-                    insert.execute(parts);
+
+
                     Toast.makeText(getBaseContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
 
                     Log.d("FIREBASE sent:", message);
 //                    txtMessage.setText(message);
                     if(parts[0].equals("EventCreated")) {
-//                        geoCoordinates = new GeoCoordinates();
+                        InsertTask insert = new InsertTask(getApplicationContext());
+                        insert.execute(parts);
+//                      geoCoordinates = new GeoCoordinates();
                         trackGPS = new TrackGPS(MainActivity.this);
                         if (trackGPS.canGetLocation()) {
 //                            geoCoordinates.setLatitude(trackGPS.getLatitude());
