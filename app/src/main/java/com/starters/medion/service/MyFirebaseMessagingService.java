@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.starters.medion.MainActivity;
 import com.starters.medion.constants.config;
@@ -14,6 +15,8 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Map;
 
 /**
  * Created by KeerthiTejaNuthi on 11/15/16.
@@ -42,8 +45,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService{
             Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
 
             try {
-                JSONObject json = new JSONObject(remoteMessage.getData().toString());
-                handleDataMessage(json);
+                Map<String, String> data = remoteMessage.getData();
+                String message = data.get("message");
+                Log.e("message is ", message);
+
+                Intent intent = new Intent("intentKey");
+//                intent.setAction("NOW");
+                intent.putExtra("key", message);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
+                Log.e("It should be sent ", " By now");
+//                JSONObject json = new JSONObject(remoteMessage.getData().toString());
+//                handleDataMessage(json);
+//                handleDataMessage(message);
+//                Toast.makeText(MainActivity(), "Event Created!", Toast.LENGTH_LONG).show();
             } catch (Exception e) {
                 Log.e(TAG, "Exception: " + e.getMessage());
             }
@@ -59,31 +74,32 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService{
 
             // play notification sound
             NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
-            notificationUtils.playNotificationSound();
+//            notificationUtils.playNotificationSound();
         }else{
             // If the app is in background, firebase itself handles the notification
         }
     }
 
-    private void handleDataMessage(JSONObject json) {
-        Log.e(TAG, "push json: " + json.toString());
+//    private void handleDataMessage(JSONObject json) {
+    private void handleDataMessage(String message){
+//        Log.e(TAG, "push json: " + json.toString());
 
         try {
-            JSONObject data = json.getJSONObject("data");
-
-            String title = data.getString("title");
-            String message = data.getString("message");
-            boolean isBackground = data.getBoolean("is_background");
-            String imageUrl = data.getString("image");
-            String timestamp = data.getString("timestamp");
-            JSONObject payload = data.getJSONObject("payload");
-
-            Log.e(TAG, "title: " + title);
-            Log.e(TAG, "message: " + message);
-            Log.e(TAG, "isBackground: " + isBackground);
-            Log.e(TAG, "payload: " + payload.toString());
-            Log.e(TAG, "imageUrl: " + imageUrl);
-            Log.e(TAG, "timestamp: " + timestamp);
+//            JSONObject data = json.getJSONObject("data");
+//
+//            String title = data.getString("title");
+//            String message = data.getString("message");
+//            boolean isBackground = data.getBoolean("is_background");
+//            String imageUrl = data.getString("image");
+//            String timestamp = data.getString("timestamp");
+//            JSONObject payload = data.getJSONObject("payload");
+//
+//            Log.e(TAG, "title: " + title);
+//            Log.e(TAG, "message: " + message);
+//            Log.e(TAG, "isBackground: " + isBackground);
+//            Log.e(TAG, "payload: " + payload.toString());
+//            Log.e(TAG, "imageUrl: " + imageUrl);
+//            Log.e(TAG, "timestamp: " + timestamp);
 
 
             if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
@@ -94,22 +110,25 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService{
 
                 // play notification sound
                 NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
-                notificationUtils.playNotificationSound();
+//                notificationUtils.playNotificationSound();
             } else {
                 // app is in background, show the notification in notification tray
                 Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
                 resultIntent.putExtra("message", message);
 
+                //Test code
+                showNotificationMessage(getApplicationContext(),message,resultIntent);
+
                 // check for image attachment
-                if (TextUtils.isEmpty(imageUrl)) {
-                    showNotificationMessage(getApplicationContext(), title, message, timestamp, resultIntent);
-                } else {
-                    // image is present, show notification with image
-                    showNotificationMessageWithBigImage(getApplicationContext(), title, message, timestamp, resultIntent, imageUrl);
-                }
+//                if (TextUtils.isEmpty(imageUrl)) {
+//                    showNotificationMessage(getApplicationContext(), title, message, timestamp, resultIntent);
+//                } else {
+//                    // image is present, show notification with image
+//                    showNotificationMessageWithBigImage(getApplicationContext(), title, message, timestamp, resultIntent, imageUrl);
+//                }
             }
-        } catch (JSONException e) {
-            Log.e(TAG, "Json Exception: " + e.getMessage());
+//        } catch (JSONException e) {
+//            Log.e(TAG, "Json Exception: " + e.getMessage());
         } catch (Exception e) {
             Log.e(TAG, "Exception: " + e.getMessage());
         }
@@ -118,6 +137,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService{
     /**
      * Showing notification with text only
      */
+    private void showNotificationMessage(Context context, String message,Intent intent){
+        notificationUtils = new NotificationUtils(context);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        notificationUtils.showNotificationMessage(message, intent);
+    }
+
     private void showNotificationMessage(Context context, String title, String message, String timeStamp, Intent intent) {
         notificationUtils = new NotificationUtils(context);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

@@ -180,21 +180,21 @@ public class EditAdmin extends Fragment {
             public void onClick(View view) {
 
                 System.out.println(eventname.getText());
-//                System.out.println(home.getDate()+"vvv"+home.getTime());
-//                for(int i=0;i<contactsarray.size();i++)
-//                {
-//                    System.out.println(contactsarray.get(i));
-//                }
+                System.out.println(home.getDate()+"vvv"+home.getTime());
+
+
+
+
                 ArrayList<String> mem = new ArrayList<String>();
                 for(int i=0; i<contactsarray.size(); i++) {
                     mem.add(i, contactsarray.get(i));
                 }
 //                mem.add(0,"123");
-//                mem.add(1,"(098) 765-4321");
+                mem.add(0,"8129551395");
                 String members = TextUtils.join(",", mem);
                 //To get it back to ArrayList,
                 //List<String> myList = new ArrayList<String>(Arrays.asList(members.split(",")));
-//                new EditAdmin.HttpAsyncTask().execute("TasteOFIndia","12-04-16","18:00",members,"http://149.161.150.185:8080/api/notifyMembers");
+//                new EditAdmin.HttpAsyncTask().execute(eventname.getText().toString(),home.getDate(),home.getTime(),members,"http://149.161.150.243:8080/api/notifyMembers");
                 new EditAdmin.HttpAsyncTask().execute(eventname.getText().toString(),home.getDate(),home.getTime(),members,"https://whispering-everglades-62915.herokuapp.com/api/notifyMembers");
 
             }

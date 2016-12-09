@@ -185,13 +185,13 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     @Override
     public String getDate() {
-        String date = pickerDay +"-"+pickerMonth+"-"+pickerYear;
+        String date = pickerDay +"-"+ pickerMonth +"-"+ pickerYear;
         return date;
     }
 
     @Override
     public String getTime() {
-        String time = pickerHour+":"+pickerMin;
+        String time = Integer.toString(pickerHour) +":"+ Integer.toString(pickerMin);
         return time;
     }
 }

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -56,9 +58,14 @@ public class MainActivity extends AppCompatActivity {
         addLoginClickListener();
         addSignupClickListener();
 
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+        /*mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            
             @Override
             public void onReceive(Context context, Intent intent) {
+
+                Log.d("Onreceive","inside");
+                String key = intent.getStringExtra("key");
+                Log.d("message in Main",key);
 
                 // checking for type intent filter
                 if (intent.getAction().equals(config.REGISTRATION_COMPLETE)) {
@@ -67,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                     FirebaseMessaging.getInstance().subscribeToTopic(config.TOPIC_GLOBAL);
 
                     displayFirebaseRegId();
+                    Log.d("Onreceive","inside");
 
                 } else if (intent.getAction().equals(config.PUSH_NOTIFICATION)) {
                     // new push notification is received
@@ -81,22 +89,55 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("FIREBASE sent:", message);
 //                    txtMessage.setText(message);
                     if(parts[0].equals("EventCreated")) {
+<<<<<<< HEAD
                         InsertTask insert = new InsertTask(getApplicationContext());
                         insert.execute(parts);
 //                      geoCoordinates = new GeoCoordinates();
+=======
+                        System.out.println("ENTERED EVENT CREATED");
+//                        geoCoordinates = new GeoCoordinates();
+>>>>>>> 7dc1f26411283aa686fb607a8051202cfa538e01
                         trackGPS = new TrackGPS(MainActivity.this);
                         if (trackGPS.canGetLocation()) {
 //                            geoCoordinates.setLatitude(trackGPS.getLatitude());
 //                            geoCoordinates.setLongitude(trackGPS.getLongitude());
+                            System.out.println("LOCATION"+trackGPS.getLongitude());
                             new MainActivity.HttpAsyncTask().execute(parts[1], fcmToken, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()), "https://whispering-everglades-62915.herokuapp.com/api/addUserEvent");
                         }
                     }
 
                 }
             }
-        };
+        };*/
         displayFirebaseRegId();
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                mMessageReceiver, new IntentFilter("intentKey"));
     }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            String message = intent.getStringExtra("key");
+            Log.e("mm", message);
+            Toast.makeText(getApplicationContext(), "You have been Added to an Event", Toast.LENGTH_LONG).show();
+            String[] parts = message.split(",");
+            if(parts[0].equals("EventCreated")) {
+                System.out.println("ENTERED EVENT CREATED");
+//                        geoCoordinates = new GeoCoordinates();
+                trackGPS = new TrackGPS(MainActivity.this);
+                if (trackGPS.canGetLocation()) {
+//                            geoCoordinates.setLatitude(trackGPS.getLatitude());
+//                            geoCoordinates.setLongitude(trackGPS.getLongitude());
+                    System.out.println("LOCATION"+trackGPS.getLongitude());
+//                    new MainActivity.HttpAsyncTask().execute(parts[1], fcmToken, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()),"http://149.161.150.243:8080/api/addUserEvent");
+                    new MainActivity.HttpAsyncTask().execute(parts[1], fcmToken, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()), "https://whispering-everglades-62915.herokuapp.com/api/addUserEvent");
+                }
+            }
+
+        }
+    };
+
     public void addLoginClickListener()
     {
         ButtonRectangle login = (ButtonRectangle) findViewById(R.id.Connectstage_login);

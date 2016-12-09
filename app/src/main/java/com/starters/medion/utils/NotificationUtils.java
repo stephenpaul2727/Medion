@@ -48,6 +48,30 @@ public class NotificationUtils {
         showNotificationMessage(title, message, timeStamp, intent, null);
     }
 
+    public void showNotificationMessage(final String message, Intent intent) {
+        // Check for empty push message
+        if (TextUtils.isEmpty(message))
+            return;
+
+        // notification icon
+        final int icon = R.mipmap.ic_launcher;
+
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        final PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        mContext,
+                        0,
+                        intent,
+                        PendingIntent.FLAG_CANCEL_CURRENT
+                );
+
+        final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+                mContext);
+
+        showSmallNotification(mBuilder, icon, message, resultPendingIntent);
+
+    }
+
     public void showNotificationMessage(final String title, final String message, final String timeStamp, Intent intent, String imageUrl) {
         // Check for empty push message
         if (TextUtils.isEmpty(message))
@@ -90,6 +114,25 @@ public class NotificationUtils {
         }
     }
 
+    private void showSmallNotification(NotificationCompat.Builder mBuilder, int icon, String message, PendingIntent resultPendingIntent){
+        NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+
+        inboxStyle.addLine(message);
+        Notification notification;
+        notification = mBuilder.setSmallIcon(icon).setTicker("Title").setWhen(0)
+                .setAutoCancel(true)
+                .setContentTitle("Title")
+                .setContentIntent(resultPendingIntent)
+                .setStyle(inboxStyle)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), icon))
+                .setContentText(message)
+                .build();
+
+        NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(config.NOTIFICATION_ID, notification);
+
+    }
 
     private void showSmallNotification(NotificationCompat.Builder mBuilder, int icon, String title, String message, String timeStamp, PendingIntent resultPendingIntent, Uri alarmSound) {
 
