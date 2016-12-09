@@ -124,6 +124,8 @@ public class MainActivity extends AppCompatActivity {
             String[] parts = message.split(",");
             if(parts[0].equals("EventCreated")) {
                 System.out.println("ENTERED EVENT CREATED");
+                InsertTask insert = new InsertTask(getApplicationContext());
+                insert.execute(parts);
 //                        geoCoordinates = new GeoCoordinates();
                 trackGPS = new TrackGPS(MainActivity.this);
                 if (trackGPS.canGetLocation()) {

@@ -36,7 +36,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private String[] mPlanetTitles;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
-
+    private InsertTask insert;
     private ReadTask read;
     private ListView list;
 
@@ -45,6 +45,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private String pickerDay;
     private String pickerMonth;
     private String pickerYear;
+
 
 
     @Override
@@ -72,7 +73,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 //            }
 //        });
 
-
+        insert = new InsertTask(this);
+        //insert.execute();
         read = new ReadTask(this);
         read.execute();
 
