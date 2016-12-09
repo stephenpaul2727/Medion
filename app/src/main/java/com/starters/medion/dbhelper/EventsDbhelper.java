@@ -11,18 +11,20 @@ import com.starters.medion.contract.EventsContract.EventsEntry;
  * Created by Ashish on 12/1/2016.
  */
 public class EventsDbhelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     private Context context;
-    public static final String DATABASE_NAME = "Events.db";
+    public static final String DATABASE_NAME = "Eventinf.db";
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ",";
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + EventsEntry.TABLE_NAME + " (" +
                     EventsEntry._ID + " INTEGER PRIMARY KEY," +
+                    EventsEntry.COLUMN_NAME_EVENTID + TEXT_TYPE + COMMA_SEP +
                     EventsEntry.COLUMN_NAME_EVENTNAME + TEXT_TYPE + COMMA_SEP +
                     EventsEntry.COLUMN_NAME_DATE + TEXT_TYPE + COMMA_SEP +
                     EventsEntry.COLUMN_NAME_TIME + TEXT_TYPE + COMMA_SEP +
                     EventsEntry.COLUMN_NAME_MEMBERS + TEXT_TYPE + COMMA_SEP +
+                    EventsEntry.COLUMN_NAME_ADMIN + TEXT_TYPE + COMMA_SEP +
                     EventsEntry.COLUMN_NAME_LOCATION + TEXT_TYPE +" )";
 
     private static final String SQL_DELETE_ENTRIES =

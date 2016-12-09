@@ -31,17 +31,20 @@ public class InsertTask extends AsyncTask {
 
 // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
-        /*values.put(EventsEntry.COLUMN_NAME_EVENTNAME, "hello");
+      /*values.put(EventsEntry.COLUMN_NAME_EVENTID, "1029");
+        values.put(EventsEntry.COLUMN_NAME_EVENTNAME, "hello");
         values.put(EventsEntry.COLUMN_NAME_DATE, "03/21/2017");
         values.put(EventsEntry.COLUMN_NAME_TIME, "10 PM");
         values.put(EventsEntry.COLUMN_NAME_MEMBERS, "8123616740");
-        values.put(EventsEntry.COLUMN_NAME_LOCATION, "blah");*/
+        values.put(EventsEntry.COLUMN_NAME_LOCATION, "blah");
+        values.put(EventsEntry.COLUMN_NAME_ADMIN, "no");*/
 
-
-        values.put(EventsEntry.COLUMN_NAME_EVENTNAME, params[0].toString());
-        values.put(EventsEntry.COLUMN_NAME_DATE, params[1].toString());
-        values.put(EventsEntry.COLUMN_NAME_TIME, params[2].toString());
-        values.put(EventsEntry.COLUMN_NAME_MEMBERS, params[3].toString());
+        values.put(EventsEntry.COLUMN_NAME_EVENTID, params[1].toString());
+        values.put(EventsEntry.COLUMN_NAME_EVENTNAME, params[2].toString());
+        values.put(EventsEntry.COLUMN_NAME_DATE, params[3].toString());
+        values.put(EventsEntry.COLUMN_NAME_TIME, params[4].toString());
+        values.put(EventsEntry.COLUMN_NAME_MEMBERS, params[5].toString());
+        values.put(EventsEntry.COLUMN_NAME_ADMIN, "no");
         values.put(EventsEntry.COLUMN_NAME_LOCATION, "blah");
 // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(EventsEntry.TABLE_NAME, null, values);

@@ -83,17 +83,23 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
         //);
         //System.out.println("ENEJLKLKLK:"+eventName);
         listView = (ListView) activity.findViewById(R.id.displaylistview);
-        String eventName, date, time;
+        String eventName, date, time, id, admin;
         while(c.moveToNext()){
             eventName = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_EVENTNAME));
             date = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_DATE));
             time = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_TIME));
+            id = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_EVENTID));
+            admin = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_ADMIN));
+            System.out.println(EventsEntry._ID);
             event = new Event();
             event.setEventName(eventName);
             event.setEventDate(date);
             event.setEventTime(time);
+            event.setEventId(id);
+            event.setAdmin(admin);
             publishProgress(event);
         }
+
         return null;
     }
 
@@ -114,6 +120,10 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent viewEvent = new Intent(context, ViewEvent.class);
                 viewEvent.putExtra("eventname", event.getEventName());
+                viewEvent.putExtra("id", event.getEventId());
+                viewEvent.putExtra("admin", event.getAdmin());
+                viewEvent.putExtra("date", event.getEventDate());
+                viewEvent.putExtra("time", event.getEventTime());
                 context.startActivity(viewEvent);
             }
         });
