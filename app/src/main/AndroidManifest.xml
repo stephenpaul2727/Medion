@@ -32,6 +32,9 @@
         <activity android:name=".Home"
             android:label="Home"></activity>
 
+        <activity android:name=".ViewEvent"
+            android:label="Event"></activity>
+
         <!-- Firebase Notifications -->
         <service android:name=".service.MyFirebaseMessagingService">
             <intent-filter>

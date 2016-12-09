@@ -2,14 +2,18 @@ package com.starters.medion.dbtasks;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.starters.medion.R;
+import com.starters.medion.ViewEvent;
 import com.starters.medion.adapter.EventsAdapter;
 import com.starters.medion.contract.EventsContract;
 import com.starters.medion.contract.EventsContract.EventsEntry;
@@ -23,12 +27,13 @@ import java.util.List;
 /**
  * Created by Ashish on 12/1/2016.
  */
-public class ReadTask extends AsyncTask<Object, Event, Object> {
+public class ReadTask extends AsyncTask<Object, Event, Object>  {
 
     private Context context;
     private EventsAdapter eventsAdapter;
     private Activity activity;
     private ListView listView;
+    private Event event;
 
     public ReadTask(Context context){
         this.context = context;
@@ -83,7 +88,7 @@ public class ReadTask extends AsyncTask<Object, Event, Object> {
             eventName = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_EVENTNAME));
             date = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_DATE));
             time = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_TIME));
-            Event event = new Event();
+            event = new Event();
             event.setEventName(eventName);
             event.setEventDate(date);
             event.setEventTime(time);
@@ -97,8 +102,21 @@ public class ReadTask extends AsyncTask<Object, Event, Object> {
         eventsAdapter.add(values[0]);
     }
 
+    public ListView getListView() {
+        return listView;
+    }
+
     @Override
     protected void onPostExecute(Object o) {
         listView.setAdapter(eventsAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent viewEvent = new Intent(context, ViewEvent.class);
+                viewEvent.putExtra("eventname", event.getEventName());
+                context.startActivity(viewEvent);
+            }
+        });
+
     }
 }
