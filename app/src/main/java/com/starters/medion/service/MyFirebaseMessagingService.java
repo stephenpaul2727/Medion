@@ -48,6 +48,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService{
                 Map<String, String> data = remoteMessage.getData();
                 String message = data.get("message");
                 Log.e("message is ", message);
+                handleNotification(message);
 
                 Intent intent = new Intent("intentKey");
 //                intent.setAction("NOW");

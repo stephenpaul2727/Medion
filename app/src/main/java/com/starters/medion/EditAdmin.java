@@ -80,6 +80,7 @@ public class EditAdmin extends Fragment {
     private int pickerDay;
     private int pickerMonth;
     private int pickerYear;
+    private ButtonRectangle finalizeEvent;
     View view;
 
     public interface HomeListener
@@ -104,6 +105,7 @@ public class EditAdmin extends Fragment {
         } catch (InflateException e) {
 
         }
+        finalizeEvent = (ButtonRectangle) view.findViewById(R.id.edit_admin_finalizeevent);
         final ButtonRectangle datepicker = (ButtonRectangle) view.findViewById(R.id.edit_admin_select_date);
         final ButtonRectangle timepicker = (ButtonRectangle) view.findViewById(R.id.edit_admin_select_time);
         eventname = (EditText)view.findViewById(R.id.edit_admin_event_name);
@@ -190,12 +192,21 @@ public class EditAdmin extends Fragment {
                     mem.add(i, contactsarray.get(i));
                 }
 //                mem.add(0,"123");
-                mem.add(0,"8129551395");
+//                mem.add(0,"8129551395");
                 String members = TextUtils.join(",", mem);
                 //To get it back to ArrayList,
                 //List<String> myList = new ArrayList<String>(Arrays.asList(members.split(",")));
 //                new EditAdmin.HttpAsyncTask().execute(eventname.getText().toString(),home.getDate(),home.getTime(),members,"http://149.161.150.243:8080/api/notifyMembers");
                 new EditAdmin.HttpAsyncTask().execute(eventname.getText().toString(),home.getDate(),home.getTime(),members,"https://whispering-everglades-62915.herokuapp.com/api/notifyMembers");
+
+            }
+        });
+
+        finalizeEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Integer temp = 61;
+                new EditAdmin.HttpAsyncTask().execute(temp.toString(),"https://whispering-everglades-62915.herokuapp.com/api/calcMedian");
 
             }
         });
@@ -326,6 +337,29 @@ public class EditAdmin extends Fragment {
         }
     }
 
+    public static String POST(String stringURL, String eventID){
+        try {
+            // 1. create URL
+            URL url = new URL(stringURL);
+
+            // 2. create connection to given URL
+            URLConnection connection = url.openConnection();
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setUseCaches(false);
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            connection.connect();
+            OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
+
+            
+        }catch (Exception e) {
+            Log.d("InputStream", e.getLocalizedMessage());
+        }
+        return null;
+    }
+
     public static String POST(String stringURL, Event event) {
         String result = "";
         try {
@@ -375,13 +409,19 @@ public class EditAdmin extends Fragment {
 
         @Override
         protected String doInBackground(String... args) {
-            event = new Event();
-            event.setEventName(args[0]);
-            event.setEventDate(args[1]);
-            event.setEventTime(args[2]);
-            event.setMemberList(args[3]);
+            int count = args.length;
+            if(count < 3){
+                return POST(args[1],args[0]);
+            }else {
+                event = new Event();
+                event.setEventName(args[0]);
+                event.setEventDate(args[1]);
+                event.setEventTime(args[2]);
+                event.setMemberList(args[3]);
 
-            return POST(args[4],event);
+                return POST(args[4], event);
+            }
+
         }
         // onPostExecute displays the results of the AsyncTask.
         @Override
