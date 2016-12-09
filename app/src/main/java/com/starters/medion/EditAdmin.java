@@ -5,6 +5,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +22,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.List;
 
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.starters.medion.model.Event;
@@ -54,13 +57,14 @@ import static android.app.Activity.RESULT_OK;
  * Created by stephenpaul on 03/11/16.
  */
 
-public class EditAdmin extends Fragment{
+public class EditAdmin extends Fragment {
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 0;
     private static final int MY_PERMISSIONS_REQUEST_WRITE_CONTACTS = 2;
     ArrayAdapter<String> adapter;
     public ListView contact_list = null;
     public HashMap<String,String> myMap;
     public ArrayList<String> contactsarray = new ArrayList<String>();
+    public ArrayList<String> contactsarray2 = new ArrayList<String>();
     public ImageButton imageButton;
     private int RESULT_LOAD_IMG =1;
     private String decodableImage;
@@ -70,12 +74,36 @@ public class EditAdmin extends Fragment{
     private ButtonRectangle membersButton;
     private ButtonRectangle saveButton;
     private Event event;
+    private int pickerHour;
+    private int pickerMin;
+    private Home home;
+    private int pickerDay;
+    private int pickerMonth;
+    private int pickerYear;
+    View view;
+
+    public interface HomeListener
+    {
+        public String getDate();
+        public String getTime();
+    }
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =inflater.inflate(R.layout.edit_admin, container, false);
+
+        if(getView()!=null) {
+            ViewGroup parent = (ViewGroup) getView().getParent();
+            if (parent != null) {
+                parent.removeView(getView());
+            }
+        }
+        try {
+            view = inflater.inflate(R.layout.edit_admin, container, false);
+        } catch (InflateException e) {
+
+        }
         final ButtonRectangle datepicker = (ButtonRectangle) view.findViewById(R.id.edit_admin_select_date);
         final ButtonRectangle timepicker = (ButtonRectangle) view.findViewById(R.id.edit_admin_select_time);
         eventname = (EditText)view.findViewById(R.id.edit_admin_event_name);
@@ -83,14 +111,19 @@ public class EditAdmin extends Fragment{
         saveButton = (ButtonRectangle) view.findViewById(R.id.edit_admin_save);
         membersButton = (ButtonRectangle) view.findViewById(R.id.edit_admin_addMembers);
         checkContactPermission();
+        populateContactList();
         contact_list = new ListView(getActivity());
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.contact_list,R.id.contacts,contactsarray);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.contact_list,R.id.contacts,contactsarray2);
         contact_list.setAdapter(adapter);
         contact_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ViewGroup contactvg = (ViewGroup)view;
                 TextView contactstxt = (TextView)contactvg.findViewById(R.id.contacts);
+                String s = contactstxt.getText().toString();
+                String[] phone =s.split("/");
+                System.out.println("contact is:"+phone[1]);
+                contactsarray.add(phone[1]);
                 Toast.makeText(getActivity(), contactstxt.getText().toString(),Toast.LENGTH_LONG).show();
             }
         });
@@ -125,7 +158,7 @@ public class EditAdmin extends Fragment{
                 if(v==datepicker){
                     Picker pickerDialogs= new Picker();
                     pickerDialogs.show(getFragmentManager(),"date_picker");
-                    tempDate=pickerDialogs.dateCalc();
+
 
                 }
             }
@@ -136,7 +169,6 @@ public class EditAdmin extends Fragment{
                 if(v==timepicker){
                     TimePicker timepickerdialog = new TimePicker();
                     timepickerdialog.show(getFragmentManager(),"time_picker");
-                    tempTime=timepickerdialog.timeCalc();
                 }
 
             }
@@ -148,19 +180,23 @@ public class EditAdmin extends Fragment{
             public void onClick(View view) {
 
                 System.out.println(eventname.getText());
-                System.out.println("Time is: "+tempTime);
-                System.out.println("date is :"+tempDate);
-                for(int i=0;i<contactsarray.size();i++)
-                {
-                    System.out.println(contactsarray.get(i));
-                }
+//                System.out.println(home.getDate()+"vvv"+home.getTime());
+//                for(int i=0;i<contactsarray.size();i++)
+//                {
+//                    System.out.println(contactsarray.get(i));
+//                }
                 ArrayList<String> mem = new ArrayList<String>();
-                mem.add(0,"(123) 456-7890");
-                mem.add(1,"(098) 765-4321");
+                for(int i=0; i<contactsarray.size(); i++) {
+                    mem.add(i, contactsarray.get(i));
+                }
+//                mem.add(0,"123");
+//                mem.add(1,"(098) 765-4321");
                 String members = TextUtils.join(",", mem);
                 //To get it back to ArrayList,
                 //List<String> myList = new ArrayList<String>(Arrays.asList(members.split(",")));
-                new EditAdmin.HttpAsyncTask().execute("TasteOFIndia","12-04-16","18:00",members,"http://149.161.150.185:8080/api/notifyMembers");
+//                new EditAdmin.HttpAsyncTask().execute("TasteOFIndia","12-04-16","18:00",members,"http://149.161.150.185:8080/api/notifyMembers");
+                new EditAdmin.HttpAsyncTask().execute(eventname.getText().toString(),home.getDate(),home.getTime(),members,"https://whispering-everglades-62915.herokuapp.com/api/notifyMembers");
+
             }
         });
 
@@ -174,14 +210,18 @@ public class EditAdmin extends Fragment{
 
     }
 
+
     public void setTempTime(String y)
     {
         tempTime =y;
     }
 
+
     @Override
     public void onAttach(Context context) {
+
         super.onAttach(context);
+        home = (Home) getActivity();
     }
 
     @Override
@@ -198,8 +238,6 @@ public class EditAdmin extends Fragment{
                 decodableImage= imageTraverse.getString(column);
                 imageButton.setImageBitmap(BitmapFactory.decodeFile(decodableImage));
                 imageButton.invalidate();
-
-
 
 
             }
@@ -261,6 +299,7 @@ public class EditAdmin extends Fragment{
         builder.setView(contact_list);
         AlertDialog dialog = builder.create();
         dialog.show();
+
     }
 
 
@@ -282,7 +321,7 @@ public class EditAdmin extends Fragment{
             {
                 String phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                 myMap.put(name,phoneNumber);
-                contactsarray.add(phoneNumber);
+                contactsarray2.add(name+"/"+phoneNumber);
             }
         }
     }
@@ -330,6 +369,7 @@ public class EditAdmin extends Fragment{
 
         return result;
     }
+
 
     private class HttpAsyncTask extends AsyncTask<String, Void, String> {
 

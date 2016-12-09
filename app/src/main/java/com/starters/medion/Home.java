@@ -1,13 +1,16 @@
 package com.starters.medion;
 
+import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,29 +21,38 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.*;
+import android.widget.TimePicker;
 
 import com.starters.medion.dbtasks.InsertTask;
 import com.starters.medion.dbtasks.ReadTask;
-
-
 
 /**
  * Created by KeerthiTejaNuthi on 11/1/16.
  */
 
-public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener,EditAdmin.HomeListener,EditMembers.HomeListener {
 
     private String[] mPlanetTitles;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
+
     private ReadTask read;
     private ListView list;
+
+    private int pickerHour;
+    private int pickerMin;
+    private String pickerDay;
+    private String pickerMonth;
+    private String pickerYear;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_layout);
+        ActionBar actionBar= getSupportActionBar();
+//        actionBar.hide();
 //        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 //
 ////Remove notification bar
@@ -60,8 +72,12 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 //            }
 //        });
 
+
         read = new ReadTask(this);
         read.execute();
+
+
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -70,7 +86,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
     }
 
     @Override
@@ -135,10 +150,48 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             Intent intent = new Intent(getApplicationContext(), PlacesMap.class);
             startActivity(intent);
         }
+        else if(id == R.id.home)
+        {
+            Intent intent = new Intent(getApplicationContext(),Home.class);
+            startActivity(intent);
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        pickerHour=hourOfDay;
+        pickerMin = minute;
+        System.out.println("hour is:"+pickerHour+""+"minute is:"+ pickerMin);
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        pickerDay = Integer.toString(dayOfMonth);
+        pickerMonth = Integer.toString(monthOfYear);
+        pickerYear = Integer.toString(year);
+        System.out.println("date is:"+" "+pickerMonth+":"+pickerDay+":"+pickerYear);
+    }
+
+
+    @Override
+    public String getDateTimeMem() {
+        String s = pickerDay +"/"+pickerMonth+"/"+pickerYear+" "+pickerHour+":"+pickerMin;
+        return s;
+    }
+
+    @Override
+    public String getDate() {
+        String date = pickerDay +"-"+pickerMonth+"-"+pickerYear;
+        return date;
+    }
+
+    @Override
+    public String getTime() {
+        String time = pickerHour+":"+pickerMin;
+        return time;
+    }
 }

@@ -23,6 +23,9 @@
     <item android:title="Communicate">
         <menu>
             <item
+                android:id="@+id/home"
+                android:title="Home"/>
+            <item
                 android:id="@+id/admin_edit_event"
                 android:title="Edit For Admin" />
             <item
