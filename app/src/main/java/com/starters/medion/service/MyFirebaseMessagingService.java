@@ -48,10 +48,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService{
                 Map<String, String> data = remoteMessage.getData();
                 String message = data.get("message");
                 Log.e("message is ", message);
-                Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
-                Intent intent = new Intent();
-                intent.setAction("NOW");
+
+                Intent intent = new Intent("intentKey");
+//                intent.setAction("NOW");
                 intent.putExtra("key", message);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 
                 Log.e("It should be sent ", " By now");
 //                JSONObject json = new JSONObject(remoteMessage.getData().toString());
