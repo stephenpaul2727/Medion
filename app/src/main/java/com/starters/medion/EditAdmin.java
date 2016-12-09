@@ -353,7 +353,23 @@ public class EditAdmin extends Fragment {
             connection.connect();
             OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
 
-            
+            // 3. build jsonObject
+            JSONObject eventIDJson = new JSONObject();
+            eventIDJson.accumulate("String", eventID);
+
+            // 4. convert JSONObject to JSON to String and send json content
+            out.write(eventIDJson.toString());
+            out.flush();
+            out.close();
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+            while (in.readLine() != null) {
+                System.out.println(in);
+            }
+            System.out.println("\nMedion notify REST Service Invoked Successfully..");
+            in.close();
+
         }catch (Exception e) {
             Log.d("InputStream", e.getLocalizedMessage());
         }
