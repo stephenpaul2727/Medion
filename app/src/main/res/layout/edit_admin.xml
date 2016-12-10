@@ -6,7 +6,7 @@
     android:layout_height="fill_parent"
     android:id="@+id/edit_admin_layout"
 
-    android:layout_marginTop="-15dp">
+    android:layout_marginTop="0dp">
 
 
     <com.gc.materialdesign.views.ButtonRectangle
@@ -14,11 +14,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/edit_admin_save"
-        android:background="#9ad3de"
+        android:background="#b8c7e0"
         android:layout_marginTop="39dp"
         android:layout_below="@+id/edit_admin_addMembers"
         android:layout_alignParentLeft="true"
-        android:textColor="#2e2f30"
+        android:textColor="#595a5b"
         android:layout_alignParentStart="true" />
 
     <com.gc.materialdesign.views.ButtonRectangle
@@ -28,26 +28,20 @@
         android:id="@+id/edit_admin_cancelevent"
         android:layout_below="@+id/edit_admin_save"
         android:layout_alignParentLeft="true"
-        android:background="#9ad3de"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="18dp"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="16dp"
-        android:layout_toLeftOf="@+id/edit_admin_addMembers"
-        android:textColor="#2e2f30"
-        android:layout_toStartOf="@+id/edit_admin_addMembers"/>
+        android:background="#b8c7e0"
+        android:layout_marginTop="70px"
+        android:textColor="#595a5b"
+       />
     <com.gc.materialdesign.views.ButtonRectangle
         android:text="Finalize Event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/edit_admin_cancelevent"
         android:layout_alignParentRight="true"
-        android:background="#9ad3de"
-        android:layout_alignParentEnd="true"
+        android:background="#b8c7e0"
         android:id="@+id/edit_admin_finalizeevent"
-        android:layout_toRightOf="@+id/edit_admin_addMembers"
-        android:textColor="#2e2f30"
-        android:layout_toEndOf="@+id/edit_admin_addMembers"/>
+        android:textColor="#595a5b"
+        />
     <ImageButton
         android:layout_marginTop="21dp"
         android:id="@+id/edit_imagebutton"
@@ -60,41 +54,45 @@
         android:id="@+id/edit_admin_select_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SELECT TIME"
-        android:background="#9ad3de"
-        android:layout_below="@+id/edit_admin_select_date"
-        android:textColor="#2e2f30"
-        android:layout_centerHorizontal="true"/>
+        android:text="Select Time"
+        android:background="#b8c7e0"
+        android:layout_below="@+id/edit_admin_event_name"
+        android:textColor="#595a5b"
+        android:layout_marginTop="100px"
+        android:layout_alignParentRight="true"/>
 
     <com.gc.materialdesign.views.ButtonRectangle
         android:text="Select Members"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/edit_admin_addMembers"
-        android:background="#9ad3de"
-        android:layout_below="@+id/edit_admin_select_time"
-        android:textColor="#2e2f30"
-        android:layout_centerHorizontal="true"/>
+        android:background="#b8c7e0"
+        android:layout_below="@+id/edit_admin_event_name"
+        android:textColor="#595a5b"
+        android:layout_marginTop="100px"
+        android:layout_centerInParent="true"/>
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:hint="Event Name"
+        android:hint="Provide an Event Name!"
         android:ems="10"
+        android:layout_marginTop="30px"
         android:id="@+id/edit_admin_event_name"
         android:textAlignment="center"
+        android:textColor="#b8c7e0"
         android:layout_below="@+id/edit_imagebutton"
-        android:layout_centerHorizontal="true"
-        android:fontFamily="sans-serif-thin"/>
+        android:layout_centerHorizontal="true" />
 
     <com.gc.materialdesign.views.ButtonRectangle
         android:id="@+id/edit_admin_select_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SELECT DATE"
-        android:background="#9ad3de"
+        android:layout_marginTop="100px"
+        android:text="Select Date"
+        android:background="#b8c7e0"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/edit_admin_event_name"
-        android:layout_centerHorizontal="true"
-        android:textColor="#2e2f30" />
+        android:textColor="#595a5b" />
 
 </RelativeLayout>

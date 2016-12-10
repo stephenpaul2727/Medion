@@ -35,18 +35,18 @@
         android:layout_below="@+id/edit_members_eventname"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="47dp"
-        android:background="#9ad3de"
-        android:textColor="#2e2f30"
+        android:background="#b8c7e0"
+        android:textColor="#595a5b"
         android:id="@+id/edit_members_addmembers" />
 
     <com.gc.materialdesign.views.ButtonRectangle
         android:text="Save"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/edit_members_addmembers"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="58dp"
-        android:background="#9ad3de"
-        android:textColor="#2e2f30"
+        android:background="#b8c7e0"
+        android:textColor="#595a5b"
         android:id="@+id/edit_members_save" />
 </RelativeLayout>

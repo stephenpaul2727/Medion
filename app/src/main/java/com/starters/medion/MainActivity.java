@@ -1,5 +1,7 @@
 package com.starters.medion;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.support.v4.app.NotificationCompat;
 import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.content.Intent;
@@ -39,8 +42,11 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -120,6 +126,17 @@ public class MainActivity extends AppCompatActivity {
             // Get extra data included in the Intent
             String message = intent.getStringExtra("key");
             Log.e("mm", message);
+            String[] words = message.split(",");
+
+            int notifyID=1;
+            NotificationManager notify = (NotificationManager) getSystemService(context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(getApplicationContext())
+                            .setSmallIcon(R.drawable.ic_menu_send)
+                            .setContentTitle("Medion")
+                            .setContentText("Event created with name: "+words[2]);
+
+            notify.notify(notifyID,mBuilder.build());
             Toast.makeText(getApplicationContext(), "You have been Added to an Event", Toast.LENGTH_LONG).show();
             String[] parts = message.split(",");
             if(parts[0].equals("EventCreated")) {

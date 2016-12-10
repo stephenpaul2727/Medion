@@ -11,8 +11,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.starters.medion.SignUp"
     android:id="@+id/Signup_view"
-    android:backgroundTint="#a8b6bf"
-    android:background="#a8b6bf">
+    android:background="@drawable/wall">
 
     <TextView
         android:layout_width="wrap_content"
@@ -44,7 +43,7 @@
         android:id="@+id/Signup_edit_name"
         android:layout_below="@+id/Signup_name"
         android:fontFamily="verdana"
-        android:textColor="#000000"
+        android:textColor="#b8c7e0"
         android:textStyle="bold"
 
         android:width="20dp"
@@ -74,7 +73,7 @@
         android:id="@+id/Signup_edit_email"
         android:layout_below="@+id/Signup_email"
         android:fontFamily="verdana"
-        android:textColor="#000000"
+        android:textColor="#b8c7e0"
         android:textStyle="bold"
 
         android:width="20dp"
@@ -101,7 +100,7 @@
         android:id="@+id/Signup_edit_phonenumber"
         android:layout_below="@+id/Signup_phonenumber"
         android:fontFamily="verdana"
-        android:textColor="#000000"
+        android:textColor="#b8c7e0"
         android:textStyle="bold"
 
         android:width="20dp"
@@ -127,7 +126,7 @@
         android:id="@+id/Signup_edit_password"
         android:layout_below="@+id/Signup_password"
         android:fontFamily="verdana"
-        android:textColor="#000000"
+        android:textColor="#b8c7e0"
         android:textStyle="bold"
 
         android:width="20dp"
@@ -154,7 +153,7 @@
         android:id="@+id/Signup_edit_reenterpassword"
         android:layout_below="@+id/Signup_reenterpassword"
         android:fontFamily="verdana"
-        android:textColor="#000000"
+        android:textColor="#b8c7e0"
         android:textStyle="bold"
 
         android:width="20dp"
@@ -176,8 +175,8 @@
         android:enabled="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:background="#9ad3de"
-        android:textColor="#2e2f30" />
+        android:background="#b8c7e0"
+        android:textColor="#595a5b" />
 
 
 
