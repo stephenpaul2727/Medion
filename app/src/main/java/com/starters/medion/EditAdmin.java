@@ -126,6 +126,8 @@ public class EditAdmin extends Fragment {
                 TextView contactstxt = (TextView)contactvg.findViewById(R.id.contacts);
                 String s = contactstxt.getText().toString();
                 String[] phone =s.split("/");
+                phone[1]=phone[1].replaceAll("\\s+","");
+                phone[1]=phone[1].replaceAll("[^a-zA-Z0-9]","");
                 System.out.println("contact is:"+phone[1]);
                 contactsarray.add(phone[1]);
                 Toast.makeText(getActivity(), contactstxt.getText().toString(),Toast.LENGTH_LONG).show();
@@ -209,7 +211,7 @@ public class EditAdmin extends Fragment {
                 Integer temp = 47;
                 eid = new Eid();
                 eid.setId(temp);
-                new EditAdmin.HttpAsyncTask().execute(temp.toString(),"http://149.161.150.243:8080/api/calcMedian");
+                new EditAdmin.HttpAsyncTask().execute(temp.toString(),"https://whispering-everglades-62915.herokuapp.com/api/calcMedian");
 //                new EditAdmin.HttpAsyncTask().execute(temp.toString(),"https://whispering-everglades-62915.herokuapp.com/api/calcMedian");
 
             }

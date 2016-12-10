@@ -32,6 +32,7 @@ import com.starters.medion.model.GeoCoordinates;
 import com.starters.medion.model.UserEvent;
 import com.starters.medion.service.TrackGPS;
 import com.starters.medion.dbtasks.InsertTask;
+import com.starters.medion.utils.Maps;
 import com.starters.medion.utils.NotificationUtils;
 
 import com.gc.materialdesign.views.ButtonRectangle;
@@ -126,19 +127,18 @@ public class MainActivity extends AppCompatActivity {
             // Get extra data included in the Intent
             String message = intent.getStringExtra("key");
             Log.e("mm", message);
-            String[] words = message.split(",");
-
+            String[] parts = message.split(",");
             int notifyID=1;
             NotificationManager notify = (NotificationManager) getSystemService(context.NOTIFICATION_SERVICE);
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(getApplicationContext())
-                            .setSmallIcon(R.drawable.ic_menu_send)
+                            .setSmallIcon(R.drawable.appimage)
                             .setContentTitle("Medion")
-                            .setContentText("Event created with name: "+words[2]);
+                            .setContentText("Event created with name: "+parts[2]);
 
             notify.notify(notifyID,mBuilder.build());
             Toast.makeText(getApplicationContext(), "You have been Added to an Event", Toast.LENGTH_LONG).show();
-            String[] parts = message.split(",");
+
             if(parts[0].equals("EventCreated")) {
                 System.out.println("ENTERED EVENT CREATED");
                 InsertTask insert = new InsertTask(getApplicationContext());
@@ -152,6 +152,15 @@ public class MainActivity extends AppCompatActivity {
 //                    new MainActivity.HttpAsyncTask().execute(parts[1], fcmToken, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()),"http://149.161.150.243:8080/api/addUserEvent");
                     new MainActivity.HttpAsyncTask().execute(parts[1], fcmToken, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()), "https://whispering-everglades-62915.herokuapp.com/api/addUserEvent");
                 }
+            }
+            else if(parts[0].equals("Medion")){
+                System.out.println("inside medion..!");
+                String latitude = parts[1];
+                String longitude=parts[2];
+                Intent mesintent=new Intent(MainActivity.this,Maps.class);
+                mesintent.putExtra("latlong",latitude+"/"+longitude);
+                startActivity(mesintent);
+
             }
 
         }

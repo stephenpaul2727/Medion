@@ -26,6 +26,7 @@ import android.widget.TimePicker;
 
 import com.starters.medion.dbtasks.InsertTask;
 import com.starters.medion.dbtasks.ReadTask;
+import com.starters.medion.utils.Maps;
 
 /**
  * Created by KeerthiTejaNuthi on 11/1/16.
@@ -149,7 +150,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
 
         } else if (id == R.id.getMap) {
-            Intent intent = new Intent(getApplicationContext(), PlacesMap.class);
+            Intent intent = new Intent(getApplicationContext(), Maps.class);
             startActivity(intent);
         }
         else if(id == R.id.home)
