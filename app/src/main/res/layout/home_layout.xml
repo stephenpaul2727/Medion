@@ -22,7 +22,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="20dp"
         android:id="@+id/fragment_container"
-        android:background="#2b2c2d"
+        android:background="@drawable/wall"
         android:clickable="true">
 
         <ListView
