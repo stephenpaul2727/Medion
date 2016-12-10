@@ -36,6 +36,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.starters.medion.model.Eid;
 import com.starters.medion.model.Event;
 import com.starters.medion.model.User;
 
@@ -81,6 +82,7 @@ public class EditAdmin extends Fragment {
     private int pickerMonth;
     private int pickerYear;
     private ButtonRectangle finalizeEvent;
+    private Eid eid;
     View view;
 
     public interface HomeListener
@@ -185,8 +187,6 @@ public class EditAdmin extends Fragment {
                 System.out.println(home.getDate()+"vvv"+home.getTime());
 
 
-
-
                 ArrayList<String> mem = new ArrayList<String>();
                 for(int i=0; i<contactsarray.size(); i++) {
                     mem.add(i, contactsarray.get(i));
@@ -205,8 +205,12 @@ public class EditAdmin extends Fragment {
         finalizeEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Integer temp = 61;
-                new EditAdmin.HttpAsyncTask().execute(temp.toString(),"https://whispering-everglades-62915.herokuapp.com/api/calcMedian");
+                Log.d("Inside:","Onclick");
+                Integer temp = 47;
+                eid = new Eid();
+                eid.setId(temp);
+                new EditAdmin.HttpAsyncTask().execute(temp.toString(),"http://149.161.150.243:8080/api/calcMedian");
+//                new EditAdmin.HttpAsyncTask().execute(temp.toString(),"https://whispering-everglades-62915.herokuapp.com/api/calcMedian");
 
             }
         });
@@ -337,8 +341,9 @@ public class EditAdmin extends Fragment {
         }
     }
 
-    public static String POST(String stringURL, String eventID){
+    public static String POST(String stringURL, Eid eid){
         try {
+            Log.d("POST","reached!");
             // 1. create URL
             URL url = new URL(stringURL);
 
@@ -355,7 +360,7 @@ public class EditAdmin extends Fragment {
 
             // 3. build jsonObject
             JSONObject eventIDJson = new JSONObject();
-            eventIDJson.accumulate("String", eventID);
+            eventIDJson.accumulate("id", eid.getId());
 
             // 4. convert JSONObject to JSON to String and send json content
             out.write(eventIDJson.toString());
@@ -427,7 +432,7 @@ public class EditAdmin extends Fragment {
         protected String doInBackground(String... args) {
             int count = args.length;
             if(count < 3){
-                return POST(args[1],args[0]);
+                return POST(args[1], eid);
             }else {
                 event = new Event();
                 event.setEventName(args[0]);
