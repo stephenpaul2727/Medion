@@ -150,7 +150,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
 
         } else if (id == R.id.getMap) {
-            Intent intent = new Intent(getApplicationContext(), Maps.class);
+            Intent intent = new Intent(getApplicationContext(), PlacesMap.class);
             startActivity(intent);
         }
         else if(id == R.id.home)

@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("inside medion..!");
                 String latitude = parts[1];
                 String longitude=parts[2];
-                Intent mesintent=new Intent(MainActivity.this,Maps.class);
+                Intent mesintent=new Intent(MainActivity.this,PlacesMap.class);
                 mesintent.putExtra("latlong",latitude+"/"+longitude);
                 startActivity(mesintent);
 

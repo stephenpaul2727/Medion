@@ -61,9 +61,12 @@ public class PlacesMap extends AppCompatActivity implements GoogleApiClient.Conn
     TextView mapname;
     TextView mapaddress;
     TextView mapphonenumber;
-    Double latitude;
-    Double longitude;
+    TextView maplat;
+    TextView maplong;
+    Double latitude = 39.768826;
+    Double longitude = -86.168968;
     Location mLastLocation;
+    LatLngBounds.Builder bounds;
     GoogleApiClient mGoogleApiClient;
 
     @Override
@@ -71,10 +74,21 @@ public class PlacesMap extends AppCompatActivity implements GoogleApiClient.Conn
         super.onCreate(savedInstanceState);
         setContentView(R.layout.places_map);
         ButtonRectangle map_button = (ButtonRectangle) findViewById(R.id.map_places);
+//        if(getIntent().getExtras().getString("latlong")!= null) {
+//        String s = getIntent().getExtras().getString("latlong");
+//        String[] latilongi = s.split("/");
+//        latitude = Double.parseDouble(latilongi[0]);
+//        longitude = Double.parseDouble(latilongi[1]);
+//        }
         mapname = (TextView) findViewById(R.id.map_name);
         mapaddress = (TextView) findViewById(R.id.map_Address);
         mapphonenumber = (TextView) findViewById(R.id.map_Phonenumber);
+        maplat = (TextView) findViewById(R.id.map_lat);
+        maplong = (TextView) findViewById(R.id.map_long);
+
         checkpermission();
+
+        final LatLngBounds bounds = new LatLngBounds(new LatLng(latitude-0.008983,longitude-0.015060),new LatLng(latitude+0.008983,longitude+0.015060));
 
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
@@ -121,7 +135,7 @@ public class PlacesMap extends AppCompatActivity implements GoogleApiClient.Conn
                     }
                 });
                 PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-//                builder.setLatLngBounds(bounds);
+                builder.setLatLngBounds(bounds);
                 Intent intent;
                 try {
                     intent = builder.build(PlacesMap.this);
@@ -132,6 +146,7 @@ public class PlacesMap extends AppCompatActivity implements GoogleApiClient.Conn
                     e.printStackTrace();
 
                 }
+
 
             }
         });
@@ -180,6 +195,7 @@ public class PlacesMap extends AppCompatActivity implements GoogleApiClient.Conn
         }
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
+
         if (mLastLocation != null) {
             latitude=mLastLocation.getLatitude();
 
@@ -248,9 +264,13 @@ public class PlacesMap extends AppCompatActivity implements GoogleApiClient.Conn
                 String s = (String) place.getName();
                 String t = (String) place.getAddress();
                 String u = (String) place.getPhoneNumber();
+                LatLng latLng= place.getLatLng();
+                //THese are the required place details which the user has picked.
                 mapname.setText(s);
                 mapaddress.setText(t);
                 mapphonenumber.setText(u);
+                maplat.setText(Double.toString(latLng.latitude));
+                maplong.setText(Double.toString(latLng.longitude));
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

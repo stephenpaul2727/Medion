@@ -16,12 +16,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/you_selected"
         android:layout_below="@+id/map_places"
+        android:textColor="#ffffff"
         android:text="YOU SELECTED:"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/map_name"
+        android:textColor="#ffffff"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/you_selected"/>
 
@@ -29,6 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/map_Address"
+        android:textColor="#ffffff"
         android:layout_below="@+id/map_name"
         android:layout_centerHorizontal="true"/>
 
@@ -36,7 +39,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/map_Phonenumber"
+        android:textColor="#ffffff"
         android:layout_below="@+id/map_Address"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/map_lat"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/map_Phonenumber"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/map_long"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/map_lat"
         android:layout_centerHorizontal="true"/>
 
 
