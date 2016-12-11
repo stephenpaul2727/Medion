@@ -40,6 +40,7 @@ import com.starters.medion.model.Eid;
 import com.starters.medion.model.Event;
 import com.starters.medion.model.User;
 
+import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -256,7 +257,6 @@ public class EditAdmin extends Fragment {
                 imageButton.setImageBitmap(BitmapFactory.decodeFile(decodableImage));
                 imageButton.invalidate();
 
-
             }
             else
             {
@@ -413,13 +413,14 @@ public class EditAdmin extends Fragment {
             out.flush();
             out.close();
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-            while (in.readLine() != null) {
-                System.out.println(in);
-            }
+//            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String myString = IOUtils.toString(new InputStreamReader(connection.getInputStream()));
+            Log.e("Server: ",myString);
+//            while (in.readLine() != null) {
+//                System.out.println(in);
+//            }
             System.out.println("\nMedion notify REST Service Invoked Successfully..");
-            in.close();
+//            in.close();
         } catch (Exception e) {
             Log.d("InputStream", e.getLocalizedMessage());
         }

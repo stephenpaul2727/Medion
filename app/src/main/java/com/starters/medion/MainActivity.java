@@ -32,7 +32,7 @@ import com.starters.medion.model.GeoCoordinates;
 import com.starters.medion.model.UserEvent;
 import com.starters.medion.service.TrackGPS;
 import com.starters.medion.dbtasks.InsertTask;
-import com.starters.medion.utils.Maps;
+//import com.starters.medion.utils.Maps;
 import com.starters.medion.utils.NotificationUtils;
 
 import com.gc.materialdesign.views.ButtonRectangle;
@@ -64,58 +64,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         addLoginClickListener();
         addSignupClickListener();
-
-        /*mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            
-            @Override
-            public void onReceive(Context context, Intent intent) {
-
-                Log.d("Onreceive","inside");
-                String key = intent.getStringExtra("key");
-                Log.d("message in Main",key);
-
-                // checking for type intent filter
-                if (intent.getAction().equals(config.REGISTRATION_COMPLETE)) {
-                    // gcm successfully registered
-                    // now subscribe to `global` topic to receive app wide notifications
-                    FirebaseMessaging.getInstance().subscribeToTopic(config.TOPIC_GLOBAL);
-
-                    displayFirebaseRegId();
-                    Log.d("Onreceive","inside");
-
-                } else if (intent.getAction().equals(config.PUSH_NOTIFICATION)) {
-                    // new push notification is received
-
-                    String message = intent.getStringExtra("message");
-                    //String message = "Fun Event,02/12/2016,10am,8123456544|5432126879";
-                    String[] parts = message.split(",");
-
-
-                    Toast.makeText(getBaseContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
-
-                    Log.d("FIREBASE sent:", message);
-//                    txtMessage.setText(message);
-                    if(parts[0].equals("EventCreated")) {
-<<<<<<< HEAD
-                        InsertTask insert = new InsertTask(getApplicationContext());
-                        insert.execute(parts);
-//                      geoCoordinates = new GeoCoordinates();
-=======
-                        System.out.println("ENTERED EVENT CREATED");
-//                        geoCoordinates = new GeoCoordinates();
->>>>>>> 7dc1f26411283aa686fb607a8051202cfa538e01
-                        trackGPS = new TrackGPS(MainActivity.this);
-                        if (trackGPS.canGetLocation()) {
-//                            geoCoordinates.setLatitude(trackGPS.getLatitude());
-//                            geoCoordinates.setLongitude(trackGPS.getLongitude());
-                            System.out.println("LOCATION"+trackGPS.getLongitude());
-                            new MainActivity.HttpAsyncTask().execute(parts[1], fcmToken, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()), "https://whispering-everglades-62915.herokuapp.com/api/addUserEvent");
-                        }
-                    }
-
-                }
-            }
-        };*/
         displayFirebaseRegId();
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 mMessageReceiver, new IntentFilter("intentKey"));
@@ -127,23 +75,25 @@ public class MainActivity extends AppCompatActivity {
             // Get extra data included in the Intent
             String message = intent.getStringExtra("key");
             Log.e("mm", message);
-            String[] parts = message.split(",");
             int notifyID=1;
             NotificationManager notify = (NotificationManager) getSystemService(context.NOTIFICATION_SERVICE);
-            NotificationCompat.Builder mBuilder =
-                    new NotificationCompat.Builder(getApplicationContext())
-                            .setSmallIcon(R.drawable.appimage)
-                            .setContentTitle("Medion")
-                            .setContentText("Event created with name: "+parts[2]);
-
-            notify.notify(notifyID,mBuilder.build());
-            Toast.makeText(getApplicationContext(), "You have been Added to an Event", Toast.LENGTH_LONG).show();
+            String[] parts = message.split(",");
 
             if(parts[0].equals("EventCreated")) {
                 System.out.println("ENTERED EVENT CREATED");
+
+                NotificationCompat.Builder mBuilder =
+                        new NotificationCompat.Builder(getApplicationContext())
+                                .setSmallIcon(R.drawable.appimage)
+                                .setContentTitle("Medion")
+                                .setContentText("New Event"+parts[2]+" created");
+                notify.notify(notifyID,mBuilder.build());
+                Toast.makeText(getApplicationContext(), "You have been Added to an Event", Toast.LENGTH_LONG).show();
+
                 InsertTask insert = new InsertTask(getApplicationContext());
                 insert.execute(parts);
-//                        geoCoordinates = new GeoCoordinates();
+
+//              geoCoordinates = new GeoCoordinates();
                 trackGPS = new TrackGPS(MainActivity.this);
                 if (trackGPS.canGetLocation()) {
 //                            geoCoordinates.setLatitude(trackGPS.getLatitude());
@@ -152,11 +102,11 @@ public class MainActivity extends AppCompatActivity {
 //                    new MainActivity.HttpAsyncTask().execute(parts[1], fcmToken, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()),"http://149.161.150.243:8080/api/addUserEvent");
                     new MainActivity.HttpAsyncTask().execute(parts[1], fcmToken, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()), "https://whispering-everglades-62915.herokuapp.com/api/addUserEvent");
                 }
-            }
-            else if(parts[0].equals("Medion")){
+            }else if(parts[0].equals("MedionCalculated")){
+
                 System.out.println("inside medion..!");
                 String latitude = parts[1];
-                String longitude=parts[2];
+                String longitude = parts[2];
                 Intent mesintent=new Intent(MainActivity.this,PlacesMap.class);
                 mesintent.putExtra("latlong",latitude+"/"+longitude);
                 startActivity(mesintent);
