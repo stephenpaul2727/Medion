@@ -36,6 +36,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.starters.medion.dbtasks.InsertTask;
 import com.starters.medion.model.Eid;
 import com.starters.medion.model.Event;
 import com.starters.medion.model.User;
@@ -84,6 +85,8 @@ public class EditAdmin extends Fragment {
     private int pickerYear;
     private ButtonRectangle finalizeEvent;
     private Eid eid;
+    private static Context context;
+    private static String[] parts = new String[7];
     View view;
 
     public interface HomeListener
@@ -188,7 +191,12 @@ public class EditAdmin extends Fragment {
 
                 System.out.println(eventname.getText());
                 System.out.println(home.getDate()+"vvv"+home.getTime());
+                parts[2] = eventname.getText().toString();
+                parts[3] = home.getDate().toString();
+                parts[4] = home.getTime().toString();
 
+                parts[6] = "yes";
+                context = getContext();
 
                 ArrayList<String> mem = new ArrayList<String>();
                 for(int i=0; i<contactsarray.size(); i++) {
@@ -197,6 +205,7 @@ public class EditAdmin extends Fragment {
 //                mem.add(0,"123");
 //                mem.add(0,"8129551395");
                 String members = TextUtils.join(",", mem);
+                parts[5] = members;
                 //To get it back to ArrayList,
                 //List<String> myList = new ArrayList<String>(Arrays.asList(members.split(",")));
 //                new EditAdmin.HttpAsyncTask().execute(eventname.getText().toString(),home.getDate(),home.getTime(),members,"http://149.161.150.243:8080/api/notifyMembers");
@@ -419,6 +428,9 @@ public class EditAdmin extends Fragment {
 //            while (in.readLine() != null) {
 //                System.out.println(in);
 //            }
+            parts[1] = myString;
+            InsertTask insert =new InsertTask(context);
+            insert.execute(parts);
             System.out.println("\nMedion notify REST Service Invoked Successfully..");
 //            in.close();
         } catch (Exception e) {

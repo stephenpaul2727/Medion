@@ -8,6 +8,7 @@
         android:id="@+id/t_eventname"
         android:layout_alignParentLeft="true"
         android:text="Name"
+        android:textColor="#FFFFFF"
         android:paddingLeft="20dp"/>
     <TextView
         android:layout_height="match_parent"
@@ -15,6 +16,7 @@
         android:id="@+id/t_date"
         android:layout_toRightOf="@id/t_eventname"
         android:text="02/21/2017"
+        android:textColor="#FFFFFF"
         />
 
     <TextView
@@ -23,7 +25,9 @@
         android:id="@+id/t_time"
         android:layout_toRightOf="@id/t_date"
         android:text="10am"
+        android:textColor="#FFFFFF"
         android:gravity="center"/>
+
 
 
 </RelativeLayout>
