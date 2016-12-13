@@ -22,13 +22,14 @@
         android:layout_height="match_parent"
         android:layout_marginTop="20dp"
         android:id="@+id/fragment_container"
-        android:background="@drawable/wall3"
+        android:background="@drawable/wall"
         android:clickable="true">
 
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/displaylistview"/>
+            android:id="@+id/displaylistview"
+            android:drawSelectorOnTop="false"/>
 
         <com.gc.materialdesign.views.ButtonFloat
             android:layout_width="wrap_content"

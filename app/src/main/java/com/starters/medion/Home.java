@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -52,7 +53,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private String pickerDay;
     private String pickerMonth;
     private String pickerYear;
+    private double latitude;
+    private double longitude;
     private ButtonFloat plusButton;
+    private ListView listView;
+
 
 
     @Override
@@ -60,6 +65,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_layout);
         ActionBar actionBar= getSupportActionBar();
+
 //        actionBar.hide();
 //        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 //
@@ -79,13 +85,33 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 //                        .setAction("Action", null).show();
 //            }
 //        });
+        try {
+            if (getIntent().getExtras().getString("ll") != null) {
+                String s = getIntent().getExtras().getString("ll");
+                String[] latilongi = s.split("/");
+                latitude = Double.parseDouble(latilongi[0]);
+                longitude = Double.parseDouble(latilongi[1]);
+            }
+        }
+        catch(Exception e)
+        {
+            Toast.makeText(this,"Final Message not received!",Toast.LENGTH_LONG).show();
+        }
 
+        String[] mobileArray={"Place Location: "+latitude+" "+longitude,"- - - - - - -","- - - - - - -"};
         insert = new InsertTask(this);
         //insert.execute();
         read = new ReadTask(this);
         read.execute();
         plusButton = (ButtonFloat) findViewById(R.id.plusButton);
 
+
+        ListAdapter adapter = new ArrayAdapter<String>(this,
+                R.layout.activity_listview, mobileArray);
+
+        listView = (ListView) findViewById(R.id.displaylistview);
+        listView.setAdapter(adapter);
+        listView.setBackgroundColor(Color.DKGRAY);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -95,6 +121,16 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent finintent = new Intent(Home.this,PlacesMap.class);
+                finintent.putExtra("finlatlong",latitude+"/"+longitude);
+                startActivity(finintent);
+            }
+        });
 
 
         plusButton.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +179,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         return super.onOptionsItemSelected(item);
     }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

@@ -76,8 +76,8 @@ public class PlacesMap extends AppCompatActivity implements GoogleApiClient.Conn
     TextView mapphonenumber;
     TextView maplat;
     TextView maplong;
-    Double latitude = 39.768826;
-    Double longitude = -86.168968;
+    Double latitude;
+    Double longitude;
     Location mLastLocation;
     LatLngBounds.Builder bounds;
     GoogleApiClient mGoogleApiClient;
@@ -88,12 +88,25 @@ public class PlacesMap extends AppCompatActivity implements GoogleApiClient.Conn
         super.onCreate(savedInstanceState);
         setContentView(R.layout.places_map);
         ButtonRectangle map_button = (ButtonRectangle) findViewById(R.id.map_places);
-//        if(getIntent().getExtras().getString("latlong")!= null) {
-//        String s = getIntent().getExtras().getString("latlong");
-//        String[] latilongi = s.split("/");
-//        latitude = Double.parseDouble(latilongi[0]);
-//        longitude = Double.parseDouble(latilongi[1]);
-//        }
+        try {
+            if (getIntent().getExtras().getString("latlong") != null) {
+                String s = getIntent().getExtras().getString("latlong");
+                String[] latilongi = s.split("/");
+                latitude = Double.parseDouble(latilongi[0]);
+                longitude = Double.parseDouble(latilongi[1]);
+            }
+            else if(getIntent().getExtras().getString("finlatlong")!=null)
+            {
+                String s = getIntent().getExtras().getString("finlatlong");
+                String[] latilongi = s.split("/");
+                latitude = Double.parseDouble(latilongi[0]);
+                longitude = Double.parseDouble(latilongi[1]);
+            }
+        }
+        catch(Exception e)
+        {
+            Toast.makeText(this,"Medion Not Received",Toast.LENGTH_LONG).show();
+        }
         mapname = (TextView) findViewById(R.id.map_name);
         mapaddress = (TextView) findViewById(R.id.map_Address);
         mapphonenumber = (TextView) findViewById(R.id.map_Phonenumber);

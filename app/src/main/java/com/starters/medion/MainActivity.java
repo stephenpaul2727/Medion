@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                         new NotificationCompat.Builder(getApplicationContext())
                                 .setSmallIcon(R.drawable.appimage)
                                 .setContentTitle("Medion")
-                                .setContentText("New Event"+parts[2]+" created");
+                                .setContentText("New Event "+parts[2]+" created");
                 notify.notify(notifyID,mBuilder.build());
                 Toast.makeText(getApplicationContext(), "You have been Added to an Event", Toast.LENGTH_LONG).show();
 
@@ -114,6 +114,9 @@ public class MainActivity extends AppCompatActivity {
             }else if(parts[0].equals("FinalPlace")){
                 String latitude = parts[1];
                 String longitude = parts[2];
+                Intent msgfinal = new Intent(MainActivity.this,Home.class);
+                msgfinal.putExtra("ll",latitude+"/"+longitude);
+                startActivity(msgfinal);
             }
 
         }
