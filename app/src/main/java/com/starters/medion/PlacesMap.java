@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,6 +21,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,8 +54,14 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.starters.medion.model.EventMedian;
+import com.starters.medion.model.UserEvent;
 
+import org.json.JSONObject;
+
+import static android.R.attr.data;
 import static android.app.Activity.RESULT_OK;
+import static com.starters.medion.MainActivity.fcmToken;
 
 /**
  * Created by stephenpaul on 15/11/16.
@@ -68,6 +81,7 @@ public class PlacesMap extends AppCompatActivity implements GoogleApiClient.Conn
     Location mLastLocation;
     LatLngBounds.Builder bounds;
     GoogleApiClient mGoogleApiClient;
+    private EventMedian eventMedian;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -271,10 +285,75 @@ public class PlacesMap extends AppCompatActivity implements GoogleApiClient.Conn
                 mapphonenumber.setText(u);
                 maplat.setText(Double.toString(latLng.latitude));
                 maplong.setText(Double.toString(latLng.longitude));
+                new PlacesMap.HttpAsyncTask().execute("AA",Double.toString(latLng.latitude),Double.toString(latLng.longitude), "https://whispering-everglades-62915.herokuapp.com/api/sendMedian");
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    public static String POST(String stringURL, EventMedian eventMedian) {
+        InputStream inputStream = null;
+        String result = "";
+        try {
+
+            Log.d("InputStream", "Before Connecting");
+            // 1. create URL
+            URL url = new URL(stringURL);
+
+            // 2. create connection to given URL
+            URLConnection connection = url.openConnection();
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setUseCaches(false);
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setConnectTimeout(50000);
+            connection.setReadTimeout(50000);
+            connection.connect();
+            OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
+
+            // 3. build jsonObject
+            JSONObject eventMedianJson = new JSONObject();
+            eventMedianJson.accumulate("eventId", eventMedian.getEventID());
+            eventMedianJson.accumulate("userFcmToken", eventMedian.getLatitude());
+            eventMedianJson.accumulate("acceptance", eventMedian.getLongitude());
+
+
+            // 4. convert JSONObject to JSON to String and send json content
+            out.write(eventMedianJson.toString());
+            out.flush();
+            out.close();
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+            while (in.readLine() != null) {
+                System.out.println(in);
+            }
+            System.out.println("\nMedion REST Service Invoked Successfully..");
+            in.close();
+        } catch (Exception e) {
+            Log.d("InputStream", e.getLocalizedMessage());
+        }
+
+        return result;
+    }
+
+    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... args) {
+            eventMedian = new EventMedian();
+            eventMedian.setEventID(110);
+            eventMedian.setLatitude(Double.parseDouble(args[1]));
+            eventMedian.setLongitude(Double.parseDouble(args[2]));
+
+
+            return POST(args[3],eventMedian);
+        }
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(getBaseContext(), "You have signed up!", Toast.LENGTH_LONG).show();
+        }
+    }
 
 }

@@ -62,7 +62,7 @@
         <activity
             android:name=".PlacesMap"
             android:label="Choose Place"></activity>
-        <activity android:name=".utils.Maps"></activity>
+        <!--<activity android:name=".utils.Maps"></activity>-->
     </application>
 
 </manifest>

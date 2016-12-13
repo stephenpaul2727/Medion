@@ -111,6 +111,9 @@ public class MainActivity extends AppCompatActivity {
                 mesintent.putExtra("latlong",latitude+"/"+longitude);
                 startActivity(mesintent);
 
+            }else if(parts[0].equals("FinalPlace")){
+                String latitude = parts[1];
+                String longitude = parts[2];
             }
 
         }

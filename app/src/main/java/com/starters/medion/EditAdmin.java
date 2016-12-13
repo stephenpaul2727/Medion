@@ -209,7 +209,7 @@ public class EditAdmin extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.d("Inside:","Onclick");
-                Integer temp = 47;
+                Integer temp = 109;
                 eid = new Eid();
                 eid.setId(temp);
                 new EditAdmin.HttpAsyncTask().execute(temp.toString(),"https://whispering-everglades-62915.herokuapp.com/api/calcMedian");

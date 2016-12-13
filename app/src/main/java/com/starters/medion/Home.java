@@ -24,9 +24,13 @@ import android.view.WindowManager;
 import android.widget.*;
 import android.widget.TimePicker;
 
+import com.gc.materialdesign.views.ButtonFloat;
+import com.gc.materialdesign.views.ButtonRectangle;
 import com.starters.medion.dbtasks.InsertTask;
 import com.starters.medion.dbtasks.ReadTask;
-import com.starters.medion.utils.Maps;
+
+import java.util.zip.Inflater;
+//import com.starters.medion.utils.Maps;
 
 /**
  * Created by KeerthiTejaNuthi on 11/1/16.
@@ -46,7 +50,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private String pickerDay;
     private String pickerMonth;
     private String pickerYear;
-
+    private ButtonFloat plusButton;
 
 
     @Override
@@ -78,7 +82,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         //insert.execute();
         read = new ReadTask(this);
         read.execute();
-
+        plusButton = (ButtonFloat) findViewById(R.id.plusButton);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -89,6 +93,19 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        plusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getFragmentManager();
+                android.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                fragmentTransaction.replace(R.id.fragment_container, new EditAdmin(), "edit_admin_tag");
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
     }
 
     @Override
