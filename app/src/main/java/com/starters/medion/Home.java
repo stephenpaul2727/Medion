@@ -109,9 +109,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         ListAdapter adapter = new ArrayAdapter<String>(this,
                 R.layout.activity_listview, mobileArray);
 
-        listView = (ListView) findViewById(R.id.displaylistview);
-        listView.setAdapter(adapter);
-        listView.setBackgroundColor(Color.DKGRAY);
+//        listView = (ListView) findViewById(R.id.displaylistview);
+//        listView.setAdapter(adapter);
+//        listView.setBackgroundColor(Color.DKGRAY);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -123,14 +123,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent finintent = new Intent(Home.this,PlacesMap.class);
-                finintent.putExtra("finlatlong",latitude+"/"+longitude);
-                startActivity(finintent);
-            }
-        });
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent finintent = new Intent(Home.this,PlacesMap.class);
+//                finintent.putExtra("finlatlong",latitude+"/"+longitude);
+//                startActivity(finintent);
+//            }
+//        });
 
 
         plusButton.setOnClickListener(new View.OnClickListener() {
@@ -138,8 +138,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             public void onClick(View view) {
                 FragmentManager fragmentManager = getFragmentManager();
                 android.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-                fragmentTransaction.replace(R.id.fragment_container, new EditAdmin(), "edit_admin_tag");
+                fragmentTransaction.replace(R.id.fragment_container,new EditAdmin(), "edit_admin_tag");
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }

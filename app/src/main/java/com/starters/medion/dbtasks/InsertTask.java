@@ -44,8 +44,8 @@ public class InsertTask extends AsyncTask {
         values.put(EventsEntry.COLUMN_NAME_DATE, params[3].toString());
         values.put(EventsEntry.COLUMN_NAME_TIME, params[4].toString());
         values.put(EventsEntry.COLUMN_NAME_MEMBERS, params[5].toString());
-        values.put(EventsEntry.COLUMN_NAME_ADMIN, "no");
-        values.put(EventsEntry.COLUMN_NAME_LOCATION, "blah");
+        values.put(EventsEntry.COLUMN_NAME_ADMIN,params[6].toString());
+        values.put(EventsEntry.COLUMN_NAME_LOCATION, "BLAH");
 // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(EventsEntry.TABLE_NAME, null, values);
         return null;

@@ -10,11 +10,11 @@
     android:background="#a8b6bf"
     tools:openDrawer="start">
 
+
     <include
         layout="@layout/app_bar_navigation_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
 
 
     <RelativeLayout
@@ -22,14 +22,15 @@
         android:layout_height="match_parent"
         android:layout_marginTop="20dp"
         android:id="@+id/fragment_container"
-        android:background="@drawable/wall3"
+        android:background="@drawable/gradient_bg"
         android:clickable="true">
 
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/displaylistview"
-            android:drawSelectorOnTop="false"/>
+            android:drawSelectorOnTop="false"
+            />
 
         <com.gc.materialdesign.views.ButtonFloat
             android:layout_width="wrap_content"
@@ -38,7 +39,6 @@
             android:layout_alignParentRight="true"
             materialdesign:animate="true"
             android:background="#9ad3de"
-            android:text="Suggested Places"
             android:id="@+id/plusButton"
             materialdesign:iconDrawable="@drawable/ic_action_new"
             android:layout_marginRight="24dp"/>

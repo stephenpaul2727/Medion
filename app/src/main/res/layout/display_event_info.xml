@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@drawable/list_selector"
     android:layout_height="match_parent">
     <TextView
         android:layout_height="100dp"
@@ -8,25 +9,36 @@
         android:id="@+id/t_eventname"
         android:layout_alignParentLeft="true"
         android:text="Name"
-        android:textColor="#FFFFFF"
-        android:paddingLeft="20dp"/>
+        android:textAlignment="center"
+        android:textSize="50px"
+        android:textColor="#000000"
+        android:paddingLeft="20dp"
+        android:paddingTop="60px"
+        />
     <TextView
         android:layout_height="match_parent"
         android:layout_width="100dp"
+        android:paddingTop="60px"
         android:id="@+id/t_date"
+        android:textSize="50px"
         android:layout_toRightOf="@id/t_eventname"
+        android:textAlignment="center"
         android:text="02/21/2017"
-        android:textColor="#FFFFFF"
+        android:gravity="center_vertical"
+        android:textColor="#000000"
         />
 
     <TextView
         android:layout_height="match_parent"
-        android:layout_width="50dp"
+        android:layout_width="150dp"
         android:id="@+id/t_time"
+        android:paddingTop="60px"
+        android:paddingLeft="40dp"
+        android:textSize="50px"
         android:layout_toRightOf="@id/t_date"
         android:text="10am"
-        android:textColor="#FFFFFF"
-        android:gravity="center"/>
+        android:gravity="center_vertical"
+        android:textColor="#000000" />
 
 
 

@@ -55,7 +55,7 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements EditAdmin.MainActivityListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private BroadcastReceiver mRegistrationBroadcastReceiver;
@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     private String username;
     private String pass;
     public String res;
+    private String eventId;
 
 
     @Override
@@ -103,9 +104,10 @@ public class MainActivity extends AppCompatActivity {
                                 .setContentText("New Event "+parts[2]+" created");
                 notify.notify(notifyID,mBuilder.build());
                 Toast.makeText(getApplicationContext(), "You have been Added to an Event", Toast.LENGTH_LONG).show();
-
+                eventId = parts[1];
                 InsertTask insert = new InsertTask(getApplicationContext());
-                insert.execute(parts);
+                insert.execute("",parts[1],parts[2],parts[3],parts[4],parts[5],"MEMBER","");
+                eventId = parts[1];
 
 //              geoCoordinates = new GeoCoordinates();
                 trackGPS = new TrackGPS(MainActivity.this);
@@ -257,6 +259,8 @@ public class MainActivity extends AppCompatActivity {
 
         return result;
     }
+
+
 
     private class HttpAsyncTask extends AsyncTask<String, Void, String> {
 

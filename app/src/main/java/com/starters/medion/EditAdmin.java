@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -36,6 +37,8 @@ import android.widget.Toast;
 import java.util.List;
 
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.starters.medion.dbhelper.EventsDbhelper;
+import com.starters.medion.dbtasks.InsertTask;
 import com.starters.medion.model.Eid;
 import com.starters.medion.model.Event;
 import com.starters.medion.model.User;
@@ -76,14 +79,11 @@ public class EditAdmin extends Fragment {
     private ButtonRectangle membersButton;
     private ButtonRectangle saveButton;
     private Event event;
-    private int pickerHour;
-    private int pickerMin;
     private Home home;
-    private int pickerDay;
-    private int pickerMonth;
-    private int pickerYear;
     private ButtonRectangle finalizeEvent;
     private Eid eid;
+    private String eventId;
+    private String members;
     View view;
 
     public interface HomeListener
@@ -91,6 +91,11 @@ public class EditAdmin extends Fragment {
         public String getDate();
         public String getTime();
     }
+    public interface MainActivityListener
+    {
+
+    }
+    MainActivityListener mainActivityListener;
 
 
     @Nullable
@@ -166,7 +171,6 @@ public class EditAdmin extends Fragment {
                     Picker pickerDialogs= new Picker();
                     pickerDialogs.show(getFragmentManager(),"date_picker");
 
-
                 }
             }
         });
@@ -196,7 +200,7 @@ public class EditAdmin extends Fragment {
                 }
 //                mem.add(0,"123");
 //                mem.add(0,"8129551395");
-                String members = TextUtils.join(",", mem);
+                members = TextUtils.join(",", mem);
                 //To get it back to ArrayList,
                 //List<String> myList = new ArrayList<String>(Arrays.asList(members.split(",")));
 //                new EditAdmin.HttpAsyncTask().execute(eventname.getText().toString(),home.getDate(),home.getTime(),members,"http://149.161.150.243:8080/api/notifyMembers");
@@ -240,6 +244,13 @@ public class EditAdmin extends Fragment {
 
         super.onAttach(context);
         home = (Home) getActivity();
+        try {
+            mainActivityListener = (MainActivityListener) getActivity();
+        }
+        catch(ClassCastException e)
+        {
+            Log.d("Error","MainActivity must implement listener");
+        }
     }
 
     @Override
@@ -413,11 +424,13 @@ public class EditAdmin extends Fragment {
             out.flush();
             out.close();
 
-//            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String myString = IOUtils.toString(new InputStreamReader(connection.getInputStream()));
-            Log.e("Server: ",myString);
-//            while (in.readLine() != null) {
-//                System.out.println(in);
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    connection.getInputStream()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null)
+                result = inputLine;
+                System.out.println(result);
+            in.close();
 //            }
             System.out.println("\nMedion notify REST Service Invoked Successfully..");
 //            in.close();
@@ -443,14 +456,19 @@ public class EditAdmin extends Fragment {
                 event.setEventTime(args[2]);
                 event.setMemberList(args[3]);
 
-                return POST(args[4], event);
+                eventId= POST(args[4], event);
+                return eventId;
             }
 
         }
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getActivity().getBaseContext(), "Event Created!", Toast.LENGTH_LONG).show();
+            System.out.println("inside postexecture"+result);
+            eventId= result;
+            InsertTask insertTask = new InsertTask(getContext());
+            insertTask.execute("",eventId,eventname.getText().toString(),home.getDate(),home.getTime(),members,"ADMIN",null);
+            Toast.makeText(getActivity().getApplicationContext(), "Event Created!", Toast.LENGTH_LONG).show();
         }
     }
 
