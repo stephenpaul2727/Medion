@@ -23,6 +23,7 @@ import android.support.v4.app.NotificationCompat;
 import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.content.Intent;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -39,15 +40,20 @@ import com.gc.materialdesign.views.ButtonRectangle;
 
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Array;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,6 +63,12 @@ public class MainActivity extends AppCompatActivity {
     private static GeoCoordinates geoCoordinates;
     private TrackGPS trackGPS;
     private UserEvent userEvent;
+    private EditText userName;
+    private EditText password;
+    private String username;
+    private String pass;
+    public String res;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
         addLoginClickListener();
         addSignupClickListener();
         displayFirebaseRegId();
+        userName = (EditText) findViewById(R.id.ConnectStage_Username);
+        password = (EditText) findViewById(R.id.ConnectStage_Password);
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 mMessageReceiver, new IntentFilter("intentKey"));
     }
@@ -130,8 +144,18 @@ public class MainActivity extends AppCompatActivity {
         login.requestFocus();
         login.setOnClickListener(new OnClickListener() {
                                      public void onClick(View v) {
-                                         Intent intent = new Intent(getApplicationContext(),Home.class);
-                                         startActivity(intent);
+                                         if(userName.getText().toString().isEmpty() || password.getText().toString().isEmpty())
+                                         {
+                                             Toast.makeText(getApplicationContext(),"Invalid username or password sequences",Toast.LENGTH_LONG).show();
+                                             return;
+                                         }
+                                         else {
+                                             username = userName.getText().toString();
+                                             pass = password.getText().toString();
+                                             new LoginAsyncTask().execute(username, pass);
+//                                         Intent intent = new Intent(getApplicationContext(),Home.class);
+//                                         startActivity(intent);
+                                         }
                                      }
                                  }
 
@@ -253,4 +277,81 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private class LoginAsyncTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected void onPostExecute(String s) {
+//            Toast.makeText(MainActivity.this,"Successfully sent login details to server",Toast.LENGTH_LONG).show();
+            if(res.equals("Valid User"))
+            {
+                Toast.makeText(MainActivity.this,"Successfully logged in",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(),Home.class);
+                startActivity(intent);
+            }
+            else
+            {
+                Toast.makeText(MainActivity.this,"Invalid Login Details",Toast.LENGTH_LONG).show();
+            }
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+                res = GET("https://whispering-everglades-62915.herokuapp.com/api/login?name="+params[0]+"&pass="+params[1]);
+
+            return res ;
+        }
+
+
+    }
+    public static String GET(String stringURL) {
+        InputStream inputStream = null;
+        String result = "";
+        try {
+
+            Log.d("InputStream", "Before Connecting");
+            // 1. create URL
+            URL url = new URL(stringURL);
+
+            // 2. create connection to given URL
+            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+            connection.setDoInput(true);
+//            connection.setDoOutput(true);
+            connection.setRequestMethod("GET");
+            connection.setUseCaches(false);
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            connection.connect();
+            System.out.println(connection.getResponseMessage());
+//            OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
+//
+//            // 3. build jsonObject
+//           JSONObject json = new JSONObject();
+//            json.put("username",myuser);
+//            json.put("password",mypass);
+//
+//            // 4. convert JSONObject to JSON to String and send json content
+//            out.write(json.toString());
+//            out.flush();
+//            out.close();
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    connection.getInputStream()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null)
+                result = inputLine;
+            in.close();
+//            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+//
+//            while (in.readLine() != null) {
+//                System.out.println(in);
+//            }
+            System.out.println("\nsuccessfully sent login details.");
+//            in.close();
+        } catch (Exception e) {
+            Log.d("InputStream", e.getLocalizedMessage());
+        }
+
+        return result;
+    }
 }
