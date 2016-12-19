@@ -11,7 +11,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.starters.medion.MembersViewEvent;
 import com.starters.medion.R;
 import com.starters.medion.ViewEvent;
 import com.starters.medion.adapter.EventsAdapter;
@@ -34,6 +36,8 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
     private Activity activity;
     private ListView listView;
     private Event event;
+    private EventsDbhelper mDbHelper;
+    private String eventName, date, time, ID, admin,members;
 
     public ReadTask(Context context){
         this.context = context;
@@ -44,7 +48,7 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
     protected Object doInBackground(Object[] params) {
 
 
-        EventsDbhelper mDbHelper = new EventsDbhelper(context);
+        mDbHelper = new EventsDbhelper(context);
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         eventsAdapter = new EventsAdapter(context, R.layout.display_event_info);
 
@@ -83,20 +87,22 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
         //);
         //System.out.println("ENEJLKLKLK:"+eventName);
         listView = (ListView) activity.findViewById(R.id.displaylistview);
-        String eventName, date, time, id, admin;
+
         while(c.moveToNext()){
             eventName = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_EVENTNAME));
             date = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_DATE));
             time = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_TIME));
-            id = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_EVENTID));
+            ID = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_EVENTID));
             admin = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_ADMIN));
+            members = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_MEMBERS));
             System.out.println(EventsEntry._ID);
             event = new Event();
             event.setEventName(eventName);
             event.setEventDate(date);
             event.setEventTime(time);
-            event.setEventId(id);
+            event.setEventId(ID);
             event.setAdmin(admin);
+            event.setMemberList(members);
             publishProgress(event);
         }
 
@@ -118,13 +124,54 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent viewEvent = new Intent(context, ViewEvent.class);
-                viewEvent.putExtra("eventname", event.getEventName());
-                viewEvent.putExtra("id", event.getEventId());
-                viewEvent.putExtra("admin", event.getAdmin());
-                viewEvent.putExtra("date", event.getEventDate());
-                viewEvent.putExtra("time", event.getEventTime());
-                context.startActivity(viewEvent);
+                TextView ins=(TextView)view.findViewById(R.id.t_eventname);
+                String [] parts =ins.getText().toString().split(" ");
+                System.out.println("clicked event name is "+parts[0]);
+                Cursor c = mDbHelper.getListContents();
+                while(c.moveToNext())
+                {
+                    String currentevent= c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_EVENTNAME));
+                    if(currentevent.equals(parts[0]))
+                    {
+                        System.out.println("inside you ass");
+                        eventName = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_EVENTNAME));
+                        date = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_DATE));
+                        time = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_TIME));
+                        ID = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_EVENTID));
+                        admin = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_ADMIN));
+                        members = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_MEMBERS));
+                        System.out.println(EventsEntry._ID);
+                        event = new Event();
+                        event.setEventName(eventName);
+                        event.setEventDate(date);
+                        event.setEventTime(time);
+                        event.setEventId(ID);
+                        event.setAdmin(admin);
+                        event.setMemberList(members);
+                        publishProgress(event);
+                    }
+                }
+                if(event.getAdmin().equals("ADMIN")) {
+                    Intent viewEvent = new Intent(context, ViewEvent.class);
+                    viewEvent.putExtra("eventname", event.getEventName());
+                    viewEvent.putExtra("id", event.getEventId());
+                    viewEvent.putExtra("admin", event.getAdmin());
+                    viewEvent.putExtra("date", event.getEventDate());
+                    viewEvent.putExtra("time", event.getEventTime());
+                    viewEvent.putExtra("members", event.getMemberList());
+                    context.startActivity(viewEvent);
+                }
+                else
+                {
+                    Intent viewEvent = new Intent(context, MembersViewEvent.class);
+                    viewEvent.putExtra("eventname", event.getEventName());
+                    viewEvent.putExtra("id", event.getEventId());
+                    viewEvent.putExtra("admin", event.getAdmin());
+                    viewEvent.putExtra("date", event.getEventDate());
+                    viewEvent.putExtra("time", event.getEventTime());
+                    viewEvent.putExtra("members", event.getMemberList());
+                    context.startActivity(viewEvent);
+                }
             }
         });
 

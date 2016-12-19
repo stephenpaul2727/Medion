@@ -4,12 +4,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
-import java.util.ResourceBundle;
-
 /**
- * Created by Ashish on 12/8/2016.
+ * Created by stephenpaul on 18/12/16.
  */
-public class ViewEvent extends AppCompatActivity {
+
+public class MembersViewEvent extends AppCompatActivity{
+
 
     private TextView eventid;
     private TextView eventname;
@@ -21,7 +21,7 @@ public class ViewEvent extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.view_event_layout);
+        setContentView(R.layout.member_view_event_layout);
         eventname = (TextView)findViewById(R.id.eventname);
         eventid = (TextView)findViewById(R.id.eventid);
         eventdate = (TextView)findViewById(R.id.eventdate);

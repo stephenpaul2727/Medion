@@ -160,34 +160,10 @@
         android:layout_centerHorizontal="true"
         android:background="#9ad3de"
         android:layout_marginTop="15dp"
-        android:layout_below="@+id/edit_admin_cancelevent"
+        android:layout_below="@+id/edit_admin_addMembers"
         android:layout_alignParentLeft="true"
         android:textColor="#2e2f30"
         android:layout_alignParentStart="true" />
-
-    <com.gc.materialdesign.views.ButtonRectangle
-        android:text="Cancel Event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_admin_cancelevent"
-        android:layout_below="@+id/edit_admin_finalizeevent"
-        android:background="#9ad3de"
-        android:layout_marginLeft="18dp"
-        android:layout_marginStart="18dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:textColor="#2e2f30" />
-    <com.gc.materialdesign.views.ButtonRectangle
-        android:text="Finalize Event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#9ad3de"
-        android:layout_marginTop="10dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/edit_admin_addMembers"
-        android:id="@+id/edit_admin_finalizeevent"
-        android:textColor="#2e2f30" />
-
 
     <com.gc.materialdesign.views.ButtonRectangle
         android:text="Select Members"

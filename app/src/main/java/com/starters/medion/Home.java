@@ -137,6 +137,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void onClick(View view) {
                 FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.popBackStack();
                 android.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container,new EditAdmin(), "edit_admin_tag");
                 fragmentTransaction.addToBackStack(null);
@@ -195,14 +196,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             fragmentTransaction.replace(R.id.fragment_container,new EditAdmin(), "edit_admin_tag");
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
-
-
-        } else if (id == R.id.edit_members) {
-
-            fragmentTransaction.replace(R.id.fragment_container, new EditMembers(), "edit_members_tag");
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-
 
         } else if (id == R.id.getMap) {
             Intent intent = new Intent(getApplicationContext(), PlacesMap.class);

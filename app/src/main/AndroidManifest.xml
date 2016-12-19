@@ -45,6 +45,8 @@
         <activity
             android:name=".ViewEvent"
             android:label="Event" />
+        <activity android:name=".MembersViewEvent"
+            android:label="MembersEvent"/>
 
         <!-- Firebase Notifications -->
         <service android:name=".service.MyFirebaseMessagingService">
