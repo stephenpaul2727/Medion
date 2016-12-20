@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.AsyncTask;
@@ -29,6 +31,8 @@ import android.widget.Toast;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.starters.medion.constants.config;
 
+import com.starters.medion.contract.EventsContract;
+import com.starters.medion.dbhelper.EventsDbhelper;
 import com.starters.medion.model.GeoCoordinates;
 import com.starters.medion.model.UserEvent;
 import com.starters.medion.service.TrackGPS;
@@ -123,6 +127,10 @@ public class MainActivity extends AppCompatActivity implements EditAdmin.MainAct
                 System.out.println("inside medion..!");
                 String latitude = parts[1];
                 String longitude = parts[2];
+                String evid = parts[3];
+                EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
+                SQLiteDatabase db = eventsDbhelper.getWritableDatabase();
+                Cursor data = db.rawQuery("Update " + EventsContract.EventsEntry.TABLE_NAME+" set "+EventsContract.EventsEntry.COLUMN_NAME_LOCATION+"="+parts[1]+","+parts[2]+" where "+EventsContract.EventsEntry.COLUMN_NAME_EVENTID+"="+evid, null);
                 Intent mesintent=new Intent(MainActivity.this,PlacesMap.class);
                 mesintent.putExtra("latlong",latitude+"/"+longitude);
                 startActivity(mesintent);
@@ -140,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements EditAdmin.MainAct
 
     public void addLoginClickListener()
     {
-        ButtonRectangle login = (ButtonRectangle) findViewById(R.id.Connectstage_login);
+        Button login = (Button) findViewById(R.id.Connectstage_login);
         login.setFocusable(true);
         login.setFocusableInTouchMode(true);
         login.requestFocus();
@@ -166,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements EditAdmin.MainAct
 
     public void addSignupClickListener()
     {
-        ButtonRectangle signup = (ButtonRectangle) findViewById(R.id.ConnectStage_SignUp);
+        Button signup = (Button) findViewById(R.id.ConnectStage_SignUp);
         signup.setFocusable(true);
         signup.setFocusableInTouchMode(true);
         signup.requestFocus();

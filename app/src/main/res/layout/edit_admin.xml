@@ -21,27 +21,7 @@
         android:textColor="#595a5b"
         android:layout_alignParentStart="true" />
 
-    <com.gc.materialdesign.views.ButtonRectangle
-        android:text="Cancel Event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_admin_cancelevent"
-        android:layout_below="@+id/edit_admin_save"
-        android:layout_alignParentLeft="true"
-        android:background="#b8c7e0"
-        android:layout_marginTop="70px"
-        android:textColor="#595a5b"
-       />
-    <com.gc.materialdesign.views.ButtonRectangle
-        android:text="Finalize Event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/edit_admin_cancelevent"
-        android:layout_alignParentRight="true"
-        android:background="#b8c7e0"
-        android:id="@+id/edit_admin_finalizeevent"
-        android:textColor="#595a5b"
-        />
+
     <ImageButton
         android:layout_marginTop="21dp"
         android:id="@+id/edit_imagebutton"

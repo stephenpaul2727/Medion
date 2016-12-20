@@ -62,21 +62,24 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="New User?"
         android:id="@+id/ConnectStage_newuser"
+        android:layout_marginTop="15dp"
         android:textColor="#ffffff"
         android:layout_below="@+id/Connectstage_login"
         android:layout_centerHorizontal="true"
         />
 
-    <com.gc.materialdesign.views.ButtonRectangle
+    <Button
 
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:text="Sign Up"
         android:id="@+id/ConnectStage_SignUp"
         android:background="#b8c7e0"
         android:textStyle="bold"
+        android:textSize="17dp"
+        android:layout_marginTop="15dp"
         android:textColor="#595a5b"
-        android:gravity="bottom"
+        android:textAlignment="center"
         android:textAllCaps="false"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/ConnectStage_newuser"
@@ -94,14 +97,17 @@
         android:layout_below="@+id/ConnectStage_SignUp"
         android:layout_centerHorizontal="true" />
 
-    <com.gc.materialdesign.views.ButtonRectangle
+    <Button
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:text="Login"
         android:id="@+id/Connectstage_login"
         android:layout_marginTop="50px"
         android:textStyle="bold"
+        android:textSize="17dp"
         android:textColor="#595a5b"
+        android:textAllCaps="false"
+        android:textAlignment="center"
         android:background="#b8c7e0"
         android:layout_below="@+id/ConnectStage_Rememberme"
         android:layout_centerHorizontal="true" />

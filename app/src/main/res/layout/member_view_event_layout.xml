@@ -8,6 +8,12 @@
     android:background="@drawable/gradient_bg"
     >
 
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="1"
+        android:id="@+id/tablelayout">
+    <TableRow>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,7 +38,8 @@
         android:layout_alignParentRight="true"
         android:text="id"
         />
-
+    </TableRow>
+    <TableRow>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,7 +62,8 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/eventid"
         android:text="name"/>
-
+    </TableRow>
+    <TableRow>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -80,7 +88,8 @@
         android:id = "@+id/eventadmin"
         android:layout_below="@+id/eventname"
         android:text="admin?"/>
-
+</TableRow>
+    <TableRow>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -103,7 +112,8 @@
         android:id = "@+id/eventdate"
         android:layout_below="@+id/eventadmin"
         android:text="date"/>
-
+    </TableRow>
+    <TableRow>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -127,7 +137,9 @@
         android:id = "@+id/eventtime"
         android:layout_below="@+id/eventdate"
         android:text="time"/>
+    </TableRow>
 
+    </TableLayout>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -137,7 +149,7 @@
         android:id = "@+id/membersevent"
         android:layout_marginLeft="5dp"
         android:text="Phone numbers of members:"
-        android:layout_below="@+id/timeevent"/>
+        android:layout_below="@+id/tablelayout"/>
 
 
     <TextView
@@ -174,6 +186,18 @@
         android:background="#9ad3de"
         android:layout_below="@+id/eventmembers"
         android:textColor="#2e2f30"
+        android:layout_centerHorizontal="true"
+        />
+
+    <com.gc.materialdesign.views.ButtonRectangle
+        android:text="Can't Make it!"
+        android:layout_marginTop="45dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cantcome"
+        android:background="#a31f44"
+        android:layout_below="@+id/edit_admin_save"
+        android:textColor="#e6e6e6"
         android:layout_centerHorizontal="true"
         />
 

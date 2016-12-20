@@ -113,32 +113,15 @@ public class EditAdmin extends Fragment {
         } catch (InflateException e) {
 
         }
-        finalizeEvent = (ButtonRectangle) view.findViewById(R.id.edit_admin_finalizeevent);
+
         final ButtonRectangle datepicker = (ButtonRectangle) view.findViewById(R.id.edit_admin_select_date);
         final ButtonRectangle timepicker = (ButtonRectangle) view.findViewById(R.id.edit_admin_select_time);
         eventname = (EditText)view.findViewById(R.id.edit_admin_event_name);
         imageButton = (ImageButton) view.findViewById(R.id.edit_imagebutton);
         saveButton = (ButtonRectangle) view.findViewById(R.id.edit_admin_save);
         membersButton = (ButtonRectangle) view.findViewById(R.id.edit_admin_addMembers);
-        checkContactPermission();
-        populateContactList();
-        contact_list = new ListView(getActivity());
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.contact_list,R.id.contacts,contactsarray2);
-        contact_list.setAdapter(adapter);
-        contact_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ViewGroup contactvg = (ViewGroup)view;
-                TextView contactstxt = (TextView)contactvg.findViewById(R.id.contacts);
-                String s = contactstxt.getText().toString();
-                String[] phone =s.split("/");
-                phone[1]=phone[1].replaceAll("\\s+","");
-                phone[1]=phone[1].replaceAll("[^a-zA-Z0-9]","");
-                System.out.println("contact is:"+phone[1]);
-                contactsarray.add(phone[1]);
-                Toast.makeText(getActivity(), contactstxt.getText().toString(),Toast.LENGTH_LONG).show();
-            }
-        });
+        checkContactPermission();populateContactList();
+
 
         membersButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,19 +188,6 @@ public class EditAdmin extends Fragment {
                 //List<String> myList = new ArrayList<String>(Arrays.asList(members.split(",")));
 //                new EditAdmin.HttpAsyncTask().execute(eventname.getText().toString(),home.getDate(),home.getTime(),members,"http://149.161.150.243:8080/api/notifyMembers");
                 new EditAdmin.HttpAsyncTask().execute(eventname.getText().toString(),home.getDate(),home.getTime(),members,"https://whispering-everglades-62915.herokuapp.com/api/notifyMembers");
-
-            }
-        });
-
-        finalizeEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("Inside:","Onclick");
-                Integer temp = 47;
-                eid = new Eid();
-                eid.setId(temp);
-                new EditAdmin.HttpAsyncTask().execute(temp.toString(),"https://whispering-everglades-62915.herokuapp.com/api/calcMedian");
-//                new EditAdmin.HttpAsyncTask().execute(temp.toString(),"https://whispering-everglades-62915.herokuapp.com/api/calcMedian");
 
             }
         });
@@ -321,6 +291,26 @@ public class EditAdmin extends Fragment {
 
     public void showDialogListView(View view)
     {
+
+
+        contact_list = new ListView(getActivity());
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.contact_list,R.id.contacts,contactsarray2);
+        contact_list.setAdapter(adapter);
+        contact_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ViewGroup contactvg = (ViewGroup)view;
+                TextView contactstxt = (TextView)contactvg.findViewById(R.id.contacts);
+                String s = contactstxt.getText().toString();
+                String[] phone =s.split("/");
+                phone[1]=phone[1].replaceAll("\\s+","");
+                phone[1]=phone[1].replaceAll("[^a-zA-Z0-9]","");
+                System.out.println("contact is:"+phone[1]);
+                contactsarray.add(phone[1]);
+                Toast.makeText(getActivity(), contactstxt.getText().toString(),Toast.LENGTH_LONG).show();
+            }
+        });
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setCancelable(true);
         builder.setPositiveButton("OK",null);
