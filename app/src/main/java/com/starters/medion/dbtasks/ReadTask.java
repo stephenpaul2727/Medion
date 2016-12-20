@@ -37,7 +37,7 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
     private ListView listView;
     private Event event;
     private EventsDbhelper mDbHelper;
-    private String eventName, date, time, ID, admin,members;
+    private String eventName, date, time, ID, admin,members,latlongs;
 
     public ReadTask(Context context){
         this.context = context;
@@ -95,6 +95,7 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
             ID = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_EVENTID));
             admin = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_ADMIN));
             members = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_MEMBERS));
+            latlongs = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_LOCATION));
             System.out.println(EventsEntry._ID);
             event = new Event();
             event.setEventName(eventName);
@@ -103,6 +104,7 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
             event.setEventId(ID);
             event.setAdmin(admin);
             event.setMemberList(members);
+            event.setLatlongs(latlongs);
             publishProgress(event);
         }
 
@@ -140,6 +142,8 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
                         ID = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_EVENTID));
                         admin = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_ADMIN));
                         members = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_MEMBERS));
+                        latlongs = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_LOCATION));
+
                         System.out.println(EventsEntry._ID);
                         event = new Event();
                         event.setEventName(eventName);
@@ -148,6 +152,7 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
                         event.setEventId(ID);
                         event.setAdmin(admin);
                         event.setMemberList(members);
+                        event.setLatlongs(latlongs);
                         publishProgress(event);
                     }
                 }
@@ -159,6 +164,7 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
                     viewEvent.putExtra("date", event.getEventDate());
                     viewEvent.putExtra("time", event.getEventTime());
                     viewEvent.putExtra("members", event.getMemberList());
+                    viewEvent.putExtra("latlongs",event.getLatlongs());
                     context.startActivity(viewEvent);
                 }
                 else
@@ -170,6 +176,7 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
                     viewEvent.putExtra("date", event.getEventDate());
                     viewEvent.putExtra("time", event.getEventTime());
                     viewEvent.putExtra("members", event.getMemberList());
+                    viewEvent.putExtra("latlongs",event.getLatlongs());
                     context.startActivity(viewEvent);
                 }
             }

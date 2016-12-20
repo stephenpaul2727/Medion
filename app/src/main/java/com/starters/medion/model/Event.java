@@ -12,8 +12,15 @@ public class Event {
     private String eventTime;
     private String admin;
     private String memberList;
+    private String latlongs;
 
+    public String getLatlongs() {
+        return latlongs;
+    }
 
+    public void setLatlongs(String latlongs) {
+        this.latlongs = latlongs;
+    }
 
     public String getEventId() {
         return eventId;

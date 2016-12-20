@@ -4,6 +4,7 @@ import android.*;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -56,6 +57,7 @@ public class ViewEvent extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_WRITE_CONTACTS = 2;
     private TextView eventime;
     private TextView eventmembers;
+    private TextView location;
     private Event event;
     private Eid eid;
     private String eventId;
@@ -80,6 +82,8 @@ public class ViewEvent extends AppCompatActivity {
         eventime = (TextView)findViewById(R.id.eventtime);
         eventmembers = (TextView)findViewById(R.id.eventmembers);
         eventadmin = (TextView)findViewById(R.id.eventadmin);
+        location = (TextView)findViewById(R.id.location);
+
 
         Bundle b = getIntent().getExtras();
         if(b != null){
@@ -88,6 +92,7 @@ public class ViewEvent extends AppCompatActivity {
             String eventAdmin=b.getString("admin");
             String date = b.getString("date");
             String time = b.getString("time");
+            String latlongs = b.getString("latlongs");
             String members = b.getString("members");
             System.out.println("IDID:" + eventId);
             System.out.println("Name:" + eventName);
@@ -101,6 +106,7 @@ public class ViewEvent extends AppCompatActivity {
             eventime.setText(time);
             eventmembers.setText(members);
             eventadmin.setText(eventAdmin);
+            location.setText(latlongs);
 
 
         }
@@ -239,6 +245,7 @@ public class ViewEvent extends AppCompatActivity {
     }
 
     public static String POST(String stringURL, Eid eid){
+        String result="";
         try {
             Log.d("POST","reached!");
             // 1. create URL
@@ -264,18 +271,17 @@ public class ViewEvent extends AppCompatActivity {
             out.flush();
             out.close();
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-            while (in.readLine() != null) {
-                System.out.println(in);
-            }
-            System.out.println("\nMedion notify REST Service Invoked Successfully..");
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    connection.getInputStream()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null)
+                result = inputLine;
             in.close();
 
         }catch (Exception e) {
             Log.d("InputStream", e.getLocalizedMessage());
         }
-        return null;
+        return result;
     }
 
 //    public static String POST(String stringURL, Event event) {
@@ -407,11 +413,14 @@ public class ViewEvent extends AppCompatActivity {
 
     private class HttpAsyncTask extends AsyncTask<String, Void, String> {
 
+        private String res;
         @Override
         protected String doInBackground(String... args) {
             int count = args.length;
             if(count < 3){
-                return POST(args[1], eid);}
+                res= POST(args[1], eid);
+                return res;
+            }
 //            else {
 //                event = new Event();
 //                event.setEventId(eid);
@@ -428,8 +437,12 @@ public class ViewEvent extends AppCompatActivity {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            System.out.println("inside postexecture"+result);
-            GET(result);
+            System.out.println("inside postexecture"+res);
+            String [] parts = res.split(",");
+            Intent mesintent=new Intent(ViewEvent.this,PlacesMap.class);
+            mesintent.putExtra("latlong",parts[0]+"/"+parts[1]);
+            startActivity(mesintent);
+
 //            InsertTask insertTask = new InsertTask(getContext());
 //            insertTask.execute("",eventId,eventname.getText().toString(),home.getDate(),home.getTime(),members,"ADMIN",null);
 //            Toast.makeText(getActivity().getApplicationContext(), "Event Created!", Toast.LENGTH_LONG).show();

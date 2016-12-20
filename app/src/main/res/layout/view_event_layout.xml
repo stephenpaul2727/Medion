@@ -137,6 +137,32 @@
                 android:id = "@+id/eventtime"
                 android:layout_below="@+id/eventdate"
                 android:text="time"/>
+
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:textColor="#e08c0f"
+                android:id = "@+id/locationis"
+                android:layout_marginLeft="5dp"
+                android:text="Location is:"
+                android:layout_below="@+id/timeevent"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:textSize="18dp"
+                android:textColor="#67bde5"
+                android:textStyle="bold"
+                android:layout_marginRight="20dp"
+                android:id = "@+id/location"
+                android:layout_below="@+id/eventtime"
+                android:text="time"/>
         </TableRow>
 
     </TableLayout>

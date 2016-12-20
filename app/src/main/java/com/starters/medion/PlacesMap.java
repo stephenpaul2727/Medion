@@ -298,7 +298,7 @@ public class PlacesMap extends AppCompatActivity implements GoogleApiClient.Conn
                 mapphonenumber.setText(u);
                 maplat.setText(Double.toString(latLng.latitude));
                 maplong.setText(Double.toString(latLng.longitude));
-                new PlacesMap.HttpAsyncTask().execute("AA",Double.toString(latLng.latitude),Double.toString(latLng.longitude), "https://whispering-everglades-62915.herokuapp.com/api/sendMedian");
+//                new PlacesMap.HttpAsyncTask().execute("AA",Double.toString(latLng.latitude),Double.toString(latLng.longitude), "https://whispering-everglades-62915.herokuapp.com/api/sendMedian");
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
