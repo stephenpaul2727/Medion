@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.starters.medion.contract.EventsContract;
 import com.starters.medion.dbtasks.InsertTask;
 import com.starters.medion.model.Eid;
 import com.starters.medion.model.Event;
@@ -60,8 +61,8 @@ public class ViewEvent extends AppCompatActivity {
     private TextView eventmembers;
     private TextView location;
     private Event event;
+    private EventsDbhelper mdbhelper;
     private Eid eid;
-    private String eventId;
     private ButtonRectangle finalizeEvent;
     public ButtonRectangle saveButton;
     public ButtonRectangle membersButton;
@@ -72,6 +73,7 @@ public class ViewEvent extends AppCompatActivity {
     public ListView contact_list = null;
     public ArrayList<String> contactsarray = new ArrayList<String>();
     public ArrayList<String> contactsarray2 = new ArrayList<String>();
+    private String eventId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +90,7 @@ public class ViewEvent extends AppCompatActivity {
 
         Bundle b = getIntent().getExtras();
         if(b != null){
-            String eventId = b.getString("id");
+            eventId = b.getString("id");
             String eventName = b.getString("eventname");
             String eventAdmin=b.getString("admin");
             String date = b.getString("date");
@@ -101,13 +103,37 @@ public class ViewEvent extends AppCompatActivity {
             System.out.println("date:" + date);
             System.out.println("time:" + time);
             System.out.println("members:" + members);
+
+//            eventid.setText(eventId);
+//            eventnameview.setText(eventName);
+//            eventdate.setText(date);
+//            eventime.setText(time);
+//            eventmembers.setText(members);
+//            eventadmin.setText(eventAdmin);
+//            location.setText(latlongs);
+
+        }
+
+            mdbhelper = new EventsDbhelper(this);
+            Cursor rs = mdbhelper.getData(eventId);
+        if(rs!=null) {
+
+            rs.moveToFirst();
+            String nam = rs.getString(rs.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_EVENTNAME));
+            String dat = rs.getString(rs.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_DATE));
+            String tim = rs.getString(rs.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_TIME));
+            String mem = rs.getString(rs.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_MEMBERS));
+            String pla = rs.getString(rs.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_LOCATION));
+            String adm = rs.getString(rs.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_ADMIN));
+
+
             eventid.setText(eventId);
-            eventnameview.setText(eventName);
-            eventdate.setText(date);
-            eventime.setText(time);
-            eventmembers.setText(members);
-            eventadmin.setText(eventAdmin);
-            location.setText(latlongs);
+            eventnameview.setText(nam);
+            eventdate.setText(dat);
+            eventime.setText(tim);
+            eventmembers.setText(mem);
+            eventadmin.setText(adm);
+            location.setText(pla);
 
 
         }
@@ -119,7 +145,6 @@ public class ViewEvent extends AppCompatActivity {
         requestPlaces = (ButtonRectangle)findViewById(R.id.edit_viewevent_places);
 
         newMemberList = eventmembers.getText().toString().split(",");
-        System.out.println(newMemberList[0]+","+newMemberList[1]);
         checkContactPermission();
         populateContactList();
 

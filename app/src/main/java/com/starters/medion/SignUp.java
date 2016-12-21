@@ -28,7 +28,6 @@ import java.net.URLConnection;
 public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
     private EditText etName, etEmail, etPhone, etPassword, etRePassword;
-    private ButtonRectangle signUpButton;
     private String name;
     private String email;
     private String phone;
@@ -50,7 +49,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         etPassword = (EditText) findViewById(R.id.Signup_edit_password);
         etRePassword = (EditText) findViewById(R.id.Signup_edit_reenterpassword);
 
-        signUpButton = (ButtonRectangle) findViewById(R.id.Signup_register);
+        ButtonRectangle signUpButton = (ButtonRectangle) findViewById(R.id.Signup_register);
         Log.d("InsideONCREATE", "Before Connecting");
 
         signUpButton.setOnClickListener(new View.OnClickListener() {

@@ -173,6 +173,7 @@
         android:fontFamily="verdana"
         android:textStyle="bold"
         android:enabled="true"
+        android:textAlignment="center"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:background="#b8c7e0"

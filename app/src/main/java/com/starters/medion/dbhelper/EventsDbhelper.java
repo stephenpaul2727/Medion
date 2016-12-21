@@ -70,7 +70,7 @@ public class EventsDbhelper extends SQLiteOpenHelper {
 
     public Cursor getData(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from "+EventsEntry.TABLE_NAME+" where id="+id+"", null );
+        Cursor res =  db.rawQuery( "select * from "+EventsEntry.TABLE_NAME+" where eventid="+id+"", null );
         return res;
     }
 

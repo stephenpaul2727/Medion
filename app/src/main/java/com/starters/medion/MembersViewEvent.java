@@ -23,7 +23,7 @@ public class MembersViewEvent extends AppCompatActivity{
     private TextView eventmembers;
     private TextView memlocs;
     private EventsDbhelper mDbhelper;
-
+    private String eventId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +40,10 @@ public class MembersViewEvent extends AppCompatActivity{
 
 
         Bundle b = getIntent().getExtras();
-        if(b != null){
-            String eventId = b.getString("id");
+        if(b != null) {
+            eventId = b.getString("id");
             String eventName = b.getString("eventname");
-            String eventAdmin=b.getString("admin");
+            String eventAdmin = b.getString("admin");
             String date = b.getString("date");
             String time = b.getString("time");
             String members = b.getString("members");
@@ -57,9 +57,19 @@ public class MembersViewEvent extends AppCompatActivity{
             System.out.println("time:" + time);
             System.out.println("members:" + members);
 
+//            eventid.setText(eventId);
+//            eventname.setText(eventName);
+//            eventdate.setText(date);
+//            eventime.setText(time);
+//            eventmembers.setText(members);
+//            eventadmin.setText(eventAdmin);
+//            memlocs.setText(locs);
+        }
             mDbhelper = new EventsDbhelper(this);
                 //means this is the view part not the add contact part.
                 Cursor rs = mDbhelper.getData(eventId);
+        if(rs!=null)
+        {
                 rs.moveToFirst();
 
                 String nam = rs.getString(rs.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_EVENTNAME));
