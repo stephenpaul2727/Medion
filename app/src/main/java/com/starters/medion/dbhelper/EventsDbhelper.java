@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.CalendarContract;
+import android.content.ContentValues;
 
 import com.starters.medion.contract.EventsContract.EventsEntry;
 /**
@@ -51,6 +52,26 @@ public class EventsDbhelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DELETE_ENTRIES);
         onCreate(db);
+    }
+
+    public boolean updateContact (String id, String name, String date, String time, String members,String location,String admin) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("eventid", id);
+        contentValues.put("name", name);
+        contentValues.put("date", date);
+        contentValues.put("time", time);
+        contentValues.put("members", members);
+        contentValues.put("location",location);
+        contentValues.put("admin",admin);
+        db.update(EventsEntry.TABLE_NAME, contentValues, "id = ? ", new String[] { id } );
+        return true;
+    }
+
+    public Cursor getData(String id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from "+EventsEntry.TABLE_NAME+" where id="+id+"", null );
+        return res;
     }
 
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {

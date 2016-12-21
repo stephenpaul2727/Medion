@@ -37,6 +37,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.starters.medion.constants.config;
 import com.starters.medion.dbhelper.EventsDbhelper;
 import com.starters.medion.dbtasks.InsertTask;
 import com.starters.medion.model.Eid;
@@ -181,9 +182,11 @@ public class EditAdmin extends Fragment {
                 for(int i=0; i<contactsarray.size(); i++) {
                     mem.add(i, contactsarray.get(i));
                 }
+
 //                mem.add(0,"123");
 //                mem.add(0,"8129551395");
                 members = TextUtils.join(",", mem);
+                members=members+","+ config.ownerPhoneNumber;
                 //To get it back to ArrayList,
                 //List<String> myList = new ArrayList<String>(Arrays.asList(members.split(",")));
 //                new EditAdmin.HttpAsyncTask().execute(eventname.getText().toString(),home.getDate(),home.getTime(),members,"http://149.161.150.243:8080/api/notifyMembers");
@@ -292,7 +295,7 @@ public class EditAdmin extends Fragment {
     public void showDialogListView(View view)
     {
 
-
+        checkContactPermission();
         contact_list = new ListView(getActivity());
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.contact_list,R.id.contacts,contactsarray2);
         contact_list.setAdapter(adapter);
@@ -325,7 +328,7 @@ public class EditAdmin extends Fragment {
     {
         myMap = new HashMap<String,String>();
 
-
+    checkContactPermission();
         ContentResolver resolver = getActivity().getContentResolver();
         Cursor cursor =resolver.query(ContactsContract.Contacts.CONTENT_URI,null,null,null,null);
 

@@ -3,6 +3,7 @@ package com.starters.medion;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentFilter;
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements EditAdmin.MainAct
     private String pass;
     public String res;
     private String eventId;
+    private String ownerPhoneNumber;
 
 
     @Override
@@ -130,7 +132,10 @@ public class MainActivity extends AppCompatActivity implements EditAdmin.MainAct
                 String evid = parts[3];
                 EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
                 SQLiteDatabase db = eventsDbhelper.getWritableDatabase();
-                Cursor data = db.rawQuery("Update " + EventsContract.EventsEntry.TABLE_NAME+" set "+EventsContract.EventsEntry.COLUMN_NAME_LOCATION+"="+parts[1]+","+parts[2]+" where "+EventsContract.EventsEntry.COLUMN_NAME_EVENTID+"="+evid, null);
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(EventsContract.EventsEntry.COLUMN_NAME_LOCATION,latitude+","+longitude);
+                db.update(EventsContract.EventsEntry.TABLE_NAME,contentValues,evid,null);
+                db.execSQL("Update " + EventsContract.EventsEntry.TABLE_NAME+" set "+EventsContract.EventsEntry.COLUMN_NAME_LOCATION+"="+parts[1]+","+parts[2]+" where "+EventsContract.EventsEntry.COLUMN_NAME_EVENTID+"="+evid, null);
                 Intent mesintent=new Intent(MainActivity.this,PlacesMap.class);
                 mesintent.putExtra("latlong",latitude+"/"+longitude);
                 startActivity(mesintent);
@@ -296,6 +301,7 @@ public class MainActivity extends AppCompatActivity implements EditAdmin.MainAct
 //            Toast.makeText(MainActivity.this,"Successfully sent login details to server",Toast.LENGTH_LONG).show();
             if(res.equals("Valid User"))
             {
+                config.ownerPhoneNumber = userName.getText().toString();
                 Toast.makeText(MainActivity.this,"Successfully logged in",Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(),Home.class);
                 startActivity(intent);

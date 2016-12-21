@@ -28,6 +28,7 @@ import com.gc.materialdesign.views.ButtonRectangle;
 import com.starters.medion.dbtasks.InsertTask;
 import com.starters.medion.model.Eid;
 import com.starters.medion.model.Event;
+import com.starters.medion.dbhelper.EventsDbhelper;
 
 import org.json.JSONObject;
 
@@ -439,6 +440,12 @@ public class ViewEvent extends AppCompatActivity {
         protected void onPostExecute(String result) {
             System.out.println("inside postexecture"+res);
             String [] parts = res.split(",");
+            EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
+            location.setText(res);
+            if(eventsDbhelper.updateContact(eventid.getText().toString(),eventnameview.getText().toString(),eventdate.getText().toString(),eventime.getText().toString(),eventmembers.getText().toString(),res,eventadmin.getText().toString()))
+            {
+                Toast.makeText(ViewEvent.this,"Location Updated!",Toast.LENGTH_LONG).show();
+            }
             Intent mesintent=new Intent(ViewEvent.this,PlacesMap.class);
             mesintent.putExtra("latlong",parts[0]+"/"+parts[1]);
             startActivity(mesintent);
