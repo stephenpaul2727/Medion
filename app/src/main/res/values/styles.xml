@@ -8,7 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:textColorHint">#8caadb</item>
+        <item name="android:textColorHint">#292b2d</item>
     </style>
 
 

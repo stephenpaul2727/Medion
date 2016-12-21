@@ -8,33 +8,46 @@
     android:background="@drawable/gradient_bg"
     >
 
+    <TextView
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:text="Event Details"
+        android:id="@+id/details"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="5dp"
+        android:textColor="#1b3966"
+        android:textSize="25dp"
+        android:fontFamily="sans-serif-medium"
+        android:textStyle="bold"/>
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:stretchColumns="1"
+        android:layout_marginTop="25dp"
         android:id="@+id/tablelayout">
         <TableRow>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18dp"
+                android:fontFamily="sans-serif-light"
                 android:textStyle="bold"
                 android:id = "@+id/Idofevent"
-                android:textColor="#e08c0f"
+                android:textColor="#292b2d"
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="5dp"
-                android:text="ID of the Event:"
+                android:text="ID: "
                 />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18dp"
-                android:textStyle="bold"
-                android:textColor="#67bde5"
+                android:textColor="#1b3966"
                 android:layout_marginTop="15dp"
                 android:id = "@+id/eventid"
                 android:layout_marginRight="20dp"
+                android:layout_marginLeft="150dp"
                 android:layout_alignParentRight="true"
                 android:text="id"
                 />
@@ -45,21 +58,21 @@
                 android:layout_height="wrap_content"
                 android:textSize="18dp"
                 android:textStyle="bold"
+                android:fontFamily="sans-serif-light"
+                android:layout_marginLeft="5dp"
                 android:id = "@+id/nameofevent"
-                android:textColor="#e08c0f"
-                android:layout_marginRight="20dp"
-                android:text="Name of the Event:"
+                android:textColor="#292b2d"
+                android:text="Name: "
                 android:layout_below="@+id/Idofevent"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18dp"
-                android:textStyle="bold"
                 android:layout_marginRight="20dp"
                 android:id = "@+id/eventname"
-                android:textColor="#67bde5"
-                android:layout_alignParentRight="true"
+                android:layout_marginLeft="150dp"
+                android:textColor="#1b3966"
                 android:layout_below="@+id/eventid"
                 android:text="name"/>
         </TableRow>
@@ -69,10 +82,11 @@
                 android:layout_height="wrap_content"
                 android:textSize="18dp"
                 android:textStyle="bold"
+                android:fontFamily="sans-serif-light"
                 android:id = "@+id/isAdmin"
-                android:textColor="#e08c0f"
+                android:textColor="#292b2d"
                 android:layout_marginLeft="5dp"
-                android:text="Group designation:"
+                android:text="Authority: "
                 android:layout_below="@+id/nameofevent"
                 />
 
@@ -82,8 +96,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:textSize="18dp"
-                android:textStyle="bold"
-                android:textColor="#67bde5"
+                android:textColor="#e8493e"
+                android:layout_marginLeft="150dp"
                 android:layout_marginRight="20dp"
                 android:id = "@+id/eventadmin"
                 android:layout_below="@+id/eventname"
@@ -96,9 +110,10 @@
                 android:textSize="18dp"
                 android:textStyle="bold"
                 android:id = "@+id/dateevent"
-                android:textColor="#e08c0f"
+                android:fontFamily="sans-serif-light"
+                android:textColor="#292b2d"
                 android:layout_marginLeft="5dp"
-                android:text="Event Date is:"
+                android:text="Date: "
                 android:layout_below="@+id/isAdmin"/>
 
             <TextView
@@ -106,8 +121,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:textSize="18dp"
-                android:textStyle="bold"
-                android:textColor="#67bde5"
+                android:textColor="#1b3966"
+                android:layout_marginLeft="150dp"
                 android:layout_marginRight="20dp"
                 android:id = "@+id/eventdate"
                 android:layout_below="@+id/eventadmin"
@@ -119,10 +134,11 @@
                 android:layout_height="wrap_content"
                 android:textSize="18dp"
                 android:textStyle="bold"
-                android:textColor="#e08c0f"
+                android:fontFamily="sans-serif-light"
+                android:textColor="#292b2d"
                 android:id = "@+id/timeevent"
                 android:layout_marginLeft="5dp"
-                android:text="Event Time is"
+                android:text="Time: "
                 android:layout_below="@+id/dateevent"/>
 
 
@@ -131,8 +147,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:textSize="18dp"
-                android:textColor="#67bde5"
-                android:textStyle="bold"
+                android:textColor="#1b3966"
+                android:layout_marginLeft="150dp"
                 android:layout_marginRight="20dp"
                 android:id = "@+id/eventtime"
                 android:layout_below="@+id/eventdate"
@@ -145,10 +161,11 @@
                 android:layout_height="wrap_content"
                 android:textSize="18dp"
                 android:textStyle="bold"
-                android:textColor="#e08c0f"
+                android:fontFamily="sans-serif-light"
+                android:textColor="#292b2d"
                 android:id = "@+id/locationis"
                 android:layout_marginLeft="5dp"
-                android:text="Location is:"
+                android:text="Location: "
                 android:layout_below="@+id/timeevent"/>
 
 
@@ -157,97 +174,76 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:textSize="18dp"
-                android:textColor="#67bde5"
-                android:textStyle="bold"
+                android:textColor="#1b3966"
+                android:layout_marginLeft="150dp"
                 android:layout_marginRight="20dp"
                 android:id = "@+id/location"
                 android:layout_below="@+id/eventtime"
                 android:text="time"/>
         </TableRow>
-
     </TableLayout>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:textColor="#e08c0f"
-                android:id = "@+id/membersevent"
-                android:layout_marginLeft="5dp"
-                android:text="Phone numbers of members:"
-                android:layout_below="@+id/tablelayout"/>
 
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:textColor="#67bde5"
-                android:layout_marginRight="20dp"
-                android:id = "@+id/eventmembers"
-                android:layout_below="@+id/membersevent"
-                android:text="members"/>
 
 
     <com.gc.materialdesign.views.ButtonRectangle
-        android:text="SAVE"
-        android:layout_width="match_parent"
+        android:text="Save"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:id="@+id/edit_viewevent_save"
         android:layout_centerHorizontal="true"
-        android:background="#9ad3de"
+        android:background="#292b2d"
         android:layout_marginTop="15dp"
         android:layout_below="@+id/edit_viewevent_cancelevent"
-        android:layout_alignParentLeft="true"
-        android:textColor="#2e2f30"
-        android:layout_alignParentStart="true" />
+        android:textColor="#92e8a7"
+         />
 
-    <com.gc.materialdesign.views.ButtonRectangle
-        android:text="Cancel Event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_alignParentRight="true"
         android:id="@+id/edit_viewevent_cancelevent"
-        android:layout_below="@+id/edit_viewevent_finalizeevent"
-        android:background="#ad0e0c"
-        android:layout_marginLeft="18dp"
-        android:layout_marginStart="18dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:textColor="#efefef" />
-    <com.gc.materialdesign.views.ButtonRectangle
-        android:text="Finalize Event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#9ad3de"
-        android:layout_marginTop="10dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/edit_viewevent_places"
-        android:id="@+id/edit_viewevent_finalizeevent"
-        android:textColor="#2e2f30" />
-
-    <com.gc.materialdesign.views.ButtonRectangle
-        android:text="Request Places"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#9ad3de"
-        android:layout_marginTop="10dp"
-        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/edit_viewevent_addNewMembers"
+        android:background="@drawable/cancelevent"
+        android:layout_marginRight="25dp"
+         />
+    <ImageButton
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:background="@drawable/finalize"
+        android:layout_marginLeft="35dp"
         android:layout_below="@+id/edit_viewevent_addMembers"
-        android:id="@+id/edit_viewevent_places"
-        android:textColor="#2e2f30" />
+        android:id="@+id/edit_viewevent_finalizeevent" />
 
-    <com.gc.materialdesign.views.ButtonRectangle
-        android:text="Select Members"
-        android:layout_marginTop="25dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_viewevent_addMembers"
-        android:background="#9ad3de"
-        android:layout_below="@+id/membersevent"
-        android:textColor="#2e2f30"
+    <ImageButton
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:background="@drawable/pickplace"
+        android:layout_marginTop="32dp"
+        android:layout_marginLeft="200dp"
         android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tablelayout"
+        android:id="@+id/edit_viewevent_places"
+        />
+
+    <ImageButton
+        android:layout_marginTop="25dp"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/edit_viewevent_addMembers"
+        android:background="@drawable/selectmembers"
+        android:layout_below="@+id/tablelayout"
+        />
+    <ImageButton
+        android:layout_marginTop="25dp"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:id="@+id/edit_viewevent_addNewMembers"
+        android:background="@drawable/currentmembers"
+        android:layout_below="@+id/tablelayout"
         />
 
 

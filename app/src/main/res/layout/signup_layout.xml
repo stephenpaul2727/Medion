@@ -11,7 +11,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.starters.medion.SignUp"
     android:id="@+id/Signup_view"
-    android:background="@drawable/wall3">
+    android:background="@drawable/gradient_bg">
 
     <TextView
         android:layout_width="wrap_content"
@@ -21,7 +21,7 @@
         android:id="@+id/Signup_title"
         android:layout_centerHorizontal="true"
         android:fontFamily="verdana"
-        android:textColor="#e6dfdf"
+        android:textColor="#292b2d"
         android:textStyle="bold" />
 
     <TextView
@@ -32,7 +32,7 @@
         android:id="@+id/Signup_name"
         android:layout_below="@+id/Signup_title"
         android:fontFamily="verdana"
-        android:textColor="#e6dfdf"
+        android:textColor="#292b2d"
         android:textStyle="bold"
 
         />
@@ -43,7 +43,7 @@
         android:id="@+id/Signup_edit_name"
         android:layout_below="@+id/Signup_name"
         android:fontFamily="verdana"
-        android:textColor="#b8c7e0"
+        android:textColor="#292b2d"
         android:textStyle="bold"
 
         android:width="20dp"
@@ -60,7 +60,7 @@
         android:layout_marginTop="10dp"
         android:layout_below="@+id/Signup_edit_name"
         android:fontFamily="verdana"
-        android:textColor="#e6dfdf"
+        android:textColor="#292b2d"
         android:textStyle="bold"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
@@ -73,7 +73,7 @@
         android:id="@+id/Signup_edit_email"
         android:layout_below="@+id/Signup_email"
         android:fontFamily="verdana"
-        android:textColor="#b8c7e0"
+        android:textColor="#292b2d"
         android:textStyle="bold"
 
         android:width="20dp"
@@ -88,7 +88,7 @@
         android:layout_marginTop="10dp"
         android:layout_below="@+id/Signup_edit_email"
         android:fontFamily="verdana"
-        android:textColor="#e6dfdf"
+        android:textColor="#292b2d"
         android:textStyle="bold"
         android:layout_centerVertical="true"
          />
@@ -100,7 +100,7 @@
         android:id="@+id/Signup_edit_phonenumber"
         android:layout_below="@+id/Signup_phonenumber"
         android:fontFamily="verdana"
-        android:textColor="#b8c7e0"
+        android:textColor="#292b2d"
         android:textStyle="bold"
 
         android:width="20dp"
@@ -115,7 +115,7 @@
         android:layout_marginTop="10dp"
         android:layout_below="@+id/Signup_edit_phonenumber"
         android:fontFamily="verdana"
-        android:textColor="#e6dfdf"
+        android:textColor="#292b2d"
         android:textStyle="bold"
 
         />
@@ -126,7 +126,7 @@
         android:id="@+id/Signup_edit_password"
         android:layout_below="@+id/Signup_password"
         android:fontFamily="verdana"
-        android:textColor="#b8c7e0"
+        android:textColor="#292b2d"
         android:textStyle="bold"
 
         android:width="20dp"
@@ -141,7 +141,7 @@
         android:id="@+id/Signup_reenterpassword"
         android:layout_below="@+id/Signup_edit_password"
         android:fontFamily="verdana"
-        android:textColor="#e6dfdf"
+        android:textColor="#292b2d"
         android:textStyle="bold"
 
         />
@@ -153,7 +153,7 @@
         android:id="@+id/Signup_edit_reenterpassword"
         android:layout_below="@+id/Signup_reenterpassword"
         android:fontFamily="verdana"
-        android:textColor="#b8c7e0"
+        android:textColor="#292b2d"
         android:textStyle="bold"
 
         android:width="20dp"
@@ -162,22 +162,22 @@
 
 
 
-    <com.gc.materialdesign.views.ButtonRectangle
-        android:layout_width="match_parent"
+    <Button
+        android:layout_width="150dp"
         android:layout_height="50dp"
         android:text="Register"
         android:id="@+id/Signup_register"
         android:layout_below="@+id/Signup_edit_reenterpassword"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:fontFamily="verdana"
-        android:textStyle="bold"
         android:enabled="true"
+        android:textSize="17dp"
+        android:fontFamily="sans-serif-medium"
         android:textAlignment="center"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:background="#b8c7e0"
-        android:textColor="#595a5b" />
+        android:background="#292b2d"
+        android:textColor="#e8493e" />
 
 
 

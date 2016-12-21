@@ -10,45 +10,42 @@
 
 
     <com.gc.materialdesign.views.ButtonRectangle
-        android:text="SAVE"
-        android:layout_width="match_parent"
+        android:text="Save"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:id="@+id/edit_admin_save"
-        android:background="#b8c7e0"
-        android:layout_marginTop="39dp"
+        android:background="#292b2d"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
         android:layout_below="@+id/edit_admin_addMembers"
-        android:layout_alignParentLeft="true"
-        android:textColor="#595a5b"
-        android:layout_alignParentStart="true" />
+        android:textColor="#92e8a7"
+         />
 
 
     <ImageButton
         android:layout_marginTop="21dp"
         android:id="@+id/edit_imagebutton"
-        android:layout_width="70dp"
+        android:layout_width="100dp"
+        android:background="@drawable/profilepic"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_height="70dp" />
+        android:layout_height="100dp" />
 
-    <com.gc.materialdesign.views.ButtonRectangle
+    <ImageButton
         android:id="@+id/edit_admin_select_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select Time"
-        android:background="#b8c7e0"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:background="@drawable/selecttime"
         android:layout_below="@+id/edit_admin_event_name"
-        android:textColor="#595a5b"
         android:layout_marginTop="100px"
         android:layout_alignParentRight="true"/>
 
-    <com.gc.materialdesign.views.ButtonRectangle
-        android:text="Select Members"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:layout_width="140dp"
+        android:layout_height="140dp"
         android:id="@+id/edit_admin_addMembers"
-        android:background="#b8c7e0"
+        android:background="@drawable/selectmembers"
         android:layout_below="@+id/edit_admin_event_name"
-        android:textColor="#595a5b"
         android:layout_marginTop="100px"
         android:layout_centerInParent="true"/>
     <EditText
@@ -60,19 +57,18 @@
         android:layout_marginTop="30px"
         android:id="@+id/edit_admin_event_name"
         android:textAlignment="center"
-        android:textColor="#b8c7e0"
+        android:textColor="#292b2d"
         android:layout_below="@+id/edit_imagebutton"
         android:layout_centerHorizontal="true" />
 
-    <com.gc.materialdesign.views.ButtonRectangle
+    <ImageButton
         android:id="@+id/edit_admin_select_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
         android:layout_marginTop="100px"
-        android:text="Select Date"
-        android:background="#b8c7e0"
+        android:background="@drawable/selectdate"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/edit_admin_event_name"
-        android:textColor="#595a5b" />
+        />
 
 </RelativeLayout>

@@ -32,7 +32,6 @@ public class MembersViewEvent extends AppCompatActivity{
         eventid = (TextView)findViewById(R.id.members_eventid);
         eventdate = (TextView)findViewById(R.id.members_eventdate);
         eventime = (TextView)findViewById(R.id.members_eventtime);
-        eventmembers = (TextView)findViewById(R.id.members_eventmembers);
         eventadmin = (TextView)findViewById(R.id.members_eventadmin);
         memlocs = (TextView)findViewById(R.id.members_location);
 
@@ -88,7 +87,6 @@ public class MembersViewEvent extends AppCompatActivity{
             eventname.setText(nam);
             eventdate.setText(dat);
             eventime.setText(tim);
-            eventmembers.setText(mem);
             eventadmin.setText(adm);
             memlocs.setText(loc);
 

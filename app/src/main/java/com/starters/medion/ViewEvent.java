@@ -7,6 +7,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,18 +65,18 @@ public class ViewEvent extends AppCompatActivity {
     private Event event;
     private EventsDbhelper mdbhelper;
     private Eid eid;
-    private ButtonRectangle finalizeEvent;
+    private ImageButton finalizeEvent;
     public ButtonRectangle saveButton;
-    public ButtonRectangle membersButton;
-    private ButtonRectangle cancelEvent;
-    private ButtonRectangle requestPlaces;
+    public ImageButton membersButton;
+    private ImageButton cancelEvent;
+    private ImageButton requestPlaces;
     private String members;
     private String [] newMemberList;
     public ListView contact_list = null;
     public ArrayList<String> contactsarray = new ArrayList<String>();
     public ArrayList<String> contactsarray2 = new ArrayList<String>();
     private String eventId;
-
+    private String mem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +85,7 @@ public class ViewEvent extends AppCompatActivity {
         eventid = (TextView)findViewById(R.id.eventid);
         eventdate = (TextView)findViewById(R.id.eventdate);
         eventime = (TextView)findViewById(R.id.eventtime);
-        eventmembers = (TextView)findViewById(R.id.eventmembers);
+//        eventmembers = (TextView)findViewById(R.id.eventmembers);
         eventadmin = (TextView)findViewById(R.id.eventadmin);
         location = (TextView)findViewById(R.id.location);
 
@@ -122,7 +124,7 @@ public class ViewEvent extends AppCompatActivity {
             String nam = rs.getString(rs.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_EVENTNAME));
             String dat = rs.getString(rs.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_DATE));
             String tim = rs.getString(rs.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_TIME));
-            String mem = rs.getString(rs.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_MEMBERS));
+            mem = rs.getString(rs.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_MEMBERS));
             String pla = rs.getString(rs.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_LOCATION));
             String adm = rs.getString(rs.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_ADMIN));
 
@@ -131,20 +133,20 @@ public class ViewEvent extends AppCompatActivity {
             eventnameview.setText(nam);
             eventdate.setText(dat);
             eventime.setText(tim);
-            eventmembers.setText(mem);
+//            eventmembers.setText(mem);
             eventadmin.setText(adm);
             location.setText(pla);
 
 
         }
 
-        finalizeEvent = (ButtonRectangle) findViewById(R.id.edit_viewevent_finalizeevent);
+        finalizeEvent = (ImageButton) findViewById(R.id.edit_viewevent_finalizeevent);
         saveButton = (ButtonRectangle) findViewById(R.id.edit_viewevent_save);
-        membersButton = (ButtonRectangle) findViewById(R.id.edit_viewevent_addMembers);
-        cancelEvent = (ButtonRectangle)findViewById(R.id.edit_viewevent_cancelevent);
-        requestPlaces = (ButtonRectangle)findViewById(R.id.edit_viewevent_places);
+        membersButton = (ImageButton) findViewById(R.id.edit_viewevent_addMembers);
+        cancelEvent = (ImageButton) findViewById(R.id.edit_viewevent_cancelevent);
+        requestPlaces = (ImageButton)findViewById(R.id.edit_viewevent_places);
 
-        newMemberList = eventmembers.getText().toString().split(",");
+        newMemberList = mem.split(",");
         checkContactPermission();
         populateContactList();
 

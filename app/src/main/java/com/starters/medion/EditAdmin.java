@@ -77,7 +77,7 @@ public class EditAdmin extends Fragment {
     private String tempDate;
     private String tempTime;
     private EditText eventname;
-    private ButtonRectangle membersButton;
+    private ImageButton membersButton;
     private ButtonRectangle saveButton;
     private Event event;
     private Home home;
@@ -85,7 +85,9 @@ public class EditAdmin extends Fragment {
     private Eid eid;
     private String eventId;
     private String members;
+    private ImageButton datepicker;
     View view;
+    private ImageButton timepicker;
 
     public interface HomeListener
     {
@@ -115,12 +117,12 @@ public class EditAdmin extends Fragment {
 
         }
 
-        final ButtonRectangle datepicker = (ButtonRectangle) view.findViewById(R.id.edit_admin_select_date);
-        final ButtonRectangle timepicker = (ButtonRectangle) view.findViewById(R.id.edit_admin_select_time);
+        datepicker = (ImageButton) view.findViewById(R.id.edit_admin_select_date);
+        timepicker= (ImageButton) view.findViewById(R.id.edit_admin_select_time);
         eventname = (EditText)view.findViewById(R.id.edit_admin_event_name);
         imageButton = (ImageButton) view.findViewById(R.id.edit_imagebutton);
         saveButton = (ButtonRectangle) view.findViewById(R.id.edit_admin_save);
-        membersButton = (ButtonRectangle) view.findViewById(R.id.edit_admin_addMembers);
+        membersButton = (ImageButton) view.findViewById(R.id.edit_admin_addMembers);
         checkContactPermission();populateContactList();
 
 

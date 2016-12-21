@@ -203,28 +203,28 @@ public class MainActivity extends AppCompatActivity implements EditAdmin.MainAct
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // register GCM registration complete receiver
-        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-                new IntentFilter(config.REGISTRATION_COMPLETE));
-
-        // register new push message receiver
-        // by doing this, the activity will be notified each time a new message arrives
-        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-                new IntentFilter(config.PUSH_NOTIFICATION));
-
-        // clear the notification area when the app is opened
-        NotificationUtils.clearNotifications(getApplicationContext());
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//
+//        // register GCM registration complete receiver
+//        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+//                new IntentFilter(config.REGISTRATION_COMPLETE));
+//
+//        // register new push message receiver
+//        // by doing this, the activity will be notified each time a new message arrives
+//        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+//                new IntentFilter(config.PUSH_NOTIFICATION));
+//
+//        // clear the notification area when the app is opened
+//        NotificationUtils.clearNotifications(getApplicationContext());
+//    }
+//
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+//    }
 
     public static String POST(String stringURL, UserEvent userEvent) {
         InputStream inputStream = null;

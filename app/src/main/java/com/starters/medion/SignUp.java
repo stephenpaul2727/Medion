@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.gc.materialdesign.views.Button;
+import android.widget.Button;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.starters.medion.model.User;
 
@@ -35,6 +35,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     private String rePassword;
     private String fcmToken;
     private User user;
+    private Button signUpButton;
 
 
 
@@ -49,7 +50,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         etPassword = (EditText) findViewById(R.id.Signup_edit_password);
         etRePassword = (EditText) findViewById(R.id.Signup_edit_reenterpassword);
 
-        ButtonRectangle signUpButton = (ButtonRectangle) findViewById(R.id.Signup_register);
+        signUpButton = (Button) findViewById(R.id.Signup_register);
         Log.d("InsideONCREATE", "Before Connecting");
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
