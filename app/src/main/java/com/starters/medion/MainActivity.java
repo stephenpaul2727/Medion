@@ -60,7 +60,7 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class MainActivity extends AppCompatActivity implements EditAdmin.MainActivityListener {
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private BroadcastReceiver mRegistrationBroadcastReceiver;
@@ -128,16 +128,18 @@ public class MainActivity extends AppCompatActivity implements EditAdmin.MainAct
 
                 System.out.println("inside medion..!");
                 String latitude = parts[1];
-                String longitude = parts[2];
+                String [] resu = parts[2].split("/");
+                String longitude = resu[0];
+                String place_id = resu[1];
                 String evid = parts[3];
                 EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
                 SQLiteDatabase db = eventsDbhelper.getWritableDatabase();
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(EventsContract.EventsEntry.COLUMN_NAME_LOCATION,latitude+","+longitude);
                 db.update(EventsContract.EventsEntry.TABLE_NAME,contentValues,evid,null);
-                db.execSQL("Update " + EventsContract.EventsEntry.TABLE_NAME+" set "+EventsContract.EventsEntry.COLUMN_NAME_LOCATION+"="+parts[1]+","+parts[2]+" where "+EventsContract.EventsEntry.COLUMN_NAME_EVENTID+"="+evid, null);
+//                db.execSQL("Update " + EventsContract.EventsEntry.TABLE_NAME+" set "+EventsContract.EventsEntry.COLUMN_NAME_LOCATION+"="+parts[1]+","+parts[2]+" where "+EventsContract.EventsEntry.COLUMN_NAME_EVENTID+"="+evid, null);
                 Intent mesintent=new Intent(MainActivity.this,PlacesMap.class);
-                mesintent.putExtra("latlong",latitude+"/"+longitude);
+                mesintent.putExtra("latlong",latitude+"/"+longitude+"/"+place_id);
                 startActivity(mesintent);
 
             }else if(parts[0].equals("FinalPlace")){
@@ -282,6 +284,7 @@ public class MainActivity extends AppCompatActivity implements EditAdmin.MainAct
             userEvent = new UserEvent();
             userEvent.setEventId(Integer.parseInt(args[0]));
             userEvent.setUserFcmToken(args[1]);
+            userEvent.setAcceptance(true);
             userEvent.setLatitude(args[2]);
             userEvent.setLongitude(args[3]);
 

@@ -117,7 +117,9 @@ public class ViewEvent extends AppCompatActivity {
         }
 
             mdbhelper = new EventsDbhelper(this);
-            Cursor rs = mdbhelper.getData(eventId);
+        Cursor rs = mdbhelper.getData(eventId);
+        try{
+
         if(rs!=null) {
 
             rs.moveToFirst();
@@ -128,14 +130,28 @@ public class ViewEvent extends AppCompatActivity {
             String pla = rs.getString(rs.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_LOCATION));
             String adm = rs.getString(rs.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_ADMIN));
 
-
             eventid.setText(eventId);
             eventnameview.setText(nam);
             eventdate.setText(dat);
             eventime.setText(tim);
 //            eventmembers.setText(mem);
             eventadmin.setText(adm);
-            location.setText(pla);
+            String[] x = pla.split(",");
+            location.setText(x[0]+","+x[1]);
+            }
+        }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        finally{
+
+            try {
+                if( rs != null && !rs.isClosed())
+                    rs.close();
+                    mdbhelper.close();
+            } catch(Exception ex) {}
+
 
 
         }
@@ -239,36 +255,44 @@ public class ViewEvent extends AppCompatActivity {
 
         ContentResolver resolver = this.getContentResolver();
         Cursor cursor =resolver.query(ContactsContract.Contacts.CONTENT_URI,null,null,null,null);
+        try {
 
-        while(cursor.moveToNext())
-        {
-            String id= cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-            String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+            while (cursor.moveToNext()) {
+                String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
 
-            Cursor phoneCursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,ContactsContract.CommonDataKinds.Phone.CONTACT_ID+" =?",new String[] {id},null);
-            while(phoneCursor.moveToNext())
-            {
-                String phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                Cursor phoneCursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " =?", new String[]{id}, null);
+                while (phoneCursor.moveToNext()) {
+                    String phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
-                phoneNumber = phoneNumber.replaceAll("\\s+","");
-                phoneNumber= phoneNumber.replaceAll("[^a-zA-Z0-9]","");
-                int count=0;
-                for(int i=0;i<newMemberList.length;i++)
-                {
-                    if(newMemberList[i].equals(phoneNumber))
-                    {
-                        count++;
-                        System.out.println("insi");
-                        break;
+                    phoneNumber = phoneNumber.replaceAll("\\s+", "");
+                    phoneNumber = phoneNumber.replaceAll("[^a-zA-Z0-9]", "");
+                    int count = 0;
+                    for (int i = 0; i < newMemberList.length; i++) {
+                        if (newMemberList[i].equals(phoneNumber)) {
+                            count++;
+                            System.out.println("insi");
+                            break;
+                        }
                     }
-                }
-                if(count==0)
-                {
-                    myMap.put(name,phoneNumber);
-                    contactsarray2.add(name+"/"+phoneNumber);
-                }
+                    if (count == 0) {
+                        myMap.put(name, phoneNumber);
+                        contactsarray2.add(name + "/" + phoneNumber);
+                    }
 
+                }
             }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally{
+            try {
+                if( cursor != null && !cursor.isClosed())
+                    cursor.close();
+            } catch(Exception ex) {}
+
         }
     }
 
@@ -469,12 +493,12 @@ public class ViewEvent extends AppCompatActivity {
             String [] parts = res.split(",");
             EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
             location.setText(res);
-            if(eventsDbhelper.updateContact(eventid.getText().toString(),eventnameview.getText().toString(),eventdate.getText().toString(),eventime.getText().toString(),eventmembers.getText().toString(),res,eventadmin.getText().toString()))
+            if(eventsDbhelper.updateContact(eventid.getText().toString(),eventnameview.getText().toString(),eventdate.getText().toString(),eventime.getText().toString(),mem,res,eventadmin.getText().toString()))
             {
                 Toast.makeText(ViewEvent.this,"Location Updated!",Toast.LENGTH_LONG).show();
             }
             Intent mesintent=new Intent(ViewEvent.this,PlacesMap.class);
-            mesintent.putExtra("latlong",parts[0]+"/"+parts[1]);
+            mesintent.putExtra("latlong",parts[0]+"/"+parts[1]+"/"+parts[2]);
             startActivity(mesintent);
 
 //            InsertTask insertTask = new InsertTask(getContext());

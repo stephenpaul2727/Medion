@@ -64,7 +64,7 @@ public class EventsDbhelper extends SQLiteOpenHelper {
         contentValues.put("members", members);
         contentValues.put("location",location);
         contentValues.put("admin",admin);
-        db.update(EventsEntry.TABLE_NAME, contentValues, "id = ? ", new String[] { id } );
+        db.update(EventsEntry.TABLE_NAME, contentValues, "eventid = "+id,null);
         return true;
     }
 

@@ -43,6 +43,7 @@ import com.starters.medion.dbtasks.InsertTask;
 import com.starters.medion.model.Eid;
 import com.starters.medion.model.Event;
 import com.starters.medion.model.User;
+import com.starters.medion.service.TrackGPS;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
@@ -76,6 +77,7 @@ public class EditAdmin extends Fragment {
     private String decodableImage;
     private String tempDate;
     private String tempTime;
+    private TrackGPS trackGPS;
     private EditText eventname;
     private ImageButton membersButton;
     private ButtonRectangle saveButton;
@@ -94,11 +96,6 @@ public class EditAdmin extends Fragment {
         public String getDate();
         public String getTime();
     }
-    public interface MainActivityListener
-    {
-
-    }
-    MainActivityListener mainActivityListener;
 
 
     @Nullable
@@ -116,14 +113,15 @@ public class EditAdmin extends Fragment {
         } catch (InflateException e) {
 
         }
-
+        checkContactPermission();
         datepicker = (ImageButton) view.findViewById(R.id.edit_admin_select_date);
         timepicker= (ImageButton) view.findViewById(R.id.edit_admin_select_time);
         eventname = (EditText)view.findViewById(R.id.edit_admin_event_name);
         imageButton = (ImageButton) view.findViewById(R.id.edit_imagebutton);
         saveButton = (ButtonRectangle) view.findViewById(R.id.edit_admin_save);
         membersButton = (ImageButton) view.findViewById(R.id.edit_admin_addMembers);
-        checkContactPermission();populateContactList();
+        checkContactPermission();
+        populateContactList();
 
 
         membersButton.setOnClickListener(new View.OnClickListener() {
@@ -188,11 +186,22 @@ public class EditAdmin extends Fragment {
 //                mem.add(0,"123");
 //                mem.add(0,"8129551395");
                 members = TextUtils.join(",", mem);
-                members=members+","+ config.ownerPhoneNumber;
+
+                trackGPS = new TrackGPS(getActivity());
+                if (trackGPS.canGetLocation()) {
+//                            geoCoordinates.setLatitude(trackGPS.getLatitude());
+//                            geoCoordinates.setLongitude(trackGPS.getLongitude());
+                    System.out.println("LOCATION"+trackGPS.getLongitude());
+//                    new MainActivity.HttpAsyncTask().execute(parts[1], fcmToken, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()),"http://149.161.150.243:8080/api/addUserEvent");
+                }
+
+                System.out.println(trackGPS.getLatitude());
+                System.out.println(trackGPS.getLongitude());
+                System.out.println(config.ownerPhoneNumber);
                 //To get it back to ArrayList,
                 //List<String> myList = new ArrayList<String>(Arrays.asList(members.split(",")));
 //                new EditAdmin.HttpAsyncTask().execute(eventname.getText().toString(),home.getDate(),home.getTime(),members,"http://149.161.150.243:8080/api/notifyMembers");
-                new EditAdmin.HttpAsyncTask().execute(eventname.getText().toString(),home.getDate(),home.getTime(),members,"https://whispering-everglades-62915.herokuapp.com/api/notifyMembers");
+                new EditAdmin.HttpAsyncTask().execute(eventname.getText().toString(),home.getDate(),home.getTime(),members,"https://whispering-everglades-62915.herokuapp.com/api/notifyMembers",Double.toString(trackGPS.getLatitude())+","+Double.toString(trackGPS.getLongitude())+","+config.ownerPhoneNumber);
 
             }
         });
@@ -219,13 +228,6 @@ public class EditAdmin extends Fragment {
 
         super.onAttach(context);
         home = (Home) getActivity();
-        try {
-            mainActivityListener = (MainActivityListener) getActivity();
-        }
-        catch(ClassCastException e)
-        {
-            Log.d("Error","MainActivity must implement listener");
-        }
     }
 
     @Override
@@ -330,21 +332,25 @@ public class EditAdmin extends Fragment {
     {
         myMap = new HashMap<String,String>();
 
-    checkContactPermission();
+        checkContactPermission();
         ContentResolver resolver = getActivity().getContentResolver();
-        Cursor cursor =resolver.query(ContactsContract.Contacts.CONTENT_URI,null,null,null,null);
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
 
-        while(cursor.moveToNext())
-        {
-            String id= cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-            String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
 
-            Cursor phoneCursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,ContactsContract.CommonDataKinds.Phone.CONTACT_ID+" =?",new String[] {id},null);
-            while(phoneCursor.moveToNext())
-            {
-                String phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                myMap.put(name,phoneNumber);
-                contactsarray2.add(name+"/"+phoneNumber);
+            Cursor cursor = resolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+
+            while (cursor.moveToNext()) {
+                String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+
+                Cursor phoneCursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " =?", new String[]{id}, null);
+                while (phoneCursor.moveToNext()) {
+                    String phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    myMap.put(name, phoneNumber);
+                    contactsarray2.add(name + "/" + phoneNumber);
+                }
             }
         }
     }
@@ -448,7 +454,7 @@ public class EditAdmin extends Fragment {
                 event = new Event();
                 event.setEventName(args[0]);
                 event.setEventDate(args[1]);
-                event.setEventTime(args[2]);
+                event.setEventTime(args[2]+"/"+args[5]);
                 event.setMemberList(args[3]);
 
                 eventId= POST(args[4], event);

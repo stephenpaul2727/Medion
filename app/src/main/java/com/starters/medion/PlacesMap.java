@@ -1,12 +1,13 @@
 package com.starters.medion;
 
-import android.*;
 import android.Manifest;
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+
+import java.io.IOException;
+import java.util.Locale;
 import android.content.pm.PackageManager;
+import android.location.Address;import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -18,7 +19,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import java.io.BufferedReader;
@@ -30,38 +30,26 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.ActivityRecognition;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.PlaceLikelihood;
-import com.google.android.gms.location.places.PlaceFilter;
+import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.starters.medion.model.EventMedian;
-import com.starters.medion.model.UserEvent;
 
 import org.json.JSONObject;
-
-import static android.R.attr.data;
-import static android.app.Activity.RESULT_OK;
-import static com.starters.medion.MainActivity.fcmToken;
 
 /**
  * Created by stephenpaul on 15/11/16.
@@ -71,13 +59,16 @@ public class PlacesMap extends AppCompatActivity implements GoogleApiClient.Conn
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 9;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 10;
     int PLACE_REQUEST = 1;
-    TextView mapname;
-    TextView mapaddress;
-    TextView mapphonenumber;
-    TextView maplat;
-    TextView maplong;
+    TextView placename;
+    TextView placeaddress;
+    TextView placelatlongs;
+    private static final int GOOGLE_API_CLIENT_ID = 0;
+    TextView placeratings;
+    TextView placepricelevel;
+    TextView placephone;
     Double latitude;
     Double longitude;
+    String place_id;
     Location mLastLocation;
     LatLngBounds.Builder bounds;
     GoogleApiClient mGoogleApiClient;
@@ -87,98 +78,106 @@ public class PlacesMap extends AppCompatActivity implements GoogleApiClient.Conn
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.places_map);
+        placename = (TextView) findViewById(R.id.place_real_name);
+        placeaddress = (TextView) findViewById(R.id.place_real_address);
+        placelatlongs = (TextView) findViewById(R.id.place_real_latlongs);
+        placeratings = (TextView) findViewById(R.id.place_real_ratings);
+        placepricelevel = (TextView) findViewById(R.id.place_real_pricelevel);
+        placephone = (TextView) findViewById(R.id.place_real_phonenumber);
         ButtonRectangle map_button = (ButtonRectangle) findViewById(R.id.map_places);
-        try {
-            if (getIntent().getExtras().getString("latlong") != null) {
                 String s = getIntent().getExtras().getString("latlong");
                 String[] latilongi = s.split("/");
                 latitude = Double.parseDouble(latilongi[0]);
                 longitude = Double.parseDouble(latilongi[1]);
-            }
-            else if(getIntent().getExtras().getString("finlatlong")!=null)
-            {
-                String s = getIntent().getExtras().getString("finlatlong");
-                String[] latilongi = s.split("/");
-                latitude = Double.parseDouble(latilongi[0]);
-                longitude = Double.parseDouble(latilongi[1]);
-            }
-        }
-        catch(Exception e)
-        {
-            Toast.makeText(this,"Medion Not Received",Toast.LENGTH_LONG).show();
-        }
-        mapname = (TextView) findViewById(R.id.map_name);
-        mapaddress = (TextView) findViewById(R.id.map_Address);
-        mapphonenumber = (TextView) findViewById(R.id.map_Phonenumber);
-        maplat = (TextView) findViewById(R.id.map_lat);
-        maplong = (TextView) findViewById(R.id.map_long);
+                place_id = latilongi[2];
+                System.out.println("place id is: "+place_id+"you don't know");
+                System.out.println("latitude="+latitude);
+                System.out.println("longitude="+longitude);
+
 
         checkpermission();
 
-        final LatLngBounds bounds = new LatLngBounds(new LatLng(latitude-0.008983,longitude-0.015060),new LatLng(latitude+0.008983,longitude+0.015060));
 
-        mGoogleApiClient = new GoogleApiClient
+                mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
+                        .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(ActivityRecognition.API)
                 .build();
 
-        ArrayList<String> restrictToRestaurants = new ArrayList<>();
-        restrictToRestaurants.add(Integer.toString(Place.TYPE_RESTAURANT));
-        final PlaceFilter pf;
-        pf = new PlaceFilter(false, restrictToRestaurants);
+        mGoogleApiClient.connect();
+        Places.GeoDataApi.getPlaceById(mGoogleApiClient, place_id)
+                .setResultCallback(new ResultCallback<PlaceBuffer>() {
+                    @Override
+                    public void onResult(PlaceBuffer places) {
+                        if (places.getStatus().isSuccess() && places.getCount() > 0) {
+                            final Place myPlace = places.get(0);
+                            Toast.makeText(PlacesMap.this,"Place found: " + myPlace.getName(),Toast.LENGTH_LONG).show();
+                            System.out.println(myPlace.getName());
+                            placename.setText(myPlace.getName());
+                            if(!myPlace.getAddress().toString().isEmpty()) {
+                                placeaddress.setText(myPlace.getAddress().toString());
+                            }
+                            Toast.makeText(PlacesMap.this,"price level:"+myPlace.getPriceLevel(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(PlacesMap.this,"place phonenumber"+myPlace.getPhoneNumber(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(PlacesMap.this,"ratings: "+myPlace.getRating(),Toast.LENGTH_LONG).show();
+                            try {
+                                placepricelevel.setText(Integer.toString(myPlace.getPriceLevel()));
+                                placelatlongs.setText(myPlace.getLatLng().latitude + "," + myPlace.getLatLng().longitude);
+                                placeratings.setText(Float.toString(myPlace.getRating()));
+                                placephone.setText(myPlace.getPhoneNumber().toString());
+                            }
+                            catch(Exception e)
+                            {
+                                Toast.makeText(PlacesMap.this,"Can't display some details",Toast.LENGTH_LONG).show();
+                            }
+
+
+                        } else {
+                            Toast.makeText(PlacesMap.this,"Sorry! No Place Found. Pick Place again.!",Toast.LENGTH_LONG).show();
+                        }
+                        places.release();
+                    }
+                });
+
+
+
+//        mGoogleApiClient = new GoogleApiClient
+//                .Builder(this)
+//                .addApi(Places.GEO_DATA_API)
+//                .addApi(Places.PLACE_DETECTION_API)
+//                .addApi(LocationServices.API)
+//                .addConnectionCallbacks(this)
+//                .addOnConnectionFailedListener(this)
+//                .addApi(ActivityRecognition.API)
+//                .build();
+//
+//        ArrayList<String> restrictToRestaurants = new ArrayList<>();
+//        restrictToRestaurants.add(Integer.toString(Place.TYPE_RESTAURANT));
+//        final PlaceFilter pf;
+//        pf = new PlaceFilter(false, restrictToRestaurants);
 
 
 
         map_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Uri gmmIntentUri = Uri.parse("geo:"+latitude+","+longitude+"?q=" + Uri.encode(placename.getText().toString()));
 
-                if (ContextCompat.checkSelfPermission(PlacesMap.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                    ActivityCompat.requestPermissions(PlacesMap.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                            MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-                }
-
-
-                PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi.getCurrentPlace(mGoogleApiClient, pf);
-
-                result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
-                    @Override
-                    public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
-                        final CharSequence thirdPartyAttributions = likelyPlaces.getAttributions();
-                        for (PlaceLikelihood placeLikelihood : likelyPlaces) {
-                            System.out.println("tag" + String.format("Place '%s' has likelihood: %g" +
-                                    placeLikelihood.getPlace().getName() +
-                                    placeLikelihood.getLikelihood()));
-
-
-                        }
-                        likelyPlaces.release();
-                    }
-                });
-                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                builder.setLatLngBounds(bounds);
-                Intent intent;
-                try {
-                    intent = builder.build(PlacesMap.this);
-                    startActivityForResult(intent, PLACE_REQUEST);
-                } catch (GooglePlayServicesRepairableException e) {
-                    e.printStackTrace();
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    e.printStackTrace();
-
-                }
-
-
+//                String uri = String.format(Locale.ENGLISH, "geo:%f,%f", latitude, longitude);
+                Intent intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                intent.setPackage("com.google.android.apps.maps");
+                startActivity(intent);
             }
         });
 
     }
+
+
 
     protected void onStart() {
         mGoogleApiClient.connect();
@@ -293,11 +292,11 @@ public class PlacesMap extends AppCompatActivity implements GoogleApiClient.Conn
                 String u = (String) place.getPhoneNumber();
                 LatLng latLng= place.getLatLng();
                 //THese are the required place details which the user has picked.
-                mapname.setText(s);
-                mapaddress.setText(t);
-                mapphonenumber.setText(u);
-                maplat.setText(Double.toString(latLng.latitude));
-                maplong.setText(Double.toString(latLng.longitude));
+//                mapname.setText(s);
+//                mapaddress.setText(t);
+//                mapphonenumber.setText(u);
+//                maplat.setText(Double.toString(latLng.latitude));
+//                maplong.setText(Double.toString(latLng.longitude));
 //                new PlacesMap.HttpAsyncTask().execute("AA",Double.toString(latLng.latitude),Double.toString(latLng.longitude), "https://whispering-everglades-62915.herokuapp.com/api/sendMedian");
             }
         }

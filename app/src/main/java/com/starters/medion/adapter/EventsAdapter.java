@@ -51,6 +51,7 @@ public class EventsAdapter extends ArrayAdapter {
             eventsHolder.t_date = (TextView) row.findViewById(R.id.t_date);
             eventsHolder.t_time = (TextView) row.findViewById(R.id.t_time);
             row.setTag(eventsHolder);
+
         }
         else {
             eventsHolder = (EventsHolder) row.getTag();

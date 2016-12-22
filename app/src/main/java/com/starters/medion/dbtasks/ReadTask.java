@@ -130,31 +130,44 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
                 String [] parts =ins.getText().toString().split(" ");
                 System.out.println("clicked event name is "+parts[0]);
                 Cursor c = mDbHelper.getListContents();
-                while(c.moveToNext())
-                {
-                    String currentevent= c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_EVENTNAME));
-                    if(currentevent.equals(parts[0]))
-                    {
-                        System.out.println("inside you ass");
-                        eventName = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_EVENTNAME));
-                        date = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_DATE));
-                        time = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_TIME));
-                        ID = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_EVENTID));
-                        admin = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_ADMIN));
-                        members = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_MEMBERS));
-                        latlongs = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_LOCATION));
+                try {
+                    while (c.moveToNext()) {
+                        String currentevent = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_EVENTNAME));
+                        if (currentevent.equals(parts[0])) {
+                            System.out.println("inside you ass");
+                            eventName = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_EVENTNAME));
+                            date = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_DATE));
+                            time = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_TIME));
+                            ID = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_EVENTID));
+                            admin = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_ADMIN));
+                            members = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_MEMBERS));
+                            latlongs = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_LOCATION));
 
-                        System.out.println(EventsEntry._ID);
-                        event = new Event();
-                        event.setEventName(eventName);
-                        event.setEventDate(date);
-                        event.setEventTime(time);
-                        event.setEventId(ID);
-                        event.setAdmin(admin);
-                        event.setMemberList(members);
-                        event.setLatlongs(latlongs);
-                        publishProgress(event);
+                            System.out.println(EventsEntry._ID);
+                            event = new Event();
+                            event.setEventName(eventName);
+                            event.setEventDate(date);
+                            event.setEventTime(time);
+                            event.setEventId(ID);
+                            event.setAdmin(admin);
+                            event.setMemberList(members);
+                            event.setLatlongs(latlongs);
+                            publishProgress(event);
+                        }
                     }
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+                finally
+                {
+                    try {
+                        if( c != null && !c.isClosed())
+                            c.close();
+                        mDbHelper.close();
+                    } catch(Exception ex) {}
+
                 }
                 if(event.getAdmin().equals("ADMIN")) {
                     Intent viewEvent = new Intent(context, ViewEvent.class);
