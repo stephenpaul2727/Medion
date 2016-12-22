@@ -47,69 +47,21 @@
                 android:layout_marginLeft="5dp"
                 android:id = "@+id/place_address"
                 android:textColor="#292b2d"
-                android:text="Place Address: "
-                android:layout_below="@+id/Idofevent"
+                android:text="Is Place Open? :"
+                android:layout_below="@+id/place_name"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="10dp"
+                android:textSize="18dp"
                 android:layout_marginRight="20dp"
                 android:id = "@+id/place_real_address"
                 android:textColor="#1b3966"
-                android:layout_below="@+id/eventid"
+                android:layout_below="@+id/place_real_name"
                 />
         </TableRow>
-        <TableRow>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:fontFamily="sans-serif-light"
-                android:id = "@+id/place_phonenumber"
-                android:textColor="#292b2d"
-                android:layout_marginLeft="5dp"
-                android:text="Place PhoneNumber: "
-                android:layout_below="@+id/nameofevent"
-                />
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:textSize="18dp"
-                android:textColor="#e8493e"
-                android:layout_marginRight="20dp"
-                android:id = "@+id/eventadmin"
-                android:layout_below="@+id/place_real_phonenumber"
-                />
-        </TableRow>
-        <TableRow>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:id = "@+id/pricelevel"
-                android:fontFamily="sans-serif-light"
-                android:textColor="#292b2d"
-                android:layout_marginLeft="5dp"
-                android:text="Place PriceLevel: "
-                android:layout_below="@+id/isAdmin"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:textSize="18dp"
-                android:textColor="#1b3966"
-                android:layout_marginRight="20dp"
-                android:id = "@+id/eventdate"
-                android:layout_below="@+id/place_real_pricelevel"
-                />
-        </TableRow>
         <TableRow>
             <TextView
                 android:layout_width="wrap_content"
@@ -121,18 +73,18 @@
                 android:id = "@+id/place_latlongs"
                 android:layout_marginLeft="5dp"
                 android:text="Place Latlongs:"
-                android:layout_below="@+id/dateevent"/>
+                android:layout_below="@+id/place_address"/>
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:textSize="18dp"
+                android:textSize="10dp"
                 android:textColor="#1b3966"
                 android:layout_marginRight="20dp"
-                android:id = "@+id/eventtime"
-                android:layout_below="@+id/place_real_latlongs"
+                android:id = "@+id/place_real_latlongs"
+                android:layout_below="@+id/place_real_address"
                 />
 
         </TableRow>
@@ -147,7 +99,7 @@
                 android:id = "@+id/ratingis"
                 android:layout_marginLeft="5dp"
                 android:text="Place Rating: "
-                android:layout_below="@+id/timeevent"/>
+                android:layout_below="@+id/place_latlongs"/>
 
 
             <TextView
@@ -157,8 +109,8 @@
                 android:textSize="18dp"
                 android:textColor="#1b3966"
                 android:layout_marginRight="20dp"
-                android:id = "@+id/location"
-                android:layout_below="@+id/place_real_ratings"
+                android:id = "@+id/place_real_ratings"
+                android:layout_below="@+id/place_real_latlongs"
                 />
         </TableRow>
     </TableLayout>

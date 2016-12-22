@@ -173,7 +173,7 @@
                 android:layout_marginRight="20dp"
                 android:id = "@+id/location"
                 android:layout_below="@+id/eventtime"
-                android:text="time"/>
+                android:text="Pick place to get updated!"/>
         </TableRow>
     </TableLayout>
 

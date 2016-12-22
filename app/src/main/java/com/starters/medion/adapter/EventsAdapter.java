@@ -31,12 +31,12 @@ public class EventsAdapter extends ArrayAdapter {
     }
     @Override
     public int getCount(){
-        return list.size();
+        return this.list.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return list.get(position);
+        return this.list.get(position);
     }
 
     @Override
@@ -60,6 +60,7 @@ public class EventsAdapter extends ArrayAdapter {
         eventsHolder.t_eventame.setText(event.getEventName().toString()+" ( "+event.getAdmin().toString()+" )");
         eventsHolder.t_date.setText(event.getEventDate().toString());
         eventsHolder.t_time.setText(event.getEventTime().toString());
+
 
         return row;
     }

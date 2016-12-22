@@ -120,8 +120,7 @@ public class EditAdmin extends Fragment {
         imageButton = (ImageButton) view.findViewById(R.id.edit_imagebutton);
         saveButton = (ButtonRectangle) view.findViewById(R.id.edit_admin_save);
         membersButton = (ImageButton) view.findViewById(R.id.edit_admin_addMembers);
-        checkContactPermission();
-        populateContactList();
+
 
 
         membersButton.setOnClickListener(new View.OnClickListener() {
@@ -129,6 +128,7 @@ public class EditAdmin extends Fragment {
             public void onClick(View v) {
                 if(v==membersButton)
                 {
+
                     showDialogListView(v);
                 }
             }
@@ -183,24 +183,17 @@ public class EditAdmin extends Fragment {
                     mem.add(i, contactsarray.get(i));
                 }
 
-//                mem.add(0,"123");
-//                mem.add(0,"8129551395");
                 members = TextUtils.join(",", mem);
 
                 trackGPS = new TrackGPS(getActivity());
                 if (trackGPS.canGetLocation()) {
-//                            geoCoordinates.setLatitude(trackGPS.getLatitude());
-//                            geoCoordinates.setLongitude(trackGPS.getLongitude());
+
                     System.out.println("LOCATION"+trackGPS.getLongitude());
-//                    new MainActivity.HttpAsyncTask().execute(parts[1], fcmToken, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()),"http://149.161.150.243:8080/api/addUserEvent");
                 }
 
                 System.out.println(trackGPS.getLatitude());
                 System.out.println(trackGPS.getLongitude());
                 System.out.println(config.ownerPhoneNumber);
-                //To get it back to ArrayList,
-                //List<String> myList = new ArrayList<String>(Arrays.asList(members.split(",")));
-//                new EditAdmin.HttpAsyncTask().execute(eventname.getText().toString(),home.getDate(),home.getTime(),members,"http://149.161.150.243:8080/api/notifyMembers");
                 new EditAdmin.HttpAsyncTask().execute(eventname.getText().toString(),home.getDate(),home.getTime(),members,"https://whispering-everglades-62915.herokuapp.com/api/notifyMembers",Double.toString(trackGPS.getLatitude())+","+Double.toString(trackGPS.getLongitude())+","+config.ownerPhoneNumber);
 
             }
@@ -270,27 +263,24 @@ public class EditAdmin extends Fragment {
                     new String[]{Manifest.permission.READ_CONTACTS},
                     MY_PERMISSIONS_REQUEST_READ_CONTACTS);
         }
-
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.WRITE_CONTACTS)
-                != PackageManager.PERMISSION_GRANTED)
+        else
         {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.WRITE_CONTACTS},
-                    MY_PERMISSIONS_REQUEST_WRITE_CONTACTS);  
+            populateContactList();
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                populateContactList();
+            if (grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                System.out.println("populating contacts list");
+                checkContactPermission();
             }
             else
             {
                 Toast.makeText(this.getActivity(),"until you give permissions, this app cannot function properly",Toast.LENGTH_LONG);
             }
+            return;
         }
 
 
@@ -298,11 +288,9 @@ public class EditAdmin extends Fragment {
 
     public void showDialogListView(View view)
     {
-
-        checkContactPermission();
         contact_list = new ListView(getActivity());
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.contact_list,R.id.contacts,contactsarray2);
-        contact_list.setAdapter(adapter);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.contact_list,R.id.contacts,contactsarray2);
+            contact_list.setAdapter(adapter);
         contact_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -331,27 +319,30 @@ public class EditAdmin extends Fragment {
     public void populateContactList()
     {
         myMap = new HashMap<String,String>();
-
-        checkContactPermission();
         ContentResolver resolver = getActivity().getContentResolver();
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.READ_CONTACTS)
-                != PackageManager.PERMISSION_GRANTED) {
-
 
             Cursor cursor = resolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+        Cursor phoneCursor;
+        try {
 
             while (cursor.moveToNext()) {
                 String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
                 String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
 
-                Cursor phoneCursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " =?", new String[]{id}, null);
+                phoneCursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " =?", new String[]{id}, null);
                 while (phoneCursor.moveToNext()) {
                     String phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                     myMap.put(name, phoneNumber);
                     contactsarray2.add(name + "/" + phoneNumber);
+                    break;
                 }
+                phoneCursor.close();
             }
+            cursor.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
         }
     }
 

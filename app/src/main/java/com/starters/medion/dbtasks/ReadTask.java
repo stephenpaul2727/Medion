@@ -134,7 +134,6 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
                     while (c.moveToNext()) {
                         String currentevent = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_EVENTNAME));
                         if (currentevent.equals(parts[0])) {
-                            System.out.println("inside you ass");
                             eventName = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_EVENTNAME));
                             date = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_DATE));
                             time = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_TIME));
@@ -152,7 +151,7 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
                             event.setAdmin(admin);
                             event.setMemberList(members);
                             event.setLatlongs(latlongs);
-                            publishProgress(event);
+//                            publishProgress(event);
                         }
                     }
                 }

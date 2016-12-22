@@ -55,7 +55,7 @@ import org.json.JSONObject;
  * Created by stephenpaul on 15/11/16.
  */
 
-public class PlacesMap extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class PlacesMap extends AppCompatActivity  {
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 9;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 10;
     int PLACE_REQUEST = 1;
@@ -82,85 +82,26 @@ public class PlacesMap extends AppCompatActivity implements GoogleApiClient.Conn
         placeaddress = (TextView) findViewById(R.id.place_real_address);
         placelatlongs = (TextView) findViewById(R.id.place_real_latlongs);
         placeratings = (TextView) findViewById(R.id.place_real_ratings);
-        placepricelevel = (TextView) findViewById(R.id.place_real_pricelevel);
-        placephone = (TextView) findViewById(R.id.place_real_phonenumber);
         ButtonRectangle map_button = (ButtonRectangle) findViewById(R.id.map_places);
                 String s = getIntent().getExtras().getString("latlong");
                 String[] latilongi = s.split("/");
                 latitude = Double.parseDouble(latilongi[0]);
                 longitude = Double.parseDouble(latilongi[1]);
                 place_id = latilongi[2];
+                String [] placedetais = place_id.split("!");
+                System.out.println("name ="+placedetais[0]);
+                System.out.println("rating="+placedetais[1]);
+                System.out.println("open?"+placedetais[2]);
+                placename.setText(placedetais[0].toString());
+                placeratings.setText(placedetais[1].toString());
+                placelatlongs.setText(latitude+","+longitude);
+                placeaddress.setText(placedetais[2].toString());
                 System.out.println("place id is: "+place_id+"you don't know");
                 System.out.println("latitude="+latitude);
                 System.out.println("longitude="+longitude);
 
 
         checkpermission();
-
-
-                mGoogleApiClient = new GoogleApiClient
-                .Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                        .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(ActivityRecognition.API)
-                .build();
-
-        mGoogleApiClient.connect();
-        Places.GeoDataApi.getPlaceById(mGoogleApiClient, place_id)
-                .setResultCallback(new ResultCallback<PlaceBuffer>() {
-                    @Override
-                    public void onResult(PlaceBuffer places) {
-                        if (places.getStatus().isSuccess() && places.getCount() > 0) {
-                            final Place myPlace = places.get(0);
-                            Toast.makeText(PlacesMap.this,"Place found: " + myPlace.getName(),Toast.LENGTH_LONG).show();
-                            System.out.println(myPlace.getName());
-                            placename.setText(myPlace.getName());
-                            if(!myPlace.getAddress().toString().isEmpty()) {
-                                placeaddress.setText(myPlace.getAddress().toString());
-                            }
-                            Toast.makeText(PlacesMap.this,"price level:"+myPlace.getPriceLevel(),Toast.LENGTH_LONG).show();
-                            Toast.makeText(PlacesMap.this,"place phonenumber"+myPlace.getPhoneNumber(),Toast.LENGTH_LONG).show();
-                            Toast.makeText(PlacesMap.this,"ratings: "+myPlace.getRating(),Toast.LENGTH_LONG).show();
-                            try {
-                                placepricelevel.setText(Integer.toString(myPlace.getPriceLevel()));
-                                placelatlongs.setText(myPlace.getLatLng().latitude + "," + myPlace.getLatLng().longitude);
-                                placeratings.setText(Float.toString(myPlace.getRating()));
-                                placephone.setText(myPlace.getPhoneNumber().toString());
-                            }
-                            catch(Exception e)
-                            {
-                                Toast.makeText(PlacesMap.this,"Can't display some details",Toast.LENGTH_LONG).show();
-                            }
-
-
-                        } else {
-                            Toast.makeText(PlacesMap.this,"Sorry! No Place Found. Pick Place again.!",Toast.LENGTH_LONG).show();
-                        }
-                        places.release();
-                    }
-                });
-
-
-
-//        mGoogleApiClient = new GoogleApiClient
-//                .Builder(this)
-//                .addApi(Places.GEO_DATA_API)
-//                .addApi(Places.PLACE_DETECTION_API)
-//                .addApi(LocationServices.API)
-//                .addConnectionCallbacks(this)
-//                .addOnConnectionFailedListener(this)
-//                .addApi(ActivityRecognition.API)
-//                .build();
-//
-//        ArrayList<String> restrictToRestaurants = new ArrayList<>();
-//        restrictToRestaurants.add(Integer.toString(Place.TYPE_RESTAURANT));
-//        final PlaceFilter pf;
-//        pf = new PlaceFilter(false, restrictToRestaurants);
-
 
 
         map_button.setOnClickListener(new View.OnClickListener() {
@@ -177,17 +118,6 @@ public class PlacesMap extends AppCompatActivity implements GoogleApiClient.Conn
 
     }
 
-
-
-    protected void onStart() {
-        mGoogleApiClient.connect();
-        super.onStart();
-    }
-
-    protected void onStop() {
-        mGoogleApiClient.disconnect();
-        super.onStop();
-    }
 
     public void checkpermission() {
         if (ContextCompat.checkSelfPermission(this,
@@ -213,95 +143,6 @@ public class PlacesMap extends AppCompatActivity implements GoogleApiClient.Conn
 
     }
 
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-
-        if (mLastLocation != null) {
-            latitude=mLastLocation.getLatitude();
-
-            longitude = mLastLocation.getLongitude();
-        }
-
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-            }
-            case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        return;
-                    }
-                    Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-            }
-        }
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==PLACE_REQUEST)
-        {
-            if(resultCode==RESULT_OK)
-            {
-                Place place=PlacePicker.getPlace(this,data);
-                String s = (String) place.getName();
-                String t = (String) place.getAddress();
-                String u = (String) place.getPhoneNumber();
-                LatLng latLng= place.getLatLng();
-                //THese are the required place details which the user has picked.
-//                mapname.setText(s);
-//                mapaddress.setText(t);
-//                mapphonenumber.setText(u);
-//                maplat.setText(Double.toString(latLng.latitude));
-//                maplong.setText(Double.toString(latLng.longitude));
-//                new PlacesMap.HttpAsyncTask().execute("AA",Double.toString(latLng.latitude),Double.toString(latLng.longitude), "https://whispering-everglades-62915.herokuapp.com/api/sendMedian");
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 
     public static String POST(String stringURL, EventMedian eventMedian) {
         InputStream inputStream = null;

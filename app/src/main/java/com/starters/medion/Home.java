@@ -39,7 +39,7 @@ import java.util.zip.Inflater;
  * Created by KeerthiTejaNuthi on 11/1/16.
  */
 
-public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener,EditAdmin.HomeListener,EditMembers.HomeListener {
+public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener,EditAdmin.HomeListener {
 
     private String[] mPlanetTitles;
     private DrawerLayout mDrawerLayout;
@@ -225,13 +225,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         pickerMonth = Integer.toString(monthOfYear);
         pickerYear = Integer.toString(year);
         System.out.println("date is:"+" "+pickerMonth+":"+pickerDay+":"+pickerYear);
-    }
-
-
-    @Override
-    public String getDateTimeMem() {
-        String s = pickerDay +"/"+pickerMonth+"/"+pickerYear+" "+pickerHour+":"+pickerMin;
-        return s;
     }
 
     @Override

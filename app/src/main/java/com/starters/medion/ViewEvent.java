@@ -136,8 +136,14 @@ public class ViewEvent extends AppCompatActivity {
             eventime.setText(tim);
 //            eventmembers.setText(mem);
             eventadmin.setText(adm);
-            String[] x = pla.split(",");
-            location.setText(x[0]+","+x[1]);
+            try {
+                String[] x = pla.split(",");
+                location.setText(x[0] + "," + x[1]);
+            }
+            catch(Exception e)
+            {
+                System.out.println("before connecting location is null");
+            }
             }
         }
             catch(Exception e)
@@ -163,22 +169,7 @@ public class ViewEvent extends AppCompatActivity {
         requestPlaces = (ImageButton)findViewById(R.id.edit_viewevent_places);
 
         newMemberList = mem.split(",");
-        checkContactPermission();
-        populateContactList();
 
-
-//        finalizeEvent.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Log.d("Inside:","Onclick");
-//                Integer temp = Integer.parseInt(eventid.getText().toString());
-//                eid = new Eid();
-//                eid.setId(temp);
-//                new HttpAsyncTask().execute(temp.toString(),"https://whispering-everglades-62915.herokuapp.com/api/calcMedian");
-////                new EditAdmin.HttpAsyncTask().execute(temp.toString(),"https://whispering-everglades-62915.herokuapp.com/api/calcMedian");
-//
-//            }
-//        });
         requestPlaces.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,6 +187,7 @@ public class ViewEvent extends AppCompatActivity {
             public void onClick(View v) {
                 if(v==membersButton)
                 {
+                    checkContactPermission();
                     showDialogListView(v);
                 }
             }
@@ -237,16 +229,29 @@ public class ViewEvent extends AppCompatActivity {
                     new String[]{android.Manifest.permission.READ_CONTACTS},
                     MY_PERMISSIONS_REQUEST_READ_CONTACTS);
         }
-
-        if (ContextCompat.checkSelfPermission(this,
-                android.Manifest.permission.WRITE_CONTACTS)
-                != PackageManager.PERMISSION_GRANTED)
+        else
         {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_CONTACTS},
-                    MY_PERMISSIONS_REQUEST_WRITE_CONTACTS);
+            populateContactList();
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
+            if (grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                System.out.println("populating contacts list");
+                checkContactPermission();
+            }
+            else
+            {
+                Toast.makeText(this,"until you give permissions, this app cannot function properly",Toast.LENGTH_LONG);
+            }
+            return;
+        }
+
+
+    }
+
 
     public void populateContactList()
     {
@@ -279,9 +284,12 @@ public class ViewEvent extends AppCompatActivity {
                         myMap.put(name, phoneNumber);
                         contactsarray2.add(name + "/" + phoneNumber);
                     }
+                    break;
 
                 }
+                phoneCursor.close();
             }
+            cursor.close();
         }
         catch(Exception e)
         {
@@ -402,17 +410,6 @@ public class ViewEvent extends AppCompatActivity {
             connection.setReadTimeout(5000);
             connection.connect();
             System.out.println(connection.getResponseMessage());
-//            OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
-//
-//            // 3. build jsonObject
-//           JSONObject json = new JSONObject();
-//            json.put("username",myuser);
-//            json.put("password",mypass);
-//
-//            // 4. convert JSONObject to JSON to String and send json content
-//            out.write(json.toString());
-//            out.flush();
-//            out.close();
 
             BufferedReader in = new BufferedReader(new InputStreamReader(
                     connection.getInputStream()));
@@ -420,13 +417,6 @@ public class ViewEvent extends AppCompatActivity {
             while ((inputLine = in.readLine()) != null)
                 result = inputLine;
             in.close();
-//            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-//
-//            while (in.readLine() != null) {
-//                System.out.println(in);
-//            }
-            System.out.println("\nsuccessfully sent login details.");
-//            in.close();
         } catch (Exception e) {
             Log.d("InputStream", e.getLocalizedMessage());
         }
@@ -490,9 +480,14 @@ public class ViewEvent extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             System.out.println("inside postexecture"+res);
+            if(res.isEmpty())
+            {
+                Toast.makeText(getApplicationContext(),"Please retry pick places!",Toast.LENGTH_LONG).show();
+                return;
+            }
             String [] parts = res.split(",");
             EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
-            location.setText(res);
+            location.setText(parts[0]+","+parts[1]);
             if(eventsDbhelper.updateContact(eventid.getText().toString(),eventnameview.getText().toString(),eventdate.getText().toString(),eventime.getText().toString(),mem,res,eventadmin.getText().toString()))
             {
                 Toast.makeText(ViewEvent.this,"Location Updated!",Toast.LENGTH_LONG).show();
