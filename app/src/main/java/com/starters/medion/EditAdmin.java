@@ -34,6 +34,9 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import com.gc.materialdesign.views.ButtonRectangle;
@@ -75,6 +78,7 @@ public class EditAdmin extends Fragment {
     public ImageButton imageButton;
     private int RESULT_LOAD_IMG =1;
     private String decodableImage;
+    private int waiter = 0;
     private String tempDate;
     private String tempTime;
     private TrackGPS trackGPS;
@@ -113,7 +117,6 @@ public class EditAdmin extends Fragment {
         } catch (InflateException e) {
 
         }
-        checkContactPermission();
         datepicker = (ImageButton) view.findViewById(R.id.edit_admin_select_date);
         timepicker= (ImageButton) view.findViewById(R.id.edit_admin_select_time);
         eventname = (EditText)view.findViewById(R.id.edit_admin_event_name);
@@ -128,7 +131,7 @@ public class EditAdmin extends Fragment {
             public void onClick(View v) {
                 if(v==membersButton)
                 {
-
+                    checkContactPermission();
                     showDialogListView(v);
                 }
             }
@@ -193,8 +196,20 @@ public class EditAdmin extends Fragment {
 
                 System.out.println(trackGPS.getLatitude());
                 System.out.println(trackGPS.getLongitude());
-                System.out.println(config.ownerPhoneNumber);
-                new EditAdmin.HttpAsyncTask().execute(eventname.getText().toString(),home.getDate(),home.getTime(),members,"https://whispering-everglades-62915.herokuapp.com/api/notifyMembers",Double.toString(trackGPS.getLatitude())+","+Double.toString(trackGPS.getLongitude())+","+config.ownerPhoneNumber);
+                String userphonenum=null;
+                try {
+                    FileInputStream f = getActivity().openFileInput("login_details_file");
+                    BufferedReader br = new BufferedReader( new InputStreamReader(f));
+                    String line;
+                    while((line = br.readLine())!=null)
+                    {
+                        userphonenum = line;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                System.out.println("the user phone number is retrieved and it is:"+userphonenum);
+                new EditAdmin.HttpAsyncTask().execute(eventname.getText().toString(),home.getDate(),home.getTime(),members,"https://whispering-everglades-62915.herokuapp.com/api/notifyMembers",Double.toString(trackGPS.getLatitude())+","+Double.toString(trackGPS.getLongitude())+","+userphonenum);
 
             }
         });
@@ -266,6 +281,7 @@ public class EditAdmin extends Fragment {
         else
         {
             populateContactList();
+
         }
     }
 
@@ -274,7 +290,8 @@ public class EditAdmin extends Fragment {
         if (requestCode == MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 System.out.println("populating contacts list");
-                checkContactPermission();
+                populateContactList();
+
             }
             else
             {

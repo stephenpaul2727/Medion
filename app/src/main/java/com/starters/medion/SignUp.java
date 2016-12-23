@@ -1,5 +1,6 @@
 package com.starters.medion;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import android.widget.Button;
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.starters.medion.dbhelper.UserDBHelper;
 import com.starters.medion.model.User;
 
 import org.json.JSONObject;
@@ -176,6 +178,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         @Override
         protected void onPostExecute(String result) {
             Toast.makeText(getBaseContext(), "You have signed up!", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(SignUp.this,MainActivity.class);
+            startActivity(intent);
         }
     }
 }

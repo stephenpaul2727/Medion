@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.gc.materialdesign.widgets.Dialog;
 import com.starters.medion.contract.EventsContract;
 import com.starters.medion.dbtasks.InsertTask;
 import com.starters.medion.model.Eid;
@@ -68,6 +69,7 @@ public class ViewEvent extends AppCompatActivity {
     private ImageButton finalizeEvent;
     public ButtonRectangle saveButton;
     public ImageButton membersButton;
+    private ImageButton currentMembers;
     private ImageButton cancelEvent;
     private ImageButton requestPlaces;
     private String members;
@@ -88,6 +90,7 @@ public class ViewEvent extends AppCompatActivity {
 //        eventmembers = (TextView)findViewById(R.id.eventmembers);
         eventadmin = (TextView)findViewById(R.id.eventadmin);
         location = (TextView)findViewById(R.id.location);
+        currentMembers = (ImageButton) findViewById(R.id.edit_viewevent_currentMembers);
 
 
         Bundle b = getIntent().getExtras();
@@ -192,6 +195,22 @@ public class ViewEvent extends AppCompatActivity {
                 }
             }
         });
+
+        currentMembers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 1. Instantiate an AlertDialog.Builder with its constructor
+                AlertDialog.Builder builder = new AlertDialog.Builder(ViewEvent.this);
+
+                // 2. Chain together various setter methods to set the dialog characteristics
+                builder.setMessage(mem)
+                        .setTitle("Current Members");
+
+                // 3. Get the AlertDialog from create()
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
 //        saveButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -240,7 +259,7 @@ public class ViewEvent extends AppCompatActivity {
         if (requestCode == MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 System.out.println("populating contacts list");
-                checkContactPermission();
+                populateContactList();
             }
             else
             {

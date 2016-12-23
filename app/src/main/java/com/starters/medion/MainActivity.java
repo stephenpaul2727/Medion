@@ -29,11 +29,13 @@ import android.content.Intent;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.gc.materialdesign.views.CheckBox;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.starters.medion.constants.config;
 
 import com.starters.medion.contract.EventsContract;
 import com.starters.medion.dbhelper.EventsDbhelper;
+import com.starters.medion.dbhelper.UserDBHelper;
 import com.starters.medion.model.GeoCoordinates;
 import com.starters.medion.model.UserEvent;
 import com.starters.medion.service.TrackGPS;
@@ -47,6 +49,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -74,8 +77,15 @@ public class MainActivity extends AppCompatActivity {
     private String pass;
     public String res;
     private String eventId;
+    private android.widget.CheckBox cb;
+    public static final String MyPREFERENCES = "AppPrefs" ;
+    public static final String Name = "nameKey";
+    public static final String Phone = "phoneKey";
+    public static final String verified = "verify";
     private String ownerPhoneNumber;
 
+
+    SharedPreferences sharedpreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +93,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         addLoginClickListener();
         addSignupClickListener();
+
         displayFirebaseRegId();
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         userName = (EditText) findViewById(R.id.ConnectStage_Username);
         password = (EditText) findViewById(R.id.ConnectStage_Password);
+        cb = (android.widget.CheckBox) findViewById(R.id.activity_main_Rememberme);
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 mMessageReceiver, new IntentFilter("intentKey"));
     }
@@ -304,7 +317,25 @@ public class MainActivity extends AppCompatActivity {
 //            Toast.makeText(MainActivity.this,"Successfully sent login details to server",Toast.LENGTH_LONG).show();
             if(res.equals("Valid User"))
             {
-                config.ownerPhoneNumber = userName.getText().toString();
+                    String FILENAME = "login_details_file";
+                    String string = username;
+
+                    try {
+                        FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+                        fos.write(string.getBytes());
+                        fos.close();
+                    }
+                    catch(Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+
+                    UserDBHelper userDBHelper = new UserDBHelper(getApplicationContext());
+                    SQLiteDatabase db = userDBHelper.getWritableDatabase();
+                    userDBHelper.updateUser(userName.getText().toString(),password.getText().toString(),"yes");
+                    db.close();
+                    userDBHelper.close();
+
                 Toast.makeText(MainActivity.this,"Successfully logged in",Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(),Home.class);
                 startActivity(intent);

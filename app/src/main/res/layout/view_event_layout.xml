@@ -196,7 +196,7 @@
         android:layout_height="140dp"
         android:layout_alignParentRight="true"
         android:id="@+id/edit_viewevent_cancelevent"
-        android:layout_below="@+id/edit_viewevent_addNewMembers"
+        android:layout_below="@+id/edit_viewevent_currentMembers"
         android:background="@drawable/cancelevent"
         android:layout_marginRight="25dp"
          />
@@ -233,7 +233,7 @@
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:layout_alignParentRight="true"
-        android:id="@+id/edit_viewevent_addNewMembers"
+        android:id="@+id/edit_viewevent_currentMembers"
         android:background="@drawable/currentmembers"
         android:layout_below="@+id/tablelayout"
         />

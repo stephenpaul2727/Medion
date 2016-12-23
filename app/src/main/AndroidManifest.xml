@@ -25,17 +25,12 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyArlFSwNUDpAMmcm7CD6iGXy8zCcWoBF1g" />
-        <!--<meta-data-->
-            <!--android:name="com.google.android.maps.v2.API_KEY"-->
-            <!--android:value="AIzaSyArlFSwNUDpAMmcm7CD6iGXy8zCcWoBF1g" />-->
+        <!-- <meta-data -->
+        <!-- android:name="com.google.android.maps.v2.API_KEY" -->
+        <!-- android:value="AIzaSyArlFSwNUDpAMmcm7CD6iGXy8zCcWoBF1g" /> -->
 
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".MainActivity" android:label="Main Activity"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".SignUp"
             android:label="Sign Up" />
@@ -45,8 +40,9 @@
         <activity
             android:name=".ViewEvent"
             android:label="Event" />
-        <activity android:name=".MembersViewEvent"
-            android:label="MembersEvent"/>
+        <activity
+            android:name=".MembersViewEvent"
+            android:label="MembersEvent" />
 
         <!-- Firebase Notifications -->
         <service android:name=".service.MyFirebaseMessagingService">
@@ -63,8 +59,17 @@
 
         <activity
             android:name=".PlacesMap"
-            android:label="Choose Place"></activity>
-        <!--<activity android:name=".utils.Maps"></activity>-->
+            android:label="Choose Place" />
+        <!-- <activity android:name=".utils.Maps"></activity> -->
+        <activity android:name=".DecisionActivity">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>

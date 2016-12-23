@@ -1,8 +1,16 @@
 package com.starters.medion;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.starters.medion.contract.EventsContract;
@@ -20,9 +28,12 @@ public class MembersViewEvent extends AppCompatActivity{
     private TextView eventdate;
     private TextView eventadmin;
     private TextView eventime;
-    private TextView eventmembers;
+    private ImageButton cancelEvent;
     private TextView memlocs;
+    private ImageButton pickPlace;
     private EventsDbhelper mDbhelper;
+    private ImageButton currentMembers;
+    private String mem;
     private String eventId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +45,9 @@ public class MembersViewEvent extends AppCompatActivity{
         eventime = (TextView)findViewById(R.id.members_eventtime);
         eventadmin = (TextView)findViewById(R.id.members_eventadmin);
         memlocs = (TextView)findViewById(R.id.members_location);
-
-
-
+        pickPlace = (ImageButton) findViewById(R.id.members_pickplace);
+        cancelEvent = (ImageButton)findViewById(R.id.cantcome);
+        currentMembers = (ImageButton)findViewById(R.id.members_addMembers);
 
         Bundle b = getIntent().getExtras();
         if(b != null) {
@@ -48,7 +59,6 @@ public class MembersViewEvent extends AppCompatActivity{
             String members = b.getString("members");
             String locs = b.getString("latlongs");
 
-
             System.out.println("IDID:" + eventId);
             System.out.println("Name:" + eventName);
             System.out.println("admin:" + eventAdmin);
@@ -56,13 +66,6 @@ public class MembersViewEvent extends AppCompatActivity{
             System.out.println("time:" + time);
             System.out.println("members:" + members);
 
-//            eventid.setText(eventId);
-//            eventname.setText(eventName);
-//            eventdate.setText(date);
-//            eventime.setText(time);
-//            eventmembers.setText(members);
-//            eventadmin.setText(eventAdmin);
-//            memlocs.setText(locs);
         }
             mDbhelper = new EventsDbhelper(this);
                 //means this is the view part not the add contact part.
@@ -75,7 +78,7 @@ public class MembersViewEvent extends AppCompatActivity{
                 String dat = rs.getString(rs.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_DATE));
                 String tim = rs.getString(rs.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_TIME));
                 String loc = rs.getString(rs.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_LOCATION));
-                String mem = rs.getString(rs.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_MEMBERS));
+                mem = rs.getString(rs.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_MEMBERS));
                 String adm = rs.getString(rs.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_ADMIN));
 
                 if (!rs.isClosed())  {
@@ -92,6 +95,61 @@ public class MembersViewEvent extends AppCompatActivity{
 
 
         }
+
+        pickPlace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String [] parts =memlocs.getText().toString().split(",");
+                Uri gmmIntentUri = Uri.parse("geo:"+parts[0]+","+parts[1]+"?q=" + Uri.encode("Decided Location!"));
+
+//                String uri = String.format(Locale.ENGLISH, "geo:%f,%f", latitude, longitude);
+                Intent intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                intent.setPackage("com.google.android.apps.maps");
+                startActivity(intent);
+            }
+        });
+
+        cancelEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(getApplicationContext())
+                        .setTitle("Cancel Invitation?")
+                        .setMessage("Are you sure you can't make it? last chance.!")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
+                                SQLiteDatabase db = eventsDbhelper.getWritableDatabase();
+                                db.execSQL("delete from "+ EventsContract.EventsEntry.TABLE_NAME+" where eventid= "+eventid.getText().toString());
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+
+                            }
+                        })
+                        .show();
+            }
+        });
+
+        currentMembers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 1. Instantiate an AlertDialog.Builder with its constructor
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MembersViewEvent.this);
+
+                // 2. Chain together various setter methods to set the dialog characteristics
+                builder.setMessage(mem)
+                        .setTitle("Current Members");
+
+                // 3. Get the AlertDialog from create()
+                android.app.AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
 
     }
 }

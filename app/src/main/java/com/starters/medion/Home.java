@@ -95,7 +95,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         }
         catch(Exception e)
         {
-            Toast.makeText(this,"Final Message not received!",Toast.LENGTH_LONG).show();
+
         }
 
         String[] mobileArray={"Place Location: "+latitude+" "+longitude,"- - - - - - -","- - - - - - -"};
