@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,14 +14,44 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/my_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#35373a"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/AppTheme"
+            app:popupTheme="@style/Theme.AppCompat.DayNight.DarkActionBar"/>
 
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_navigation_menu" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="58dp"
+        android:id="@+id/fragment_container"
+        android:background="@drawable/gradient_bg"
+        android:clickable="true">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/displaylistview"
+            android:drawSelectorOnTop="false"
+            />
+
+        <com.gc.materialdesign.views.ButtonFloat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            materialdesign:animate="true"
+            android:background="#9ad3de"
+            android:id="@+id/plusButton"
+            materialdesign:iconDrawable="@drawable/ic_action_new"
+            android:layout_marginRight="24dp"/>
+
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

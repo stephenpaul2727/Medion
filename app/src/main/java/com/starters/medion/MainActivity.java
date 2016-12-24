@@ -128,12 +128,12 @@ public class MainActivity extends AppCompatActivity {
                 insert.execute("",parts[1],parts[2],parts[3],parts[4],parts[5],"MEMBER","");
                 eventId = parts[1];
 
-//              geoCoordinates = new GeoCoordinates();
                 trackGPS = new TrackGPS(MainActivity.this);
                 if (trackGPS.canGetLocation()) {
 //                            geoCoordinates.setLatitude(trackGPS.getLatitude());
 //                            geoCoordinates.setLongitude(trackGPS.getLongitude());
                     System.out.println("LOCATION"+trackGPS.getLongitude());
+                    Toast.makeText(MainActivity.this,"Your lat is: "+trackGPS.getLatitude()+" your long is: "+trackGPS.getLongitude(),Toast.LENGTH_LONG).show();
 //                    new MainActivity.HttpAsyncTask().execute(parts[1], fcmToken, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()),"http://149.161.150.243:8080/api/addUserEvent");
                     new MainActivity.HttpAsyncTask().execute(parts[1], fcmToken, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()), "https://whispering-everglades-62915.herokuapp.com/api/addUserEvent");
                 }
@@ -329,12 +329,6 @@ public class MainActivity extends AppCompatActivity {
                     {
                         e.printStackTrace();
                     }
-
-                    UserDBHelper userDBHelper = new UserDBHelper(getApplicationContext());
-                    SQLiteDatabase db = userDBHelper.getWritableDatabase();
-                    userDBHelper.updateUser(userName.getText().toString(),password.getText().toString(),"yes");
-                    db.close();
-                    userDBHelper.close();
 
                 Toast.makeText(MainActivity.this,"Successfully logged in",Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(),Home.class);

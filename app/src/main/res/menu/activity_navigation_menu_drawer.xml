@@ -20,17 +20,11 @@
             <!--android:title="Tools" />-->
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Extra Options">
         <menu>
             <item
                 android:id="@+id/home"
                 android:title="Home"/>
-            <item
-                android:id="@+id/admin_edit_event"
-                android:title="Create New Event" />
-            <item
-                android:id="@+id/getMap"
-                android:title="Get Map"/>
         </menu>
     </item>
 

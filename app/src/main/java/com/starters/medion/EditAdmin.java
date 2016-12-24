@@ -117,6 +117,7 @@ public class EditAdmin extends Fragment {
         } catch (InflateException e) {
 
         }
+
         datepicker = (ImageButton) view.findViewById(R.id.edit_admin_select_date);
         timepicker= (ImageButton) view.findViewById(R.id.edit_admin_select_time);
         eventname = (EditText)view.findViewById(R.id.edit_admin_event_name);
@@ -208,6 +209,7 @@ public class EditAdmin extends Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                Toast.makeText(getActivity(),"your lat is: "+trackGPS.getLatitude()+" your long is: "+trackGPS.getLongitude(),Toast.LENGTH_LONG).show();
                 System.out.println("the user phone number is retrieved and it is:"+userphonenum);
                 new EditAdmin.HttpAsyncTask().execute(eventname.getText().toString(),home.getDate(),home.getTime(),members,"https://whispering-everglades-62915.herokuapp.com/api/notifyMembers",Double.toString(trackGPS.getLatitude())+","+Double.toString(trackGPS.getLongitude())+","+userphonenum);
 
@@ -363,6 +365,8 @@ public class EditAdmin extends Fragment {
         }
     }
 
+
+
     public static String POST(String stringURL, Eid eid){
         try {
             Log.d("POST","reached!");
@@ -438,7 +442,7 @@ public class EditAdmin extends Fragment {
             String inputLine;
             while ((inputLine = in.readLine()) != null)
                 result = inputLine;
-                System.out.println(result);
+                System.out.println("event id returned from server: "+result);
             in.close();
 //            }
             System.out.println("\nMedion notify REST Service Invoked Successfully..");
@@ -474,11 +478,18 @@ public class EditAdmin extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             System.out.println("inside postexecture"+result);
-            eventId= result;
-            InsertTask insertTask = new InsertTask(getContext());
-            insertTask.execute("",eventId,eventname.getText().toString(),home.getDate(),home.getTime(),members,"ADMIN",null);
-            Toast.makeText(getActivity().getApplicationContext(), "Event Created!", Toast.LENGTH_LONG).show();
-        }
+            if(!result.isEmpty()) {
+                eventId = result;
+                InsertTask insertTask = new InsertTask(getContext());
+                insertTask.execute("", eventId, eventname.getText().toString(), home.getDate(), home.getTime(), members, "ADMIN", null);
+                Toast.makeText(getActivity().getApplicationContext(), "Event Created!", Toast.LENGTH_LONG).show();
+            }
+            else {
+                Toast.makeText(getActivity(),"Network problem please press SAVE again.!",Toast.LENGTH_LONG).show();
+            }
+
+            }
+
     }
 
 

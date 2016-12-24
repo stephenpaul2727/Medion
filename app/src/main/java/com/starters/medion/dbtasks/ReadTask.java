@@ -142,7 +142,7 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
                             members = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_MEMBERS));
                             latlongs = c.getString(c.getColumnIndex(EventsEntry.COLUMN_NAME_LOCATION));
 
-                            System.out.println(EventsEntry._ID);
+                            System.out.println(EventsEntry.COLUMN_NAME_EVENTID);
                             event = new Event();
                             event.setEventName(eventName);
                             event.setEventDate(date);
@@ -151,7 +151,7 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
                             event.setAdmin(admin);
                             event.setMemberList(members);
                             event.setLatlongs(latlongs);
-//                            publishProgress(event);
+                            publishProgress(event);
                         }
                     }
                 }

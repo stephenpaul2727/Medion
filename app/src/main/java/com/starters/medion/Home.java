@@ -9,17 +9,20 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewManager;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.*;
@@ -64,7 +67,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_layout);
-        ActionBar actionBar= getSupportActionBar();
+
 
 //        actionBar.hide();
 //        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -74,8 +77,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 //
 ////set content view AFTER ABOVE sequence (to avoid crash)
 //        this.setContentView(R.layout.home_layout);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#b7d6e5\">" +"Upcoming Events"+"</font>"));
+
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -106,9 +115,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         plusButton = (ButtonFloat) findViewById(R.id.plusButton);
 
 
-        ListAdapter adapter = new ArrayAdapter<String>(this,
-                R.layout.activity_listview, mobileArray);
-
 //        listView = (ListView) findViewById(R.id.displaylistview);
 //        listView.setAdapter(adapter);
 //        listView.setBackgroundColor(Color.DKGRAY);
@@ -116,7 +122,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -136,26 +142,31 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                FragmentManager fragmentManager = getFragmentManager();
-//                fragmentManager.popBackStack();
-//                android.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.replace(R.id.fragment_container,new EditAdmin(), "edit_admin_tag");
-//                fragmentTransaction.addToBackStack(null);
-//                fragmentTransaction.commit();
+                FragmentManager fragmentManager = getFragmentManager();
+                android.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#b7d6e5\">" +"Plan an event"+"</font>"));
+                fragmentTransaction.replace(R.id.fragment_container,new EditAdmin(), "edit_admin_tag");
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-        if(list != null)
-            list.setVisibility(View.VISIBLE);
+        startActivity(new Intent(this,Home.class));
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        if (drawer.isDrawerOpen(GravityCompat.START)) {
+//            drawer.closeDrawer(GravityCompat.START);
+//            getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#b7d6e5\">" +"Upcoming Events"+"</font>"));
+//
+//        } else {
+//            super.onBackPressed();
+//            getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#b7d6e5\">" +"Upcoming Events"+"</font>"));
+//
+//        }
+//        if(list != null)
+//            list.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -173,9 +184,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -190,18 +201,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         list.setVisibility(View.GONE)   ;
         FragmentManager fragmentManager = getFragmentManager();
         android.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if (id == R.id.admin_edit_event) {
-
-            EditAdmin editAdmin = new EditAdmin();
-            fragmentTransaction.replace(R.id.fragment_container,new EditAdmin(), "edit_admin_tag");
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-
-        } else if (id == R.id.getMap) {
-            Intent intent = new Intent(getApplicationContext(), PlacesMap.class);
-            startActivity(intent);
-        }
-        else if(id == R.id.home)
+       if(id == R.id.home)
         {
             Intent intent = new Intent(getApplicationContext(),Home.class);
             startActivity(intent);

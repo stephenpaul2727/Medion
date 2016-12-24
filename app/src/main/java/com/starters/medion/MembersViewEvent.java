@@ -112,25 +112,30 @@ public class MembersViewEvent extends AppCompatActivity{
         cancelEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(getApplicationContext())
-                        .setTitle("Cancel Invitation?")
-                        .setMessage("Are you sure you can't make it? last chance.!")
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                android.app.AlertDialog.Builder cancelbuilder = new android.app.AlertDialog.Builder(MembersViewEvent.this);
+                        cancelbuilder.setTitle("Cancel Invitation?");
+                        cancelbuilder.setMessage("Are you sure you can't make it? last chance.!");
+                        cancelbuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
                                 SQLiteDatabase db = eventsDbhelper.getWritableDatabase();
-                                db.execSQL("delete from "+ EventsContract.EventsEntry.TABLE_NAME+" where eventid= "+eventid.getText().toString());
+                                db.delete(EventsContract.EventsEntry.TABLE_NAME,EventsContract.EventsEntry.COLUMN_NAME_EVENTID+"=?",new String[]{eventId});
+                                db.close();
+                                eventsDbhelper.close();
+                                Intent intent = new Intent(MembersViewEvent.this,Home.class);
+                                startActivity(intent);
                             }
-                        })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        });
+                        cancelbuilder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
 
                             }
-                        })
-                        .show();
+                        });
+                        android.app.AlertDialog dialog = cancelbuilder.create();
+                        dialog.show();
             }
         });
 

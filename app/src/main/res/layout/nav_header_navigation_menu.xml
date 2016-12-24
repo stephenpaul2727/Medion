@@ -19,13 +19,14 @@
         android:layout_width="111dp"
         android:layout_height="78dp"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:src="@drawable/appimage"
+        android:src="@drawable/app_xxhdpi"
         android:layout_weight="0.43" />
 
     <TextView
         android:layout_width="327dp"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:layout_marginLeft="25dp"
         android:text="Medion"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
