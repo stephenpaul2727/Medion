@@ -127,8 +127,9 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView ins=(TextView)view.findViewById(R.id.t_eventname);
-                String [] parts =ins.getText().toString().split(" ");
+                String [] parts =ins.getText().toString().split("~");
                 System.out.println("clicked event name is "+parts[0]);
+                System.out.println("event clicked is: "+ins.getText().toString());
                 Cursor c = mDbHelper.getListContents();
                 try {
                     while (c.moveToNext()) {
@@ -151,7 +152,6 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
                             event.setAdmin(admin);
                             event.setMemberList(members);
                             event.setLatlongs(latlongs);
-                            publishProgress(event);
                         }
                     }
                 }

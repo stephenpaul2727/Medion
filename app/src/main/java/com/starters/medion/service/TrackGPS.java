@@ -53,7 +53,7 @@ public class TrackGPS extends Service implements LocationListener {
 
         try {
             locationManager = (LocationManager) mContext
-                    .getSystemService(LOCATION_SERVICE);
+                    .getSystemService(Context.LOCATION_SERVICE);
 
             // getting GPS status
             checkGPS = locationManager
@@ -68,50 +68,51 @@ public class TrackGPS extends Service implements LocationListener {
             } else {
                 this.canGetLocation = true;
                 // First get location from Network Provider
-                if (checkNetwork) {
-                    Toast.makeText(mContext, "Network", Toast.LENGTH_SHORT).show();
+//                if (checkNetwork) {
+//                    Toast.makeText(mContext, "Network", Toast.LENGTH_SHORT).show();
+//
+//                    try {
+//                        locationManager.requestLocationUpdates(
+//                                LocationManager.NETWORK_PROVIDER,
+//                                MIN_TIME_BW_UPDATES,
+//                                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+//                        Log.d("Network", "Network");
+//                        if (locationManager != null) {
+//                            loc = locationManager
+//                                    .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//
+//                        }
+//
+//                        if (loc != null) {
+//                            latitude = loc.getLatitude();
+//                            longitude = loc.getLongitude();
+//                        }
+//                    } catch (SecurityException e) {
+//
+//                    }
+//                }
 
-                    try {
-                        locationManager.requestLocationUpdates(
-                                LocationManager.NETWORK_PROVIDER,
-                                MIN_TIME_BW_UPDATES,
-                                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                        Log.d("Network", "Network");
-                        if (locationManager != null) {
-                            loc = locationManager
-                                    .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-                        }
-
-                        if (loc != null) {
-                            latitude = loc.getLatitude();
-                            longitude = loc.getLongitude();
-                        }
-                    } catch (SecurityException e) {
-
-                    }
-                }
-            }
-            // if GPS Enabled get lat/long using GPS Services
-            if (checkGPS) {
-                Toast.makeText(mContext, "GPS", Toast.LENGTH_SHORT).show();
-                if (loc == null) {
-                    try {
-                        locationManager.requestLocationUpdates(
-                                LocationManager.GPS_PROVIDER,
-                                MIN_TIME_BW_UPDATES,
-                                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                        Log.d("GPS Enabled", "GPS Enabled");
-                        if (locationManager != null) {
-                            loc = locationManager
-                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                            if (loc != null) {
-                                latitude = loc.getLatitude();
-                                longitude = loc.getLongitude();
+                // if GPS Enabled get lat/long using GPS Services
+                if (checkGPS) {
+                    Toast.makeText(mContext, "GPS", Toast.LENGTH_SHORT).show();
+                    if (loc == null) {
+                        try {
+                            locationManager.requestLocationUpdates(
+                                    LocationManager.GPS_PROVIDER,
+                                    0,
+                                    0, this);
+                            Log.d("GPS Enabled", "GPS Enabled");
+                            if (locationManager != null) {
+                                loc = locationManager
+                                        .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                                if (loc != null) {
+                                    latitude = loc.getLatitude();
+                                    longitude = loc.getLongitude();
+                                }
                             }
-                        }
-                    } catch (SecurityException e) {
+                        } catch (SecurityException e) {
 
+                        }
                     }
                 }
             }
@@ -193,6 +194,10 @@ public class TrackGPS extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
+        if(location!=null)
+        {
+            loc= location;
+        }
 
     }
 

@@ -78,14 +78,8 @@ public class MainActivity extends AppCompatActivity {
     public String res;
     private String eventId;
     private android.widget.CheckBox cb;
-    public static final String MyPREFERENCES = "AppPrefs" ;
-    public static final String Name = "nameKey";
-    public static final String Phone = "phoneKey";
-    public static final String verified = "verify";
-    private String ownerPhoneNumber;
 
 
-    SharedPreferences sharedpreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,78 +87,76 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         addLoginClickListener();
         addSignupClickListener();
-
-        displayFirebaseRegId();
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         userName = (EditText) findViewById(R.id.ConnectStage_Username);
         password = (EditText) findViewById(R.id.ConnectStage_Password);
-        cb = (android.widget.CheckBox) findViewById(R.id.activity_main_Rememberme);
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-                mMessageReceiver, new IntentFilter("intentKey"));
+
+//        displayFirebaseRegId();
+//        LocalBroadcastManager.getInstance(this).registerReceiver(
+//                mMessageReceiver, new IntentFilter("intentKey"));
     }
 
-    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // Get extra data included in the Intent
-            String message = intent.getStringExtra("key");
-            Log.e("mm", message);
-            int notifyID=1;
-            NotificationManager notify = (NotificationManager) getSystemService(context.NOTIFICATION_SERVICE);
-            String[] parts = message.split(",");
-
-            if(parts[0].equals("EventCreated")) {
-                System.out.println("ENTERED EVENT CREATED");
-
-                NotificationCompat.Builder mBuilder =
-                        new NotificationCompat.Builder(getApplicationContext())
-                                .setSmallIcon(R.drawable.appimage)
-                                .setContentTitle("Medion")
-                                .setContentText("New Event "+parts[2]+" created");
-                notify.notify(notifyID,mBuilder.build());
-                Toast.makeText(getApplicationContext(), "You have been Added to an Event", Toast.LENGTH_LONG).show();
-                eventId = parts[1];
-                InsertTask insert = new InsertTask(getApplicationContext());
-                insert.execute("",parts[1],parts[2],parts[3],parts[4],parts[5],"MEMBER","");
-                eventId = parts[1];
-
-                trackGPS = new TrackGPS(MainActivity.this);
-                if (trackGPS.canGetLocation()) {
-//                            geoCoordinates.setLatitude(trackGPS.getLatitude());
-//                            geoCoordinates.setLongitude(trackGPS.getLongitude());
-                    System.out.println("LOCATION"+trackGPS.getLongitude());
-                    Toast.makeText(MainActivity.this,"Your lat is: "+trackGPS.getLatitude()+" your long is: "+trackGPS.getLongitude(),Toast.LENGTH_LONG).show();
-//                    new MainActivity.HttpAsyncTask().execute(parts[1], fcmToken, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()),"http://149.161.150.243:8080/api/addUserEvent");
-                    new MainActivity.HttpAsyncTask().execute(parts[1], fcmToken, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()), "https://whispering-everglades-62915.herokuapp.com/api/addUserEvent");
-                }
-            }else if(parts[0].equals("MedionCalculated")){
-
-                System.out.println("inside medion..!");
-                String latitude = parts[1];
-                String [] resu = parts[2].split("/");
-                String longitude = resu[0];
-                String place_id = resu[1];
-                String evid = parts[3];
-                EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
-                SQLiteDatabase db = eventsDbhelper.getWritableDatabase();
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(EventsContract.EventsEntry.COLUMN_NAME_LOCATION,latitude+","+longitude);
-                db.update(EventsContract.EventsEntry.TABLE_NAME,contentValues,evid,null);
-//                db.execSQL("Update " + EventsContract.EventsEntry.TABLE_NAME+" set "+EventsContract.EventsEntry.COLUMN_NAME_LOCATION+"="+parts[1]+","+parts[2]+" where "+EventsContract.EventsEntry.COLUMN_NAME_EVENTID+"="+evid, null);
-                Intent mesintent=new Intent(MainActivity.this,PlacesMap.class);
-                mesintent.putExtra("latlong",latitude+"/"+longitude+"/"+place_id);
-                startActivity(mesintent);
-
-            }else if(parts[0].equals("FinalPlace")){
-                String latitude = parts[1];
-                String longitude = parts[2];
-                Intent msgfinal = new Intent(MainActivity.this,Home.class);
-                msgfinal.putExtra("ll",latitude+"/"+longitude);
-                startActivity(msgfinal);
-            }
-
-        }
-    };
+//    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            // Get extra data included in the Intent
+//            String message = intent.getStringExtra("key");
+//            Log.e("mm", message);
+//            int notifyID=1;
+//            NotificationManager notify = (NotificationManager) getSystemService(context.NOTIFICATION_SERVICE);
+//            String[] parts = message.split(",");
+//
+//            if(parts[0].equals("EventCreated")) {
+//                System.out.println("ENTERED EVENT CREATED");
+//
+//                NotificationCompat.Builder mBuilder =
+//                        new NotificationCompat.Builder(getApplicationContext())
+//                                .setSmallIcon(R.drawable.appimage)
+//                                .setContentTitle("Medion")
+//                                .setContentText("New Event "+parts[2]+" created");
+//                notify.notify(notifyID,mBuilder.build());
+//                Toast.makeText(getApplicationContext(), "You have been Added to an Event", Toast.LENGTH_LONG).show();
+//                eventId = parts[1];
+//                InsertTask insert = new InsertTask(getApplicationContext());
+//                insert.execute("",parts[1],parts[2],parts[3],parts[4],parts[5],"MEMBER","");
+//                eventId = parts[1];
+//
+//                trackGPS = new TrackGPS(MainActivity.this);
+//                if (trackGPS.canGetLocation()) {
+////                            geoCoordinates.setLatitude(trackGPS.getLatitude());
+////                            geoCoordinates.setLongitude(trackGPS.getLongitude());
+//                    System.out.println("LOCATION"+trackGPS.getLongitude());
+//                    Toast.makeText(MainActivity.this,"Your lat is: "+trackGPS.getLatitude()+" your long is: "+trackGPS.getLongitude(),Toast.LENGTH_LONG).show();
+////                    new MainActivity.HttpAsyncTask().execute(parts[1], fcmToken, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()),"http://149.161.150.243:8080/api/addUserEvent");
+//                    new MainActivity.HttpAsyncTask().execute(parts[1], fcmToken, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()), "https://whispering-everglades-62915.herokuapp.com/api/addUserEvent");
+//                }
+//            }else if(parts[0].equals("MedionCalculated")){
+//
+//                System.out.println("inside medion..!");
+//                String latitude = parts[1];
+//                String [] resu = parts[2].split("/");
+//                String longitude = resu[0];
+//                String place_id = resu[1];
+//                String evid = parts[3];
+//                EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
+//                SQLiteDatabase db = eventsDbhelper.getWritableDatabase();
+//                ContentValues contentValues = new ContentValues();
+//                contentValues.put(EventsContract.EventsEntry.COLUMN_NAME_LOCATION,latitude+","+longitude);
+//                db.update(EventsContract.EventsEntry.TABLE_NAME,contentValues,evid,null);
+////                db.execSQL("Update " + EventsContract.EventsEntry.TABLE_NAME+" set "+EventsContract.EventsEntry.COLUMN_NAME_LOCATION+"="+parts[1]+","+parts[2]+" where "+EventsContract.EventsEntry.COLUMN_NAME_EVENTID+"="+evid, null);
+//                Intent mesintent=new Intent(MainActivity.this,PlacesMap.class);
+//                mesintent.putExtra("latlong",latitude+"/"+longitude+"/"+place_id);
+//                startActivity(mesintent);
+//
+//            }else if(parts[0].equals("FinalPlace")){
+//                String latitude = parts[1];
+//                String longitude = parts[2];
+//                Intent msgfinal = new Intent(MainActivity.this,Home.class);
+//                msgfinal.putExtra("ll",latitude+"/"+longitude);
+//                startActivity(msgfinal);
+//            }
+//
+//        }
+//    };
 
     public void addLoginClickListener()
     {
@@ -210,13 +202,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void displayFirebaseRegId() {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(config.SHARED_PREF, 0);
-        String regId = pref.getString("regId", null);
-        fcmToken = regId;
-        Log.e(TAG, "Firebase reg id: " + regId);
-
-    }
+//    private void displayFirebaseRegId() {
+//        SharedPreferences pref = getApplicationContext().getSharedPreferences(config.SHARED_PREF, 0);
+//        String regId = pref.getString("regId", null);
+//        fcmToken = regId;
+//        Log.e(TAG, "Firebase reg id: " + regId);
+//
+//    }
 
 //    @Override
 //    protected void onResume() {
@@ -240,75 +232,6 @@ public class MainActivity extends AppCompatActivity {
 //        super.onPause();
 //        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
 //    }
-
-    public static String POST(String stringURL, UserEvent userEvent) {
-        InputStream inputStream = null;
-        String result = "";
-        try {
-
-            Log.d("InputStream", "Before Connecting");
-            // 1. create URL
-            URL url = new URL(stringURL);
-
-            // 2. create connection to given URL
-            URLConnection connection = url.openConnection();
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
-            connection.setUseCaches(false);
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setConnectTimeout(5000);
-            connection.setReadTimeout(5000);
-            connection.connect();
-            OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
-
-            // 3. build jsonObject
-            JSONObject userEventJson = new JSONObject();
-            userEventJson.accumulate("eventId", userEvent.getEventId());
-            userEventJson.accumulate("userFcmToken", userEvent.getUserFcmToken());
-            userEventJson.accumulate("acceptance", true);
-            userEventJson.accumulate("latitude", userEvent.getLatitude());
-            userEventJson.accumulate("longitude", userEvent.getLongitude());
-
-            // 4. convert JSONObject to JSON to String and send json content
-            out.write(userEventJson.toString());
-            out.flush();
-            out.close();
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-            while (in.readLine() != null) {
-                System.out.println(in);
-            }
-            System.out.println("\nMedion REST Service Invoked Successfully..");
-            in.close();
-        } catch (Exception e) {
-            Log.d("InputStream", e.getLocalizedMessage());
-        }
-
-        return result;
-    }
-
-
-
-    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... args) {
-            userEvent = new UserEvent();
-            userEvent.setEventId(Integer.parseInt(args[0]));
-            userEvent.setUserFcmToken(args[1]);
-            userEvent.setAcceptance(true);
-            userEvent.setLatitude(args[2]);
-            userEvent.setLongitude(args[3]);
-
-            return POST(args[4],userEvent);
-        }
-        // onPostExecute displays the results of the AsyncTask.
-        @Override
-        protected void onPostExecute(String result) {
-            Toast.makeText(getBaseContext(), "You have signed up!", Toast.LENGTH_LONG).show();
-        }
-    }
 
     private class LoginAsyncTask extends AsyncTask<String, Void, String> {
 

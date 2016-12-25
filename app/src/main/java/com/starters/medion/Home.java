@@ -67,16 +67,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_layout);
-
-
-//        actionBar.hide();
-//        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//
-////Remove notification bar
-//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//
-////set content view AFTER ABOVE sequence (to avoid crash)
-//        this.setContentView(R.layout.home_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#b7d6e5\">" +"Upcoming Events"+"</font>"));
@@ -86,14 +76,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
         try {
             if (getIntent().getExtras().getString("ll") != null) {
                 String s = getIntent().getExtras().getString("ll");
@@ -106,18 +88,12 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         {
 
         }
-
-        String[] mobileArray={"Place Location: "+latitude+" "+longitude,"- - - - - - -","- - - - - - -"};
         insert = new InsertTask(this);
         //insert.execute();
         read = new ReadTask(this);
         read.execute();
         plusButton = (ButtonFloat) findViewById(R.id.plusButton);
 
-
-//        listView = (ListView) findViewById(R.id.displaylistview);
-//        listView.setAdapter(adapter);
-//        listView.setBackgroundColor(Color.DKGRAY);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -127,16 +103,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent finintent = new Intent(Home.this,PlacesMap.class);
-//                finintent.putExtra("finlatlong",latitude+"/"+longitude);
-//                startActivity(finintent);
-//            }
-//        });
 
 
         plusButton.setOnClickListener(new View.OnClickListener() {
@@ -155,18 +121,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     public void onBackPressed() {
         startActivity(new Intent(this,Home.class));
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        if (drawer.isDrawerOpen(GravityCompat.START)) {
-//            drawer.closeDrawer(GravityCompat.START);
-//            getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#b7d6e5\">" +"Upcoming Events"+"</font>"));
-//
-//        } else {
-//            super.onBackPressed();
-//            getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#b7d6e5\">" +"Upcoming Events"+"</font>"));
-//
-//        }
-//        if(list != null)
-//            list.setVisibility(View.VISIBLE);
     }
 
     @Override

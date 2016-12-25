@@ -1,6 +1,7 @@
 package com.starters.medion;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,12 +12,14 @@ import android.widget.Toast;
 
 import android.widget.Button;
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.starters.medion.constants.config;
 import com.starters.medion.dbhelper.UserDBHelper;
 import com.starters.medion.model.User;
 
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -168,8 +171,10 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
             user.setEmail(args[1]);
             user.setPhone(args[2]);
             user.setPassword(args[3]);
-
-            user.setFcmToken(MainActivity.fcmToken);
+            SharedPreferences prefer = getApplicationContext().getSharedPreferences(config.SHARED_PREF, 0);
+            String regId = prefer.getString("regId", null);
+            fcmToken = regId;
+            user.setFcmToken(regId);
 
             System.out.println(args[4]);
             return POST(args[4],user);
@@ -178,6 +183,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         @Override
         protected void onPostExecute(String result) {
             Toast.makeText(getBaseContext(), "You have signed up!", Toast.LENGTH_LONG).show();
+            Toast.makeText(SignUp.this,fcmToken,Toast.LENGTH_LONG).show();
             Intent intent = new Intent(SignUp.this,MainActivity.class);
             startActivity(intent);
         }

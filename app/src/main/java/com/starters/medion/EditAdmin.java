@@ -91,6 +91,7 @@ public class EditAdmin extends Fragment {
     private Eid eid;
     private String eventId;
     private String members;
+    private String userphonenum=null;
     private ImageButton datepicker;
     View view;
     private ImageButton timepicker;
@@ -197,7 +198,7 @@ public class EditAdmin extends Fragment {
 
                 System.out.println(trackGPS.getLatitude());
                 System.out.println(trackGPS.getLongitude());
-                String userphonenum=null;
+
                 try {
                     FileInputStream f = getActivity().openFileInput("login_details_file");
                     BufferedReader br = new BufferedReader( new InputStreamReader(f));
