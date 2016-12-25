@@ -1,5 +1,6 @@
 package com.starters.medion;
 
+import android.*;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -7,8 +8,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +41,8 @@ import java.net.URLConnection;
 public class DecisionActivity extends AppCompatActivity {
 
     public static String fcmToken = null;
+    private static final int MY_PERMISSIONS_AFL = 9;
+    private static final int MY_PERMISSIONS_ACL = 11;
     public String eventId;
     private static final String TAG = DecisionActivity.class.getSimpleName();
     private TrackGPS trackGPS;
@@ -50,22 +55,9 @@ public class DecisionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent;
         displayFirebaseRegId();
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-                mMessageReceiver, new IntentFilter("intentKey"));
+        checkPermission();
 
-        try {
-            FileInputStream f =openFileInput("login_details_file");
-            intent = new Intent(this, Home.class);
-            startActivity(intent);
-            finish();
-        } catch (FileNotFoundException e) {
-            intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-            e.printStackTrace();
-        }
 
     }
 
@@ -94,14 +86,17 @@ public class DecisionActivity extends AppCompatActivity {
                 insert.execute("",parts[1],parts[2],parts[3],parts[4],parts[5],"MEMBER","");
                 eventId = parts[1];
 
-                trackGPS = new TrackGPS(DecisionActivity.this);
+                trackGPS = new TrackGPS(getApplicationContext(),DecisionActivity.this);
                 if (trackGPS.canGetLocation()) {
 //                            geoCoordinates.setLatitude(trackGPS.getLatitude());
 //                            geoCoordinates.setLongitude(trackGPS.getLongitude());
                     System.out.println("LOCATION"+trackGPS.getLongitude());
                     Toast.makeText(DecisionActivity.this,"Your lat is: "+trackGPS.getLatitude()+" your long is: "+trackGPS.getLongitude(),Toast.LENGTH_LONG).show();
 //                    new MainActivity.HttpAsyncTask().execute(parts[1], fcmToken, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()),"http://149.161.150.243:8080/api/addUserEvent");
-                    new HttpAsyncTask().execute(parts[1], fcmToken, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()), "https://whispering-everglades-62915.herokuapp.com/api/addUserEvent");
+
+                    SharedPreferences pref = getApplicationContext().getSharedPreferences(config.SHARED_PREF, 0);
+                    String reg = pref.getString("regId", null);
+                    new HttpAsyncTask().execute(parts[1], reg, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()), "https://whispering-everglades-62915.herokuapp.com/api/addUserEvent");
                 }
             }else if(parts[0].equals("MedionCalculated")){
 
@@ -131,6 +126,54 @@ public class DecisionActivity extends AppCompatActivity {
 
         }
     };
+
+    public void checkPermission()
+    {
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
+                    MY_PERMISSIONS_ACL);
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_AFL);
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == MY_PERMISSIONS_AFL|| requestCode==MY_PERMISSIONS_ACL) {
+            if (grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                Intent intent;
+                LocalBroadcastManager.getInstance(this).registerReceiver(
+                        mMessageReceiver, new IntentFilter("intentKey"));
+
+                try {
+                    FileInputStream f =openFileInput("login_details_file");
+                    intent = new Intent(this, Home.class);
+                    startActivity(intent);
+                    finish();
+                } catch (FileNotFoundException e) {
+                    intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                    e.printStackTrace();
+                }
+
+
+            }
+            else
+            {
+                Toast.makeText(this,"until you give permissions, this app cannot function properly",Toast.LENGTH_LONG);
+                checkPermission();
+            }
+            return;
+        }
+
+
+    }
 
     private void displayFirebaseRegId() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences(config.SHARED_PREF, 0);

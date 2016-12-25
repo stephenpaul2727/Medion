@@ -190,7 +190,7 @@ public class EditAdmin extends Fragment {
 
                 members = TextUtils.join(",", mem);
 
-                trackGPS = new TrackGPS(getActivity());
+                trackGPS = new TrackGPS(getContext(),getActivity());
                 if (trackGPS.canGetLocation()) {
 
                     System.out.println("LOCATION"+trackGPS.getLongitude());
