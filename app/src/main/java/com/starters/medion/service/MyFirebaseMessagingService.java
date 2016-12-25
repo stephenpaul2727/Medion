@@ -1,13 +1,16 @@
 package com.starters.medion.service;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.starters.medion.MainActivity;
+import com.starters.medion.R;
 import com.starters.medion.constants.config;
 import com.starters.medion.utils.NotificationUtils;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -69,14 +72,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService{
     private void handleNotification(String message) {
         if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
             // app is in foreground, broadcast the push message
-            Intent pushNotification = new Intent(config.PUSH_NOTIFICATION);
-            pushNotification.putExtra("message", message);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
-
-            // play notification sound
-            NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
-//            notificationUtils.playNotificationSound();
+            NotificationCompat.Builder builder = new  NotificationCompat.Builder(this)
+                    .setSmallIcon(R.drawable.applogosecondary)
+                    .setContentTitle("Medion")
+                    .setContentText(message);
+            NotificationManager manager = (NotificationManager)     getSystemService(NOTIFICATION_SERVICE);
+            manager.notify(0,builder.build());
+            
         }else{
+
+
             // If the app is in background, firebase itself handles the notification
         }
     }

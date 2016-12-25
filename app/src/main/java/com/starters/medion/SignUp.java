@@ -183,7 +183,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         @Override
         protected void onPostExecute(String result) {
             Toast.makeText(getBaseContext(), "You have signed up!", Toast.LENGTH_LONG).show();
-            Toast.makeText(SignUp.this,fcmToken,Toast.LENGTH_LONG).show();
             Intent intent = new Intent(SignUp.this,MainActivity.class);
             startActivity(intent);
         }

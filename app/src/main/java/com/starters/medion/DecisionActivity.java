@@ -76,7 +76,7 @@ public class DecisionActivity extends AppCompatActivity {
 
                 NotificationCompat.Builder mBuilder =
                         new NotificationCompat.Builder(getApplicationContext())
-                                .setSmallIcon(R.drawable.appimage)
+                                .setSmallIcon(R.drawable.applogosecondary)
                                 .setContentTitle("Medion")
                                 .setContentText("New Event "+parts[2]+" created");
                 notify.notify(notifyID,mBuilder.build());
@@ -137,6 +137,23 @@ public class DecisionActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_AFL);
+        }
+        else
+        {
+            Intent intent;
+            LocalBroadcastManager.getInstance(this).registerReceiver(
+                    mMessageReceiver, new IntentFilter("intentKey"));
+
+            try {
+                FileInputStream f =openFileInput("login_details_file");
+                intent = new Intent(this, Home.class);
+                startActivity(intent);
+                finish();
+            } catch (FileNotFoundException e) {
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
         }
     }
 
