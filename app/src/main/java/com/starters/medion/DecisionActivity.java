@@ -56,11 +56,7 @@ public class DecisionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         displayFirebaseRegId();
-        Intent extractIntent = getIntent();
-        String mes = extractIntent.getStringExtra("message");
-        Intent intent = new Intent("intentKey");
-        intent.putExtra("key", mes);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        Transparent transparent = new Transparent();
         checkPermission();
 
 
