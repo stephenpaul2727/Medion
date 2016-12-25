@@ -73,12 +73,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService{
         if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
             // app is in foreground, broadcast the push message
             NotificationCompat.Builder builder = new  NotificationCompat.Builder(this)
-                    .setSmallIcon(R.drawable.applogosecondary)
+                    .setSmallIcon(R.drawable.app_xxhdpi)
                     .setContentTitle("Medion")
                     .setContentText(message);
             NotificationManager manager = (NotificationManager)     getSystemService(NOTIFICATION_SERVICE);
             manager.notify(0,builder.build());
-            
+
         }else{
 
 

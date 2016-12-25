@@ -64,7 +64,7 @@
         <activity android:name=".DecisionActivity">
 
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="DECISION_ACTIVITY" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
