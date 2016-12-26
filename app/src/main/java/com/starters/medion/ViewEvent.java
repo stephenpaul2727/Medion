@@ -4,9 +4,11 @@ import android.*;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,6 +32,7 @@ import com.gc.materialdesign.views.ButtonRectangle;
 import com.gc.materialdesign.widgets.Dialog;
 import com.starters.medion.contract.EventsContract;
 import com.starters.medion.dbtasks.InsertTask;
+import com.starters.medion.model.Delid;
 import com.starters.medion.model.Eid;
 import com.starters.medion.model.Event;
 import com.starters.medion.dbhelper.EventsDbhelper;
@@ -180,7 +183,7 @@ public class ViewEvent extends AppCompatActivity {
                 Integer temp = Integer.parseInt(eventid.getText().toString());
                 eid = new Eid();
                 eid.setId(temp);
-                new HttpAsyncTask().execute(temp.toString(),"https://whispering-everglades-62915.herokuapp.com/api/calcMedian");
+                new HttpAsyncTask().execute("https://whispering-everglades-62915.herokuapp.com/api/calcMedian");
 
             }
         });
@@ -208,6 +211,31 @@ public class ViewEvent extends AppCompatActivity {
 
                 // 3. Get the AlertDialog from create()
                 AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
+
+        cancelEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.app.AlertDialog.Builder cancelbuilder = new android.app.AlertDialog.Builder(ViewEvent.this);
+                cancelbuilder.setTitle("Cancel Invitation?");
+                cancelbuilder.setMessage("Are you sure you can't make it? last chance.!");
+                cancelbuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new DelAsyncTask().execute("https://whispering-everglades-62915.herokuapp.com/api/delEvent",eventId);
+                    }
+                });
+                cancelbuilder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                    }
+                });
+                android.app.AlertDialog dialog = cancelbuilder.create();
                 dialog.show();
             }
         });
@@ -410,25 +438,32 @@ public class ViewEvent extends AppCompatActivity {
 //        return result;
 //    }
 
-    public static String GET(String stringURL) {
-        InputStream inputStream = null;
-        String result = "";
+    public static String POST(String stringURL, Delid eid){
+        String result="";
         try {
-
-            Log.d("InputStream", "Before Connecting");
+            Log.d("POST","reached!");
             // 1. create URL
             URL url = new URL(stringURL);
 
             // 2. create connection to given URL
-            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+            URLConnection connection = url.openConnection();
             connection.setDoInput(true);
-//            connection.setDoOutput(true);
-            connection.setRequestMethod("GET");
+            connection.setDoOutput(true);
             connection.setUseCaches(false);
+            connection.setRequestProperty("Content-Type", "application/json");
             connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);
             connection.connect();
-            System.out.println(connection.getResponseMessage());
+            OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
+
+            // 3. build jsonObject
+            JSONObject eventIDJson = new JSONObject();
+            eventIDJson.accumulate("id", eid.getId());
+
+            // 4. convert JSONObject to JSON to String and send json content
+            out.write(eventIDJson.toString());
+            out.flush();
+            out.close();
 
             BufferedReader in = new BufferedReader(new InputStreamReader(
                     connection.getInputStream()));
@@ -436,12 +471,13 @@ public class ViewEvent extends AppCompatActivity {
             while ((inputLine = in.readLine()) != null)
                 result = inputLine;
             in.close();
-        } catch (Exception e) {
+
+        }catch (Exception e) {
             Log.d("InputStream", e.getLocalizedMessage());
         }
-
         return result;
     }
+
 
     public void showDialogListView(View view)
     {
@@ -518,6 +554,34 @@ public class ViewEvent extends AppCompatActivity {
 //            InsertTask insertTask = new InsertTask(getContext());
 //            insertTask.execute("",eventId,eventname.getText().toString(),home.getDate(),home.getTime(),members,"ADMIN",null);
 //            Toast.makeText(getActivity().getApplicationContext(), "Event Created!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+
+    private class DelAsyncTask extends AsyncTask<String, Void, String> {
+
+        private String res;
+        @Override
+        protected String doInBackground(String... args) {
+            Delid delid = new Delid();
+            delid.setId(args[1]);
+                res= POST(args[0], delid);
+                return res;
+        }
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+            System.out.println("inside postexectue: "+res);
+            Toast.makeText(ViewEvent.this,res,Toast.LENGTH_LONG).show();
+            EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
+            SQLiteDatabase db = eventsDbhelper.getWritableDatabase();
+            db.delete(EventsContract.EventsEntry.TABLE_NAME,EventsContract.EventsEntry.COLUMN_NAME_EVENTID+"=?",new String[]{eventId});
+            db.close();
+            eventsDbhelper.close();
+            Intent mesintent=new Intent(ViewEvent.this,Home.class);
+            startActivity(mesintent);
+
         }
     }
 

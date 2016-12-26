@@ -65,14 +65,8 @@
         <!-- <activity android:name=".utils.Maps"></activity> -->
         <activity android:name=".DecisionActivity">
             <intent-filter>
-                <action android:name="DECISION_ACTIVITY" />
-
+                <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".Transparent">
-            <intent-filter>
-                <action android:name="DECISION_ACTIVITY" />
             </intent-filter>
         </activity>
     </application>

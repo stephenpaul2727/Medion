@@ -2,19 +2,37 @@ package com.starters.medion;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.starters.medion.constants.config;
 import com.starters.medion.contract.EventsContract;
 import com.starters.medion.dbhelper.EventsDbhelper;
+import com.starters.medion.model.Delid;
+import com.starters.medion.model.Eid;
+
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
+
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by stephenpaul on 18/12/16.
@@ -118,13 +136,10 @@ public class MembersViewEvent extends AppCompatActivity{
                         cancelbuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
-                                SQLiteDatabase db = eventsDbhelper.getWritableDatabase();
-                                db.delete(EventsContract.EventsEntry.TABLE_NAME,EventsContract.EventsEntry.COLUMN_NAME_EVENTID+"=?",new String[]{eventId});
-                                db.close();
-                                eventsDbhelper.close();
-                                Intent intent = new Intent(MembersViewEvent.this,Home.class);
-                                startActivity(intent);
+                                SharedPreferences prefer = getApplicationContext().getSharedPreferences(config.SHARED_PREF, 0);
+                                String regId = prefer.getString("regId", null);
+                                new HttpAsyncTask().execute(regId+"!"+eventId,"https://whispering-everglades-62915.herokuapp.com/api/delMember");
+
                             }
                         });
                         cancelbuilder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -157,4 +172,75 @@ public class MembersViewEvent extends AppCompatActivity{
 
 
     }
+
+    public static String POST(String stringURL, Delid eid){
+        String result="";
+        try {
+            Log.d("POST","reached!");
+            // 1. create URL
+            URL url = new URL(stringURL);
+
+            // 2. create connection to given URL
+            URLConnection connection = url.openConnection();
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setUseCaches(false);
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            connection.connect();
+            OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
+
+            // 3. build jsonObject
+            JSONObject eventIDJson = new JSONObject();
+            eventIDJson.accumulate("id", eid.getId());
+
+            // 4. convert JSONObject to JSON to String and send json content
+            out.write(eventIDJson.toString());
+            out.flush();
+            out.close();
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    connection.getInputStream()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null)
+                result = inputLine;
+            in.close();
+
+        }catch (Exception e) {
+            Log.d("InputStream", e.getLocalizedMessage());
+        }
+        return result;
+    }
+
+    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
+
+        private String res;
+        @Override
+        protected String doInBackground(String... args) {
+                Delid delid = new Delid();
+                delid.setId(args[0]);
+                res= POST(args[1], delid);
+                return res;
+            }
+
+
+        @Override
+        protected void onPostExecute(String s) {
+            String res= s;
+            Toast.makeText(MembersViewEvent.this,res,Toast.LENGTH_LONG).show();
+            EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
+            SQLiteDatabase db = eventsDbhelper.getWritableDatabase();
+            db.delete(EventsContract.EventsEntry.TABLE_NAME,EventsContract.EventsEntry.COLUMN_NAME_EVENTID+"=?",new String[]{eventId});
+            db.close();
+            eventsDbhelper.close();
+            Intent intent = new Intent(MembersViewEvent.this,Home.class);
+            startActivity(intent);
+        }
+    }
+
+
+
+
+
 }

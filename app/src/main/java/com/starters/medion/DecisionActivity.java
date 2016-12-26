@@ -56,7 +56,6 @@ public class DecisionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         displayFirebaseRegId();
-        Transparent transparent = new Transparent();
         checkPermission();
 
 
@@ -131,10 +130,8 @@ public class DecisionActivity extends AppCompatActivity {
     public void checkPermission()
     {
 
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
-                    MY_PERMISSIONS_ACL);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_AFL);
@@ -161,7 +158,7 @@ public class DecisionActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == MY_PERMISSIONS_AFL|| requestCode==MY_PERMISSIONS_ACL) {
+        if (requestCode == MY_PERMISSIONS_AFL) {
             if (grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                 Intent intent;
