@@ -23,6 +23,7 @@ import com.starters.medion.constants.config;
 import com.starters.medion.contract.EventsContract;
 import com.starters.medion.dbhelper.EventsDbhelper;
 import com.starters.medion.dbtasks.InsertTask;
+import com.starters.medion.model.Event;
 import com.starters.medion.model.UserEvent;
 import com.starters.medion.service.TrackGPS;
 
@@ -35,6 +36,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Member;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -70,6 +72,11 @@ public class DecisionActivity extends AppCompatActivity {
             int notifyID=1;
             NotificationManager notify = (NotificationManager) getSystemService(context.NOTIFICATION_SERVICE);
             String[] parts = message.split(",");
+            String[] newparts=null;
+            try{
+            newparts = message.split("!");}
+            catch(Exception e)
+            {}
 
             if(parts[0].equals("EventCreated")) {
                 System.out.println("ENTERED EVENT CREATED");
@@ -82,8 +89,17 @@ public class DecisionActivity extends AppCompatActivity {
                 notify.notify(notifyID,mBuilder.build());
                 Toast.makeText(getApplicationContext(), "You have been Added to an Event", Toast.LENGTH_LONG).show();
                 eventId = parts[1];
-                InsertTask insert = new InsertTask(getApplicationContext());
-                insert.execute("",parts[1],parts[2],parts[3],parts[4],parts[5],"MEMBER","");
+                EventsDbhelper mDbHelper = new EventsDbhelper(getApplicationContext());
+                SQLiteDatabase db = mDbHelper.getWritableDatabase();
+                ContentValues content = new ContentValues();
+                content.put(EventsContract.EventsEntry.COLUMN_NAME_EVENTID, parts[1]);
+                content.put(EventsContract.EventsEntry.COLUMN_NAME_EVENTNAME, parts[2]);
+                content.put(EventsContract.EventsEntry.COLUMN_NAME_DATE, parts[3]);
+                content.put(EventsContract.EventsEntry.COLUMN_NAME_TIME, parts[4]);
+                content.put(EventsContract.EventsEntry.COLUMN_NAME_MEMBERS, parts[5]);
+                content.put(EventsContract.EventsEntry.COLUMN_NAME_ADMIN,"MEMBER");
+                content.put(EventsContract.EventsEntry.COLUMN_NAME_LOCATION, "");
+                db.insert(EventsContract.EventsEntry.TABLE_NAME,null,content);
                 eventId = parts[1];
 
                 trackGPS = new TrackGPS(getApplicationContext(),DecisionActivity.this);
@@ -116,12 +132,19 @@ public class DecisionActivity extends AppCompatActivity {
                 mesintent.putExtra("latlong",latitude+"/"+longitude+"/"+place_id);
                 startActivity(mesintent);
 
-            }else if(parts[0].equals("FinalPlace")){
-                String latitude = parts[1];
-                String longitude = parts[2];
-                Intent msgfinal = new Intent(DecisionActivity.this,Home.class);
-                msgfinal.putExtra("ll",latitude+"/"+longitude);
-                startActivity(msgfinal);
+            }else if(newparts!=null && newparts[0].equals("Event Finalized")){
+                String [] par = newparts[5].split(",");
+                String latitude = par[1];
+                String longitude = par[2];
+                EventsDbhelper evehelp = new EventsDbhelper(getApplicationContext());
+                SQLiteDatabase db = evehelp.getWritableDatabase();
+                ContentValues cv = new ContentValues();
+                cv.put(EventsContract.EventsEntry.COLUMN_NAME_MEMBERS, newparts[3]);
+                cv.put(EventsContract.EventsEntry.COLUMN_NAME_LOCATION,newparts[5]);
+                db.update(EventsContract.EventsEntry.TABLE_NAME, cv, newparts[1],null);
+                db.close();
+                evehelp.close();
+                startActivity(new Intent(DecisionActivity.this, MembersViewEvent.class));
             }
 
         }
@@ -194,7 +217,6 @@ public class DecisionActivity extends AppCompatActivity {
         SharedPreferences pref = getApplicationContext().getSharedPreferences(config.SHARED_PREF, 0);
         String regId = pref.getString("regId", null);
         fcmToken = regId;
-        config.ownerfcm = regId;
         Log.e(TAG, "Firebase reg id: " + regId);
         System.out.println("myfcm token is:"+fcmToken);
 

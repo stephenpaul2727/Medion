@@ -24,9 +24,6 @@ public class InsertTask extends AsyncTask {
 
 
         EventsDbhelper mDbHelper = new EventsDbhelper(context);
-
-
-
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
 // Create a new map of values, where column names are the keys

@@ -4,6 +4,7 @@ import android.*;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -51,9 +52,6 @@ import java.util.ResourceBundle;
 
 import javax.net.ssl.HttpsURLConnection;
 
-/**
- * Created by Ashish on 12/8/2016.
- */
 public class ViewEvent extends AppCompatActivity {
 
     private TextView eventid;
@@ -65,6 +63,8 @@ public class ViewEvent extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_WRITE_CONTACTS = 2;
     private TextView eventime;
     private TextView eventmembers;
+    private String finlatlongs;
+    StringBuilder sb = new StringBuilder();
     private TextView location;
     private Event event;
     private EventsDbhelper mdbhelper;
@@ -75,7 +75,6 @@ public class ViewEvent extends AppCompatActivity {
     private ImageButton currentMembers;
     private ImageButton cancelEvent;
     private ImageButton requestPlaces;
-    private String members;
     private String [] newMemberList;
     public ListView contact_list = null;
     public ArrayList<String> contactsarray = new ArrayList<String>();
@@ -169,7 +168,6 @@ public class ViewEvent extends AppCompatActivity {
         }
 
         finalizeEvent = (ImageButton) findViewById(R.id.edit_viewevent_finalizeevent);
-        saveButton = (ButtonRectangle) findViewById(R.id.edit_viewevent_save);
         membersButton = (ImageButton) findViewById(R.id.edit_viewevent_addMembers);
         cancelEvent = (ImageButton) findViewById(R.id.edit_viewevent_cancelevent);
         requestPlaces = (ImageButton)findViewById(R.id.edit_viewevent_places);
@@ -198,6 +196,12 @@ public class ViewEvent extends AppCompatActivity {
                 }
             }
         });
+        finalizeEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DelAsyncTask().execute("https://whispering-everglades-62915.herokuapp.com/api/finEvent");
+            }
+        });
 
         currentMembers.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -220,12 +224,12 @@ public class ViewEvent extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 android.app.AlertDialog.Builder cancelbuilder = new android.app.AlertDialog.Builder(ViewEvent.this);
-                cancelbuilder.setTitle("Cancel Invitation?");
-                cancelbuilder.setMessage("Are you sure you can't make it? last chance.!");
+                cancelbuilder.setTitle("Cancel Event?");
+                cancelbuilder.setMessage("Are you sure you want to delete this event?");
                 cancelbuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        new DelAsyncTask().execute("https://whispering-everglades-62915.herokuapp.com/api/delEvent",eventId);
+                        new DelAsyncTask().execute("https://whispering-everglades-62915.herokuapp.com/serv/delevent",eventId);
                     }
                 });
                 cancelbuilder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -239,28 +243,6 @@ public class ViewEvent extends AppCompatActivity {
                 dialog.show();
             }
         });
-//        saveButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                System.out.println(eventnameview.getText().toString());
-//                System.out.println(eventdate.getText().toString()+"vvv"+eventime.getText().toString());
-//
-//
-//                ArrayList<String> mem = new ArrayList<String>();
-//                for(int i=0; i<contactsarray.size(); i++) {
-//                    mem.add(i, contactsarray.get(i));
-//                }
-////                mem.add(0,"123");
-////                mem.add(0,"8129551395");
-//                members = TextUtils.join(",", mem);
-//                //To get it back to ArrayList,
-//                //List<String> myList = new ArrayList<String>(Arrays.asList(members.split(",")));
-////                new EditAdmin.HttpAsyncTask().execute(eventname.getText().toString(),home.getDate(),home.getTime(),members,"http://149.161.150.243:8080/api/notifyMembers");
-//                new HttpAsyncTask().execute(eventnameview.getText().toString(),eventdate.getText().toString(),eventime.getText().toString(),members,"https://whispering-everglades-62915.herokuapp.com/api/notifyMembers");
-//
-//            }
-//        });
 
     }
 
@@ -391,59 +373,108 @@ public class ViewEvent extends AppCompatActivity {
         return result;
     }
 
-//    public static String POST(String stringURL, Event event) {
-//        String result = "";
-//        try {
-//
-//            // 1. create URL
-//            URL url = new URL(stringURL);
-//
-//            // 2. create connection to given URL
-//            URLConnection connection = url.openConnection();
-//            connection.setDoInput(true);
-//            connection.setDoOutput(true);
-//            connection.setUseCaches(false);
-//            connection.setRequestProperty("Content-Type", "application/json");
-//            connection.setConnectTimeout(5000);
-//            connection.setReadTimeout(5000);
-//            connection.connect();
-//            OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
-//
-//            // 3. build jsonObject
-//            JSONObject eventJson = new JSONObject();
-//            eventJson.accumulate("eventName", event.getEventName());
-//            eventJson.accumulate("eventDate", event.getEventDate());
-//            eventJson.accumulate("eventTime", event.getEventTime());
-//            eventJson.accumulate("memberList", event.getMemberList());
-//
-//            // 4. convert JSONObject to JSON to String and send json content
-//            out.write(eventJson.toString());
-//            out.flush();
-//            out.close();
-//
-//            BufferedReader in = new BufferedReader(new InputStreamReader(
-//                    connection.getInputStream()));
-//            String inputLine;
-//            while ((inputLine = in.readLine()) != null)
-//                result = inputLine;
-//            System.out.println(result);
+    public static String POST(String stringURL, Event event) {
+        String result = "";
+        try {
+
+            // 1. create URL
+            URL url = new URL(stringURL);
+
+            // 2. create connection to given URL
+            URLConnection connection = url.openConnection();
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setUseCaches(false);
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            connection.connect();
+            OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
+
+            // 3. build jsonObject
+            JSONObject eventJson = new JSONObject();
+            eventJson.accumulate("eventId",event.getEventId());
+            eventJson.accumulate("eventName", event.getEventName());
+            eventJson.accumulate("eventDate", event.getEventDate());
+            eventJson.accumulate("eventTime", event.getEventTime());
+            eventJson.accumulate("memberList", event.getMemberList());
+
+            // 4. convert JSONObject to JSON to String and send json content
+            out.write(eventJson.toString());
+            out.flush();
+            out.close();
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    connection.getInputStream()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null)
+                result = inputLine;
+            System.out.println(result);
+            in.close();
+//            }
+            System.out.println("\nMedion notify REST Service Invoked Successfully..");
 //            in.close();
-////            }
-//            System.out.println("\nMedion notify REST Service Invoked Successfully..");
-////            in.close();
-//        } catch (Exception e) {
-//            Log.d("InputStream", e.getLocalizedMessage());
-//        }
-//
-//        return result;
-//    }
+        } catch (Exception e) {
+            Log.d("InputStream", e.getLocalizedMessage());
+        }
+
+        return result;
+    }
+
+
+    public void showDialogListView(View view)
+    {
+        contact_list = new ListView(this);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.contact_list,R.id.contacts,contactsarray2);
+        contact_list.setAdapter(adapter);
+        contact_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ViewGroup contactvg = (ViewGroup)view;
+                TextView contactstxt = (TextView)contactvg.findViewById(R.id.contacts);
+                String s = contactstxt.getText().toString();
+                String[] phone =s.split("/");
+                phone[1]=phone[1].replaceAll("\\s+","");
+                phone[1]=phone[1].replaceAll("[^a-zA-Z0-9]","");
+                System.out.println("contact is:"+phone[1]);
+                contactsarray.add(phone[1]);
+                sb.append(phone[1]+",");
+                Toast.makeText(ViewEvent.this, contactstxt.getText().toString(),Toast.LENGTH_LONG).show();
+            }
+        });
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sb.setLength(sb.length()-1);
+                mem = mem+","+sb.toString();
+                EventsDbhelper evehelp = new EventsDbhelper(getApplicationContext());
+                SQLiteDatabase db = evehelp.getWritableDatabase();
+                ContentValues cv = new ContentValues();
+                cv.put(EventsContract.EventsEntry.COLUMN_NAME_MEMBERS, mem);
+                db.update(EventsContract.EventsEntry.TABLE_NAME, cv, eventId,null);
+                db.close();
+                evehelp.close();
+                new HttpAsyncTask().execute(eventid.getText().toString(),eventnameview.getText().toString(),eventdate.getText().toString(),eventime.getText().toString(),sb.toString(),"https://whispering-everglades-62915.herokuapp.com/api/notifyNewMembers");
+
+            }
+        });
+        builder.setView(contact_list);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
 
     public static String POST(String stringURL, Delid eid){
         String result="";
         try {
             Log.d("POST","reached!");
             // 1. create URL
+            System.out.println("ins2");
             URL url = new URL(stringURL);
+            System.out.println("URL IS:"+stringURL+".");
 
             // 2. create connection to given URL
             URLConnection connection = url.openConnection();
@@ -479,81 +510,55 @@ public class ViewEvent extends AppCompatActivity {
     }
 
 
-    public void showDialogListView(View view)
-    {
-        contact_list = new ListView(ViewEvent.this);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(ViewEvent.this,R.layout.contact_list,R.id.contacts,contactsarray2);
-        contact_list.setAdapter(adapter);
-        contact_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ViewGroup contactvg = (ViewGroup)view;
-                TextView contactstxt = (TextView)contactvg.findViewById(R.id.contacts);
-                String s = contactstxt.getText().toString();
-                String[] phone =s.split("/");
-                phone[1]=phone[1].replaceAll("\\s+","");
-                phone[1]=phone[1].replaceAll("[^a-zA-Z0-9]","");
-                System.out.println("contact is:"+phone[1]);
-                contactsarray.add(phone[1]);
-                Toast.makeText(ViewEvent.this, contactstxt.getText().toString(),Toast.LENGTH_LONG).show();
-            }
-        });
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(ViewEvent.this);
-        builder.setCancelable(true);
-        builder.setPositiveButton("OK",null);
-        builder.setView(contact_list);
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
-    }
-
     private class HttpAsyncTask extends AsyncTask<String, Void, String> {
 
         private String res;
+
         @Override
         protected String doInBackground(String... args) {
             int count = args.length;
-            if(count < 3){
-                res= POST(args[1], eid);
+            if (count < 3) {
+                res = POST(args[0], eid);
+                return res;
+            } else {
+                event = new Event();
+                event.setEventId(args[0]);
+                event.setEventName(args[1]);
+                event.setEventDate(args[2]);
+                event.setEventTime(args[3]);
+                event.setMemberList(args[4]);
+
+                res = POST(args[5], event);
                 return res;
             }
-//            else {
-//                event = new Event();
-//                event.setEventId(eid);
-//                event.setEventName(args[0]);
-//                event.setEventDate(args[1]);
-//                event.setEventTime(args[2]);
-//                event.setMemberList(args[3]);
-//
-//                eventId= POST(args[4], event);
-//                return eventId;
-//            }
-            return null;
         }
+
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            System.out.println("inside postexecture"+res);
-            if(res.isEmpty())
-            {
-                Toast.makeText(getApplicationContext(),"Please retry pick places!",Toast.LENGTH_LONG).show();
-                return;
-            }
-            String [] parts = res.split(",");
-            EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
-            location.setText(parts[0]+","+parts[1]);
-            if(eventsDbhelper.updateContact(eventid.getText().toString(),eventnameview.getText().toString(),eventdate.getText().toString(),eventime.getText().toString(),mem,res,eventadmin.getText().toString()))
-            {
-                Toast.makeText(ViewEvent.this,"Location Updated!",Toast.LENGTH_LONG).show();
-            }
-            Intent mesintent=new Intent(ViewEvent.this,PlacesMap.class);
-            mesintent.putExtra("latlong",parts[0]+"/"+parts[1]+"/"+parts[2]);
-            startActivity(mesintent);
+            System.out.println("inside postexecture" + res);
+            if (res.equals("New Members Notified")) {
+                Toast.makeText(getApplicationContext(), "New members added and Notified!", Toast.LENGTH_LONG).show();
+            } else {
+                if (res.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Please retry pick places!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                finlatlongs = res;
+                String[] parts = res.split(",");
+                EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
+                location.setText(parts[0] + "," + parts[1]);
+                if (eventsDbhelper.updateContact(eventid.getText().toString(), eventnameview.getText().toString(), eventdate.getText().toString(), eventime.getText().toString(), mem, res, eventadmin.getText().toString())) {
+                    Toast.makeText(ViewEvent.this, "Location Updated!", Toast.LENGTH_LONG).show();
+                }
+                Intent mesintent = new Intent(ViewEvent.this, PlacesMap.class);
+                mesintent.putExtra("latlong", parts[0] + "/" + parts[1] + "/" + parts[2]);
+                startActivity(mesintent);
 
 //            InsertTask insertTask = new InsertTask(getContext());
 //            insertTask.execute("",eventId,eventname.getText().toString(),home.getDate(),home.getTime(),members,"ADMIN",null);
 //            Toast.makeText(getActivity().getApplicationContext(), "Event Created!", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -564,24 +569,43 @@ public class ViewEvent extends AppCompatActivity {
         private String res;
         @Override
         protected String doInBackground(String... args) {
+            if(args.length==1)
+            {
+                System.out.println("inside finevent");
+                Delid delid = new Delid();
+                String s = eventId+"!"+finlatlongs+"!"+mem;
+                delid.setId(s);
+                res= POST(args[0],delid);
+                return res;
+            }
+            else{
+            System.out.println("ins1");
             Delid delid = new Delid();
             delid.setId(args[1]);
                 res= POST(args[0], delid);
                 return res;
         }
+        }
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            System.out.println("inside postexectue: "+res);
-            Toast.makeText(ViewEvent.this,res,Toast.LENGTH_LONG).show();
-            EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
-            SQLiteDatabase db = eventsDbhelper.getWritableDatabase();
-            db.delete(EventsContract.EventsEntry.TABLE_NAME,EventsContract.EventsEntry.COLUMN_NAME_EVENTID+"=?",new String[]{eventId});
-            db.close();
-            eventsDbhelper.close();
-            Intent mesintent=new Intent(ViewEvent.this,Home.class);
-            startActivity(mesintent);
-
+            if(res.equals("EventFinalized!"))
+            {
+                requestPlaces.setVisibility(View.INVISIBLE);
+                membersButton.setVisibility(View.INVISIBLE);
+                Toast.makeText(ViewEvent.this,res,Toast.LENGTH_LONG).show();
+            }
+            else {
+                System.out.println("inside postexectue: " + res);
+                Toast.makeText(ViewEvent.this, res, Toast.LENGTH_LONG).show();
+                EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
+                SQLiteDatabase db = eventsDbhelper.getWritableDatabase();
+                db.delete(EventsContract.EventsEntry.TABLE_NAME, EventsContract.EventsEntry.COLUMN_NAME_EVENTID + "=?", new String[]{eventId});
+                db.close();
+                eventsDbhelper.close();
+                Intent mesintent = new Intent(ViewEvent.this, Home.class);
+                startActivity(mesintent);
+            }
         }
     }
 

@@ -1,8 +1,5 @@
 package com.starters.medion.model;
 
-/**
- * Created by KeerthiTejaNuthi on 12/8/16.
- */
 
 public class UserEvent {
 

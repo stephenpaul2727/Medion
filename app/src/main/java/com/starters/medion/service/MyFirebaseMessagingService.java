@@ -21,10 +21,6 @@ import org.json.JSONObject;
 
 import java.util.Map;
 
-/**
- * Created by KeerthiTejaNuthi on 11/15/16.
- */
-
 public class MyFirebaseMessagingService extends FirebaseMessagingService{
     private static final String TAG = MyFirebaseMessagingService.class.getSimpleName();
 

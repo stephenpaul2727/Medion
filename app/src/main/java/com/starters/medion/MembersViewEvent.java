@@ -34,10 +34,6 @@ import java.net.URLConnection;
 
 import javax.net.ssl.HttpsURLConnection;
 
-/**
- * Created by stephenpaul on 18/12/16.
- */
-
 public class MembersViewEvent extends AppCompatActivity{
 
 
@@ -117,13 +113,19 @@ public class MembersViewEvent extends AppCompatActivity{
         pickPlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String [] parts =memlocs.getText().toString().split(",");
-                Uri gmmIntentUri = Uri.parse("geo:"+parts[0]+","+parts[1]+"?q=" + Uri.encode("Decided Location!"));
+                if(memlocs.getText().toString().isEmpty())
+                {
+                    Toast.makeText(MembersViewEvent.this,"Location is still unpicked by admin of this group!",Toast.LENGTH_LONG).show();
+                }
+                else {
+                    String[] parts = memlocs.getText().toString().split(",");
+                    Uri gmmIntentUri = Uri.parse("geo:" + parts[0] + "," + parts[1] + "?q=" + Uri.encode("Decided Location!"));
 
 //                String uri = String.format(Locale.ENGLISH, "geo:%f,%f", latitude, longitude);
-                Intent intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                intent.setPackage("com.google.android.apps.maps");
-                startActivity(intent);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    intent.setPackage("com.google.android.apps.maps");
+                    startActivity(intent);
+                }
             }
         });
 
@@ -138,7 +140,7 @@ public class MembersViewEvent extends AppCompatActivity{
                             public void onClick(DialogInterface dialog, int which) {
                                 SharedPreferences prefer = getApplicationContext().getSharedPreferences(config.SHARED_PREF, 0);
                                 String regId = prefer.getString("regId", null);
-                                new HttpAsyncTask().execute(regId+"!"+eventId,"https://whispering-everglades-62915.herokuapp.com/api/delMember");
+                                new HttpAsyncTask().execute(regId+"!"+eventId,"https://whispering-everglades-62915.herokuapp.com/serv/delmember");
 
                             }
                         });

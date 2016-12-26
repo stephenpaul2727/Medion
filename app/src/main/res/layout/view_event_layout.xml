@@ -178,19 +178,6 @@
     </TableLayout>
 
 
-
-    <com.gc.materialdesign.views.ButtonRectangle
-        android:text="Save"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_viewevent_save"
-        android:layout_centerHorizontal="true"
-        android:background="#292b2d"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/edit_viewevent_cancelevent"
-        android:textColor="#92e8a7"
-         />
-
     <ImageButton
         android:layout_width="140dp"
         android:layout_height="140dp"
