@@ -393,7 +393,6 @@ public class ViewEvent extends AppCompatActivity {
 
             // 3. build jsonObject
             JSONObject eventJson = new JSONObject();
-            eventJson.accumulate("eventId",event.getEventId());
             eventJson.accumulate("eventName", event.getEventName());
             eventJson.accumulate("eventDate", event.getEventDate());
             eventJson.accumulate("eventTime", event.getEventTime());
@@ -438,7 +437,12 @@ public class ViewEvent extends AppCompatActivity {
                 phone[1]=phone[1].replaceAll("[^a-zA-Z0-9]","");
                 System.out.println("contact is:"+phone[1]);
                 contactsarray.add(phone[1]);
-                sb.append(phone[1]+",");
+                try{
+                sb.append(phone[1]+",");}
+                catch(ArrayIndexOutOfBoundsException ee)
+                {
+                    Toast.makeText(ViewEvent.this,"Click again Please!",Toast.LENGTH_LONG).show();
+                }
                 Toast.makeText(ViewEvent.this, contactstxt.getText().toString(),Toast.LENGTH_LONG).show();
             }
         });
@@ -463,8 +467,15 @@ public class ViewEvent extends AppCompatActivity {
         });
         builder.setView(contact_list);
         AlertDialog dialog = builder.create();
-        dialog.show();
-
+        if(ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+            Toast.makeText(ViewEvent.this,"Please Grant permission for the app to read your contacts!",Toast.LENGTH_LONG).show();
+        }
+        else {
+            dialog.show();
+        }
     }
 
     public static String POST(String stringURL, Delid eid){
@@ -522,10 +533,9 @@ public class ViewEvent extends AppCompatActivity {
                 return res;
             } else {
                 event = new Event();
-                event.setEventId(args[0]);
                 event.setEventName(args[1]);
                 event.setEventDate(args[2]);
-                event.setEventTime(args[3]);
+                event.setEventTime(args[3]+"/"+args[0]);
                 event.setMemberList(args[4]);
 
                 res = POST(args[5], event);
@@ -591,8 +601,6 @@ public class ViewEvent extends AppCompatActivity {
         protected void onPostExecute(String result) {
             if(res.equals("EventFinalized!"))
             {
-                requestPlaces.setVisibility(View.INVISIBLE);
-                membersButton.setVisibility(View.INVISIBLE);
                 Toast.makeText(ViewEvent.this,res,Toast.LENGTH_LONG).show();
             }
             else {

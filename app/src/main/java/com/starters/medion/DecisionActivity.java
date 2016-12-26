@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
@@ -70,13 +71,9 @@ public class DecisionActivity extends AppCompatActivity {
             String message = intent.getStringExtra("key");
             Log.e("mm", message);
             int notifyID=1;
+            String newmes = message;
             NotificationManager notify = (NotificationManager) getSystemService(context.NOTIFICATION_SERVICE);
             String[] parts = message.split(",");
-            String[] newparts=null;
-            try{
-            newparts = message.split("!");}
-            catch(Exception e)
-            {}
 
             if(parts[0].equals("EventCreated")) {
                 System.out.println("ENTERED EVENT CREATED");
@@ -132,16 +129,62 @@ public class DecisionActivity extends AppCompatActivity {
                 mesintent.putExtra("latlong",latitude+"/"+longitude+"/"+place_id);
                 startActivity(mesintent);
 
-            }else if(newparts!=null && newparts[0].equals("Event Finalized")){
-                String [] par = newparts[5].split(",");
+            }
+            else if(parts[0].equals("Event with id"))
+            {
+                EventsDbhelper evehelp = new EventsDbhelper(getApplicationContext());
+                SQLiteDatabase db = evehelp.getWritableDatabase();
+                db.delete(EventsContract.EventsEntry.TABLE_NAME,EventsContract.EventsEntry.COLUMN_NAME_EVENTID+"=?",new String[]{parts[1]});
+                db.close();
+                evehelp.close();
+            }
+            else if(parts[0].equals("Member with Phone"))
+            {
+                EventsDbhelper evehelp = new EventsDbhelper(getApplicationContext());
+                SQLiteDatabase db = evehelp.getWritableDatabase();
+                String phone = parts[1];
+                String eveid = parts[2];
+                ContentValues cval = new ContentValues();
+                Cursor c;
+                c= evehelp.getListContents();
+                c.moveToFirst();
+                while(c.moveToNext())
+                {
+                    if(c.getString(c.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_EVENTID)).equals(eveid))
+                    {
+                        String mem = c.getString(c.getColumnIndex(EventsContract.EventsEntry.COLUMN_NAME_MEMBERS));
+                        String [] splitmem = mem.split(",");
+                        StringBuilder s = new StringBuilder();
+                        for(int i=0;i<splitmem.length;i++)
+                        {
+                            if(splitmem[i].equals(phone))
+                            {}
+                            else
+                            {
+                                s.append(splitmem[i]+",");
+                            }
+                        }
+                        s.setLength(s.length()-1);
+                        cval.put(EventsContract.EventsEntry.COLUMN_NAME_MEMBERS,s.toString());
+                        db.update(EventsContract.EventsEntry.TABLE_NAME,cval,EventsContract.EventsEntry.COLUMN_NAME_EVENTID+"=?",new String[]{eveid});
+                    }
+                }
+                db.close();
+                evehelp.close();
+            }
+            else {
+                Toast.makeText(DecisionActivity.this,"Event Finalized",Toast.LENGTH_LONG).show();
+                String [] pawns= newmes.split("!");
+
+                String [] par = pawns[5].split(",");
                 String latitude = par[1];
                 String longitude = par[2];
                 EventsDbhelper evehelp = new EventsDbhelper(getApplicationContext());
                 SQLiteDatabase db = evehelp.getWritableDatabase();
                 ContentValues cv = new ContentValues();
-                cv.put(EventsContract.EventsEntry.COLUMN_NAME_MEMBERS, newparts[3]);
-                cv.put(EventsContract.EventsEntry.COLUMN_NAME_LOCATION,newparts[5]);
-                db.update(EventsContract.EventsEntry.TABLE_NAME, cv, newparts[1],null);
+                cv.put(EventsContract.EventsEntry.COLUMN_NAME_MEMBERS, pawns[3]);
+                cv.put(EventsContract.EventsEntry.COLUMN_NAME_LOCATION,pawns[5]);
+                db.update(EventsContract.EventsEntry.TABLE_NAME, cv, EventsContract.EventsEntry.COLUMN_NAME_EVENTID +" = ?", new String[] {pawns[1]});
                 db.close();
                 evehelp.close();
                 startActivity(new Intent(DecisionActivity.this, MembersViewEvent.class));
