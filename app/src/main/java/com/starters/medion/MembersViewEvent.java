@@ -26,6 +26,7 @@ import com.starters.medion.model.Eid;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -48,6 +49,7 @@ public class MembersViewEvent extends AppCompatActivity{
     private EventsDbhelper mDbhelper;
     private ImageButton currentMembers;
     private String mem;
+    Delid delid;
     private String eventId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,8 +222,20 @@ public class MembersViewEvent extends AppCompatActivity{
         private String res;
         @Override
         protected String doInBackground(String... args) {
-                Delid delid = new Delid();
-                delid.setId(args[0]);
+                delid = new Delid();
+            String userphonenum=null;
+            try {
+                FileInputStream f = MembersViewEvent.this.openFileInput("login_details_file");
+                BufferedReader br = new BufferedReader( new InputStreamReader(f));
+                String line;
+                while((line = br.readLine())!=null)
+                {
+                    userphonenum = line;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+                delid.setId(userphonenum+"!"+eventId);
                 res= POST(args[1], delid);
                 return res;
             }

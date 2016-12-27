@@ -80,7 +80,7 @@ public class DecisionActivity extends AppCompatActivity {
 
                 NotificationCompat.Builder mBuilder =
                         new NotificationCompat.Builder(getApplicationContext())
-                                .setSmallIcon(R.drawable.applogosecondary)
+                                .setSmallIcon(R.drawable.app_xxhdpi)
                                 .setContentTitle("Medion")
                                 .setContentText("New Event "+parts[2]+" created");
                 notify.notify(notifyID,mBuilder.build());
@@ -112,6 +112,12 @@ public class DecisionActivity extends AppCompatActivity {
                     new HttpAsyncTask().execute(parts[1], reg, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()), "https://whispering-everglades-62915.herokuapp.com/api/addUserEvent");
                 }
             }else if(parts[0].equals("MedionCalculated")){
+                NotificationCompat.Builder mBuilder =
+                        new NotificationCompat.Builder(getApplicationContext())
+                                .setSmallIcon(R.drawable.app_xxhdpi)
+                                .setContentTitle("Medion")
+                                .setContentText(message);
+                notify.notify(notifyID,mBuilder.build());
 
                 System.out.println("inside medion..!");
                 String latitude = parts[1];
@@ -132,6 +138,12 @@ public class DecisionActivity extends AppCompatActivity {
             }
             else if(parts[0].equals("Event with id"))
             {
+                NotificationCompat.Builder mBuilder =
+                        new NotificationCompat.Builder(getApplicationContext())
+                                .setSmallIcon(R.drawable.app_xxhdpi)
+                                .setContentTitle("Medion")
+                                .setContentText(message);
+                notify.notify(notifyID,mBuilder.build());
                 EventsDbhelper evehelp = new EventsDbhelper(getApplicationContext());
                 SQLiteDatabase db = evehelp.getWritableDatabase();
                 db.delete(EventsContract.EventsEntry.TABLE_NAME,EventsContract.EventsEntry.COLUMN_NAME_EVENTID+"=?",new String[]{parts[1]});
@@ -140,6 +152,13 @@ public class DecisionActivity extends AppCompatActivity {
             }
             else if(parts[0].equals("Member with Phone"))
             {
+                NotificationCompat.Builder mBuilder =
+                        new NotificationCompat.Builder(getApplicationContext())
+                                .setSmallIcon(R.drawable.app_xxhdpi)
+                                .setContentTitle("Medion")
+                                .setContentText(message);
+                notify.notify(notifyID,mBuilder.build());
+                Toast.makeText(DecisionActivity.this, message, Toast.LENGTH_LONG).show();
                 EventsDbhelper evehelp = new EventsDbhelper(getApplicationContext());
                 SQLiteDatabase db = evehelp.getWritableDatabase();
                 String phone = parts[1];
@@ -164,7 +183,9 @@ public class DecisionActivity extends AppCompatActivity {
                                 s.append(splitmem[i]+",");
                             }
                         }
-                        s.setLength(s.length()-1);
+                        if(s.length()==0){}
+                        else{
+                        s.setLength(s.length()-1);}
                         cval.put(EventsContract.EventsEntry.COLUMN_NAME_MEMBERS,s.toString());
                         db.update(EventsContract.EventsEntry.TABLE_NAME,cval,EventsContract.EventsEntry.COLUMN_NAME_EVENTID+"=?",new String[]{eveid});
                     }
@@ -173,6 +194,12 @@ public class DecisionActivity extends AppCompatActivity {
                 evehelp.close();
             }
             else {
+                NotificationCompat.Builder mBuilder =
+                        new NotificationCompat.Builder(getApplicationContext())
+                                .setSmallIcon(R.drawable.app_xxhdpi)
+                                .setContentTitle("Medion")
+                                .setContentText(message);
+                notify.notify(notifyID,mBuilder.build());
                 Toast.makeText(DecisionActivity.this,"Event Finalized",Toast.LENGTH_LONG).show();
                 String [] pawns= newmes.split("!");
 
