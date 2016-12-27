@@ -202,7 +202,6 @@ public class DecisionActivity extends AppCompatActivity {
                 notify.notify(notifyID,mBuilder.build());
                 Toast.makeText(DecisionActivity.this,"Event Finalized",Toast.LENGTH_LONG).show();
                 String [] pawns= newmes.split("!");
-
                 String [] par = pawns[5].split(",");
                 String latitude = par[1];
                 String longitude = par[2];
@@ -214,7 +213,6 @@ public class DecisionActivity extends AppCompatActivity {
                 db.update(EventsContract.EventsEntry.TABLE_NAME, cv, EventsContract.EventsEntry.COLUMN_NAME_EVENTID +" = ?", new String[] {pawns[1]});
                 db.close();
                 evehelp.close();
-                startActivity(new Intent(DecisionActivity.this, MembersViewEvent.class));
             }
 
         }
