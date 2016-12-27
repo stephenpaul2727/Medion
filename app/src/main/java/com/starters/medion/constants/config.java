@@ -18,6 +18,7 @@ public class config {
 
     public static final String SHARED_PREF = "ah_firebase";
     public static String ownerfcm ="";
+    public static final String LOCS ="locfile";
 
 
 }

@@ -45,7 +45,6 @@
         android:layout_height="wrap_content"
         android:textSize="18dp"
         android:textColor="#1b3966"
-        android:layout_marginLeft="150dp"
         android:layout_marginTop="15dp"
         android:id = "@+id/members_eventid"
         android:layout_marginRight="20dp"
@@ -71,7 +70,6 @@
         android:layout_height="wrap_content"
         android:textSize="18dp"
         android:layout_marginRight="20dp"
-        android:layout_marginLeft="150dp"
         android:id = "@+id/members_eventname"
         android:textColor="#1b3966"
         android:layout_alignParentRight="true"
@@ -97,7 +95,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:textSize="18dp"
-        android:layout_marginLeft="150dp"
         android:textColor="#e8493e"
         android:layout_marginRight="20dp"
         android:id = "@+id/members_eventadmin"
@@ -121,7 +118,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:textSize="18dp"
-        android:layout_marginLeft="150dp"
         android:textColor="#1b3966"
         android:layout_marginRight="20dp"
         android:id = "@+id/members_eventdate"
@@ -147,7 +143,6 @@
         android:layout_alignParentRight="true"
         android:textSize="18dp"
         android:textColor="#1b3966"
-        android:layout_marginLeft="150dp"
         android:layout_marginRight="20dp"
         android:id = "@+id/members_eventtime"
         android:layout_below="@+id/members_eventdate"
@@ -170,24 +165,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:textSize="18dp"
+            android:textSize="12dp"
             android:textColor="#1b3966"
-            android:layout_marginLeft="150dp"
             android:layout_marginRight="20dp"
             android:id = "@+id/members_location"
             android:layout_below="@+id/members_eventtime"
-            android:text="time"/>
+            android:text="location not Found!"/>
     </TableRow>
 
     </TableLayout>
 
 
     <ImageButton
-        android:layout_marginTop="35dp"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
+        android:layout_marginTop="40dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:id="@+id/members_pickplace"
-        android:background="@drawable/pickplace"
+        android:background="@drawable/finalplace"
         android:layout_below="@+id/members_tablelayout"
         android:layout_centerHorizontal="true"/>
 

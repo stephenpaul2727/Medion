@@ -124,7 +124,19 @@ public class DecisionActivity extends AppCompatActivity {
                 String [] resu = parts[2].split("/");
                 String longitude = resu[0];
                 String place_id = resu[1];
+                String filename = config.LOCS;
                 String evid = parts[3];
+                FileOutputStream outputStream;
+
+                try {
+                    outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+                    outputStream.write(place_id.getBytes());
+                    outputStream.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
                 EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
                 SQLiteDatabase db = eventsDbhelper.getWritableDatabase();
                 ContentValues contentValues = new ContentValues();
@@ -202,9 +214,6 @@ public class DecisionActivity extends AppCompatActivity {
                 notify.notify(notifyID,mBuilder.build());
                 Toast.makeText(DecisionActivity.this,"Event Finalized",Toast.LENGTH_LONG).show();
                 String [] pawns= newmes.split("!");
-                String [] par = pawns[5].split(",");
-                String latitude = par[1];
-                String longitude = par[2];
                 EventsDbhelper evehelp = new EventsDbhelper(getApplicationContext());
                 SQLiteDatabase db = evehelp.getWritableDatabase();
                 ContentValues cv = new ContentValues();

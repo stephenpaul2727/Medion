@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.gc.materialdesign.widgets.Dialog;
+import com.starters.medion.constants.config;
 import com.starters.medion.contract.EventsContract;
 import com.starters.medion.dbtasks.InsertTask;
 import com.starters.medion.model.Delid;
@@ -41,6 +42,7 @@ import com.starters.medion.dbhelper.EventsDbhelper;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -69,6 +71,7 @@ public class ViewEvent extends AppCompatActivity {
     private Event event;
     private EventsDbhelper mdbhelper;
     private Eid eid;
+    private ImageButton finalplace;
     private ImageButton finalizeEvent;
     public ButtonRectangle saveButton;
     public ImageButton membersButton;
@@ -171,6 +174,7 @@ public class ViewEvent extends AppCompatActivity {
         membersButton = (ImageButton) findViewById(R.id.edit_viewevent_addMembers);
         cancelEvent = (ImageButton) findViewById(R.id.edit_viewevent_cancelevent);
         requestPlaces = (ImageButton)findViewById(R.id.edit_viewevent_places);
+        finalplace = (ImageButton)findViewById(R.id.edit_viewevent_finalplace);
 
         newMemberList = mem.split(",");
 
@@ -196,10 +200,45 @@ public class ViewEvent extends AppCompatActivity {
                 }
             }
         });
+
+        finalplace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(location.getText().toString().equals("Pick place to get updated!")){
+                    Toast.makeText(ViewEvent.this,"Finalize event and view final place!",Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    String pid=null;
+                    try {
+                        FileInputStream f = ViewEvent.this.openFileInput(config.LOCS);
+                        BufferedReader br = new BufferedReader( new InputStreamReader(f));
+                        String line;
+                        while((line = br.readLine())!=null)
+                        {
+                            pid = line;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    String [] x = location.getText().toString().split(",");
+                    Intent mesintent=new Intent(ViewEvent.this,PlacesMap.class);
+                    mesintent.putExtra("latlong",x[0]+"/"+x[1]+"/"+pid);
+                    startActivity(mesintent);
+                }
+            }
+        });
         finalizeEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DelAsyncTask().execute("https://whispering-everglades-62915.herokuapp.com/api/finEvent");
+                if(location.getText().toString().equals("Pick place to get updated!"))
+                {
+                    Toast.makeText(ViewEvent.this,"Pick a Place First to finalize the event!",Toast.LENGTH_LONG).show();
+                }
+                else{
+
+                finlatlongs =location.getText().toString();
+                new DelAsyncTask().execute("https://whispering-everglades-62915.herokuapp.com/api/finEvent");}
             }
         });
 
@@ -599,11 +638,18 @@ public class ViewEvent extends AppCompatActivity {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            if(res.equals("EventFinalized!"))
+            if(res.equals("Event Finalized!"))
             {
                 Toast.makeText(ViewEvent.this,res,Toast.LENGTH_LONG).show();
+                finalizeEvent.setVisibility(View.INVISIBLE);
+                membersButton.setVisibility(View.INVISIBLE);
+                cancelEvent.setVisibility(View.INVISIBLE);
+                requestPlaces.setVisibility(View.INVISIBLE);
             }
             else {
+                String[] ho =res.split(" ");
+                if(ho[0].equals("Successfully"))
+                {
                 System.out.println("inside postexectue: " + res);
                 Toast.makeText(ViewEvent.this, res, Toast.LENGTH_LONG).show();
                 EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
@@ -613,6 +659,8 @@ public class ViewEvent extends AppCompatActivity {
                 eventsDbhelper.close();
                 Intent mesintent = new Intent(ViewEvent.this, Home.class);
                 startActivity(mesintent);
+            }
+            else{}
             }
         }
     }

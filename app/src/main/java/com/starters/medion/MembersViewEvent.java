@@ -115,18 +115,27 @@ public class MembersViewEvent extends AppCompatActivity{
         pickPlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(memlocs.getText().toString().isEmpty())
+                if(memlocs.getText().toString().equals("location not Found!"))
                 {
                     Toast.makeText(MembersViewEvent.this,"Location is still unpicked by admin of this group!",Toast.LENGTH_LONG).show();
                 }
                 else {
-                    String[] parts = memlocs.getText().toString().split(",");
-                    Uri gmmIntentUri = Uri.parse("geo:" + parts[0] + "," + parts[1] + "?q=" + Uri.encode("Decided Location!"));
-
-//                String uri = String.format(Locale.ENGLISH, "geo:%f,%f", latitude, longitude);
-                    Intent intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                    intent.setPackage("com.google.android.apps.maps");
-                    startActivity(intent);
+                    String pid=null;
+                    try {
+                        FileInputStream f = MembersViewEvent.this.openFileInput(config.LOCS);
+                        BufferedReader br = new BufferedReader( new InputStreamReader(f));
+                        String line;
+                        while((line = br.readLine())!=null)
+                        {
+                            pid = line;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    String [] x = memlocs.getText().toString().split(",");
+                    Intent mesintent=new Intent(MembersViewEvent.this,PlacesMap.class);
+                    mesintent.putExtra("latlong",x[0]+"/"+x[1]+"/"+pid);
+                    startActivity(mesintent);
                 }
             }
         });
