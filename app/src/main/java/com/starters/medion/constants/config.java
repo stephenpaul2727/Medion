@@ -1,9 +1,5 @@
 package com.starters.medion.constants;
 
-/**
- * Created by KeerthiTejaNuthi on 11/15/16.
- */
-
 public class config {
     // global topic to receive app wide push notifications
     public static final String TOPIC_GLOBAL = "global";

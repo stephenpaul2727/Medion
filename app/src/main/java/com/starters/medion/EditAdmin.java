@@ -1,23 +1,20 @@
 package com.starters.medion;
 
-import android.*;
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -36,23 +33,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.List;
 
 import com.gc.materialdesign.views.ButtonRectangle;
-import com.starters.medion.constants.config;
-import com.starters.medion.dbhelper.EventsDbhelper;
 import com.starters.medion.dbtasks.InsertTask;
 import com.starters.medion.model.Eid;
 import com.starters.medion.model.Event;
-import com.starters.medion.model.User;
 import com.starters.medion.service.TrackGPS;
 
-import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
@@ -63,19 +53,15 @@ import java.util.HashMap;
 
 import static android.app.Activity.RESULT_OK;
 
-/**
- * Created by stephenpaul on 03/11/16.
- */
-
 public class EditAdmin extends Fragment {
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 0;
     private static final int MY_PERMISSIONS_REQUEST_WRITE_CONTACTS = 2;
     ArrayAdapter<String> adapter;
-    public ListView contact_list = null;
-    public HashMap<String,String> myMap;
-    public ArrayList<String> contactsarray = new ArrayList<String>();
-    public ArrayList<String> contactsarray2 = new ArrayList<String>();
-    public ImageButton imageButton;
+    private ListView contact_list = null;
+    private HashMap<String,String> myMap;
+    private ArrayList<String> contactsarray = new ArrayList<>();
+    private ArrayList<String> contactsarray2 = new ArrayList<>();
+    private ImageButton imageButton;
     private int RESULT_LOAD_IMG =1;
     private String decodableImage;
     private int waiter = 0;
@@ -93,7 +79,7 @@ public class EditAdmin extends Fragment {
     private String members;
     private String userphonenum=null;
     private ImageButton datepicker;
-    View view;
+    private View view;
     private ImageButton timepicker;
 
     public interface HomeListener
@@ -116,6 +102,7 @@ public class EditAdmin extends Fragment {
         try {
             view = inflater.inflate(R.layout.edit_admin, container, false);
         } catch (InflateException e) {
+            Toast.makeText(getActivity(),R.string.layoutexception,Toast.LENGTH_LONG).show();
 
         }
 
@@ -183,7 +170,7 @@ public class EditAdmin extends Fragment {
                 System.out.println(home.getDate()+"vvv"+home.getTime());
 
 
-                ArrayList<String> mem = new ArrayList<String>();
+                ArrayList<String> mem = new ArrayList<>();
                 for(int i=0; i<contactsarray.size(); i++) {
                     mem.add(i, contactsarray.get(i));
                 }
@@ -247,15 +234,22 @@ public class EditAdmin extends Fragment {
         try{
             if(requestCode==RESULT_LOAD_IMG && resultCode== RESULT_OK && null!=data)
             {
+                try{
                 Uri selectedImage = data.getData();
                 String[] path = { MediaStore.Images.Media.DATA};
                 Cursor imageTraverse = getActivity().getContentResolver().query(selectedImage,path,null,null,null);
-                imageTraverse.moveToFirst();
+                    assert imageTraverse != null;
+                    imageTraverse.moveToFirst();
                 int column = imageTraverse.getColumnIndex(path[0]);
                 decodableImage= imageTraverse.getString(column);
                 imageButton.setImageBitmap(BitmapFactory.decodeFile(decodableImage));
                 imageButton.invalidate();
-
+                    imageTraverse.close();
+                }
+                catch(Exception e)
+                {
+                    Toast.makeText(getActivity(),R.string.dbexception1,Toast.LENGTH_LONG).show();
+                }
             }
             else
             {
@@ -269,7 +263,7 @@ public class EditAdmin extends Fragment {
         }
     }
 
-    public void checkContactPermission()
+    private void checkContactPermission()
     {
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.READ_CONTACTS)
@@ -289,7 +283,7 @@ public class EditAdmin extends Fragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 System.out.println("populating contacts list");
@@ -298,7 +292,7 @@ public class EditAdmin extends Fragment {
             }
             else
             {
-                Toast.makeText(this.getActivity(),"until you give permissions, this app cannot function properly",Toast.LENGTH_LONG);
+                Toast.makeText(this.getActivity(),"until you give permissions, this app cannot function properly",Toast.LENGTH_LONG).show();
             }
             return;
         }
@@ -306,10 +300,10 @@ public class EditAdmin extends Fragment {
 
     }
 
-    public void showDialogListView(View view)
+    private void showDialogListView(View view)
     {
         contact_list = new ListView(getActivity());
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.contact_list,R.id.contacts,contactsarray2);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.contact_list, R.id.contacts, contactsarray2);
             contact_list.setAdapter(adapter);
         contact_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -336,20 +330,22 @@ public class EditAdmin extends Fragment {
     }
 
 
-    public void populateContactList()
+    private void populateContactList()
     {
-        myMap = new HashMap<String,String>();
+        myMap = new HashMap<>();
         ContentResolver resolver = getActivity().getContentResolver();
 
             Cursor cursor = resolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
         Cursor phoneCursor;
         try {
 
+            assert cursor != null;
             while (cursor.moveToNext()) {
                 String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
                 String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
 
                 phoneCursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " =?", new String[]{id}, null);
+                assert phoneCursor != null;
                 while (phoneCursor.moveToNext()) {
                     String phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                     myMap.put(name, phoneNumber);
@@ -362,13 +358,13 @@ public class EditAdmin extends Fragment {
         }
         catch(Exception e)
         {
-            e.printStackTrace();
+            Toast.makeText(getActivity(),R.string.dbexception1,Toast.LENGTH_LONG).show();
         }
     }
 
 
 
-    public static String POST(String stringURL, Eid eid){
+    private static String POST(String stringURL, Eid eid){
         try {
             Log.d("POST","reached!");
             // 1. create URL
@@ -408,7 +404,7 @@ public class EditAdmin extends Fragment {
         return null;
     }
 
-    public static String POST(String stringURL, Event event) {
+    private static String POST(String stringURL, Event event) {
         String result = "";
         try {
 

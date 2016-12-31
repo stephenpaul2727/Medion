@@ -1,65 +1,24 @@
 package com.starters.medion;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.support.v4.app.NotificationCompat;
 import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.content.Intent;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.gc.materialdesign.views.CheckBox;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.starters.medion.constants.config;
-
-import com.starters.medion.contract.EventsContract;
-import com.starters.medion.dbhelper.EventsDbhelper;
-import com.starters.medion.dbhelper.UserDBHelper;
 import com.starters.medion.model.GeoCoordinates;
 import com.starters.medion.model.UserEvent;
 import com.starters.medion.service.TrackGPS;
-import com.starters.medion.dbtasks.InsertTask;
-//import com.starters.medion.utils.Maps;
-import com.starters.medion.utils.NotificationUtils;
-
-import com.gc.materialdesign.views.ButtonRectangle;
-
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -75,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText password;
     private String username;
     private String pass;
-    public String res;
+    private String res;
     private String eventId;
     private android.widget.CheckBox cb;
 
@@ -158,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
 //    };
 
-    public void addLoginClickListener()
+    private void addLoginClickListener()
     {
         Button login = (Button) findViewById(R.id.Connectstage_login);
         login.setFocusable(true);
@@ -184,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    public void addSignupClickListener()
+    private void addSignupClickListener()
     {
         Button signup = (Button) findViewById(R.id.ConnectStage_SignUp);
         signup.setFocusable(true);
@@ -273,8 +232,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    public static String GET(String stringURL) {
-        InputStream inputStream = null;
+    private static String GET(String stringURL) {
         String result = "";
         try {
 

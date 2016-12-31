@@ -1,46 +1,29 @@
 package com.starters.medion;
 
 import android.app.DatePickerDialog;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewManager;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.*;
 import android.widget.TimePicker;
 
 import com.gc.materialdesign.views.ButtonFloat;
-import com.gc.materialdesign.views.ButtonRectangle;
 import com.starters.medion.dbtasks.InsertTask;
 import com.starters.medion.dbtasks.ReadTask;
-
-
-import java.util.zip.Inflater;
-
-//import com.starters.medion.utils.Maps;
-
-/**
- * Created by KeerthiTejaNuthi on 11/1/16.
- */
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener,EditAdmin.HomeListener {
 
@@ -69,25 +52,17 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         setContentView(R.layout.home_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#b7d6e5\">" +"Upcoming Events"+"</font>"));
+        try{
+            //noinspection ConstantConditions
+            getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#b7d6e5\">" +"Upcoming Events"+"</font>"));}
+        catch(Exception ignored)
+        {}
 
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
-        try {
-            if (getIntent().getExtras().getString("ll") != null) {
-                String s = getIntent().getExtras().getString("ll");
-                String[] latilongi = s.split("/");
-                latitude = Double.parseDouble(latilongi[0]);
-                longitude = Double.parseDouble(latilongi[1]);
-            }
-        }
-        catch(Exception e)
-        {
-
-        }
         insert = new InsertTask(this);
         //insert.execute();
         read = new ReadTask(this);
@@ -135,13 +110,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -154,13 +122,13 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         list = read.getListView();
         list.setVisibility(View.GONE)   ;
         FragmentManager fragmentManager = getFragmentManager();
-        android.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        @SuppressWarnings("UnusedAssignment") android.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
        if(id == R.id.home)
         {
             Intent intent = new Intent(getApplicationContext(),Home.class);
             startActivity(intent);
         }
-
+        fragmentTransaction.commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -183,13 +151,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     @Override
     public String getDate() {
-        String date = pickerDay +"-"+ pickerMonth +"-"+ pickerYear;
-        return date;
+        return pickerDay +"-"+ pickerMonth +"-"+ pickerYear;
     }
 
     @Override
     public String getTime() {
-        String time = Integer.toString(pickerHour) +":"+ Integer.toString(pickerMin);
-        return time;
+        return Integer.toString(pickerHour) +":"+ Integer.toString(pickerMin);
     }
 }

@@ -3,7 +3,6 @@ package com.gc.materialdesign.views;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewGroup;
 
 
@@ -28,7 +27,7 @@ public class ScrollView extends android.widget.ScrollView {
 						child.onTouchEvent(ev);
 						return true;
 					}
-				} catch (ClassCastException e) {
+				} catch (ClassCastException ignored) {
 				}
 	        }
 //	    }

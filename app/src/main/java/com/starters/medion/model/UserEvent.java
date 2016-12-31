@@ -24,8 +24,8 @@ public class UserEvent {
     public boolean isAcceptance() {
         return acceptance;
     }
-    public void setAcceptance(boolean acceptance) {
-        this.acceptance = acceptance;
+    public void setAcceptance() {
+        this.acceptance = true;
     }
     public String getLatitude() {
         return latitude;

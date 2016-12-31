@@ -11,24 +11,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import android.widget.Button;
-import com.gc.materialdesign.views.ButtonRectangle;
 import com.starters.medion.constants.config;
-import com.starters.medion.dbhelper.UserDBHelper;
 import com.starters.medion.model.User;
 
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 
-/**
- * Created by KeerthiTejaNuthi on 11/28/16.
- */
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
@@ -115,8 +108,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
             return true;
     }
 
-    public static String POST(String stringURL, User user) {
-        InputStream inputStream = null;
+    private static String POST(String stringURL, User user) {
         String result = "";
         try {
 

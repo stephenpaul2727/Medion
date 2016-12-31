@@ -9,9 +9,6 @@ import com.starters.medion.constants.config;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
-/**
- * Created by KeerthiTejaNuthi on 11/15/16.
- */
 
 public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService{
     private static final String TAG = MyFirebaseInstanceIDService.class.getSimpleName();
@@ -42,6 +39,6 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService{
         SharedPreferences pref = getApplicationContext().getSharedPreferences(config.SHARED_PREF, 0);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("regId", token);
-        editor.commit();
+        editor.apply();
     }
 }

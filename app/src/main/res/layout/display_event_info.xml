@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:background="@drawable/list_selector"
     android:layout_height="match_parent">
@@ -8,13 +9,13 @@
         android:layout_width="150dp"
         android:id="@+id/t_eventname"
         android:layout_alignParentLeft="true"
-        android:text="Name"
+        android:text="@string/eventName"
         android:textAlignment="center"
         android:textSize="50px"
         android:textColor="#000000"
         android:paddingLeft="20dp"
         android:paddingTop="60px"
-        />
+        tools:ignore="RtlHardcoded,RtlSymmetry" />
     <TextView
         android:layout_height="match_parent"
         android:layout_width="100dp"
@@ -23,10 +24,9 @@
         android:textSize="50px"
         android:layout_toRightOf="@id/t_eventname"
         android:textAlignment="center"
-        android:text="02/21/2017"
         android:gravity="center_vertical"
         android:textColor="#000000"
-        />
+        tools:ignore="RtlHardcoded" />
 
     <TextView
         android:layout_height="match_parent"
@@ -36,9 +36,9 @@
         android:paddingLeft="40dp"
         android:textSize="50px"
         android:layout_toRightOf="@id/t_date"
-        android:text="10am"
         android:gravity="center_vertical"
-        android:textColor="#000000" />
+        android:textColor="#000000"
+        tools:ignore="RtlHardcoded,RtlSymmetry" />
 
 
 

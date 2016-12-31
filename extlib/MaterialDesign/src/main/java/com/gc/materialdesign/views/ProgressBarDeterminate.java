@@ -10,17 +10,15 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 
 public class ProgressBarDeterminate extends CustomView {
 	
 	
-	int max = 100;
-	int min = 0;
-	int progress = 0;
+	private int max = 100;
+	private int min = 0;
+	private int progress = 0;
 	
-	int backgroundColor = Color.parseColor("#1E88E5");
+	private int backgroundColor = Color.parseColor("#1E88E5");
 	
 	View progressView;
 
@@ -30,7 +28,7 @@ public class ProgressBarDeterminate extends CustomView {
 	}
 	
 	// Set atributtes of XML to View
-		protected void setAttributes(AttributeSet attrs){
+	private void setAttributes(AttributeSet attrs){
 			
 			progressView = new View(getContext());
 			LayoutParams params = new LayoutParams(1,1);
@@ -72,9 +70,9 @@ public class ProgressBarDeterminate extends CustomView {
 	
 	/**
 	 * Make a dark color to ripple effect
-	 * @return
+	 *
 	 */
-	protected int makePressColor(){
+	private int makePressColor(){
 		int r = (this.backgroundColor >> 16) & 0xFF;
 		int g = (this.backgroundColor >> 8) & 0xFF;
 		int b = (this.backgroundColor >> 0) & 0xFF;
@@ -98,8 +96,8 @@ public class ProgressBarDeterminate extends CustomView {
 		this.min = min;
 	}
 	
-	int pendindProgress = -1;
-	public void setProgress(int progress){
+	private int pendindProgress = -1;
+	void setProgress(int progress){
 		if(getWidth() == 0){
 			pendindProgress = progress;
 		}else{

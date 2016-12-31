@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:id="@+id/edit_admin_layout"
     android:background="@drawable/gradient_bg"
 
     android:layout_marginTop="0dp">
 
 
     <com.gc.materialdesign.views.ButtonRectangle
-        android:text="Save"
+        android:text="@string/eventSave"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:id="@+id/edit_admin_save"
@@ -25,6 +23,7 @@
 
     <ImageButton
         android:layout_marginTop="21dp"
+        android:contentDescription="@string/profile_logo"
         android:id="@+id/edit_imagebutton"
         android:layout_width="100dp"
         android:background="@drawable/profilepic"
@@ -34,16 +33,19 @@
 
     <ImageButton
         android:id="@+id/edit_admin_select_time"
+        android:contentDescription="@string/time_image"
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:background="@drawable/selecttime"
         android:layout_below="@+id/edit_admin_event_name"
         android:layout_marginTop="100px"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        tools:ignore="RtlHardcoded" />
 
     <ImageButton
         android:layout_width="140dp"
         android:layout_height="140dp"
+        android:contentDescription="@string/select_members"
         android:id="@+id/edit_admin_addMembers"
         android:background="@drawable/selectmembers"
         android:layout_below="@+id/edit_admin_event_name"
@@ -53,7 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:hint="Provide an Event Name!"
+        android:hint="@string/hint_eventName"
         android:ems="10"
         android:layout_marginTop="30px"
         android:id="@+id/edit_admin_event_name"
@@ -65,11 +67,12 @@
     <ImageButton
         android:id="@+id/edit_admin_select_date"
         android:layout_width="140dp"
+        android:contentDescription="@string/date_image"
         android:layout_height="140dp"
         android:layout_marginTop="100px"
         android:background="@drawable/selectdate"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/edit_admin_event_name"
-        />
+        tools:ignore="RtlHardcoded" />
 
 </RelativeLayout>

@@ -1,8 +1,5 @@
 package com.starters.medion.model;
 
-/**
- * Created by KeerthiTejaNuthi on 12/13/16.
- */
 
 public class EventMedian {
 

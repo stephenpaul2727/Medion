@@ -9,6 +9,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -48,7 +49,7 @@ public class Switch extends CustomView {
     }
 
     // Set atributtes of XML to View
-    protected void setAttributes(AttributeSet attrs) {
+	private void setAttributes(AttributeSet attrs) {
 
         setBackgroundResource(R.drawable.background_transparent);
 
@@ -91,11 +92,7 @@ public class Switch extends CustomView {
 				float x = event.getX();
 				x = (x < ball.xIni) ? ball.xIni : x;
 				x = (x > ball.xFin) ? ball.xFin : x;
-				if (x > ball.xCen) {
-					eventCheck = true;
-				} else {
-					eventCheck = false;
-				}
+				eventCheck = x > ball.xCen;
 				ViewHelper.setX(ball, x);
 				ball.changeBackground();
 				if ((event.getX() <= getWidth() && event.getX() >= 0)) {
@@ -151,8 +148,7 @@ public class Switch extends CustomView {
 		canvas.drawBitmap(bitmap, 0, 0, new Paint());
 
 		if (press) {
-			paint.setColor((check) ? makePressColor() : Color
-					.parseColor("#446D6D6D"));
+			paint.setColor(ContextCompat.getColor(getContext(), R.color.checkBoxColor));
 			canvas.drawCircle(ViewHelper.getX(ball) + ball.getWidth() / 2,
 					getHeight() / 2, getHeight() / 2, paint);
 		}
@@ -163,7 +159,7 @@ public class Switch extends CustomView {
 	/**
 	 * Make a dark color to press effect
 	 * 
-	 * @return
+	 *
 	 */
 	protected int makePressColor() {
 		int r = (this.backgroundColor >> 16) & 0xFF;
@@ -176,7 +172,7 @@ public class Switch extends CustomView {
 	}
 
 	// Move ball to first position in view
-	boolean placedBall = false;
+	private boolean placedBall = false;
 
 	private void placeBall() {
 		ViewHelper.setX(ball, getHeight() / 2 - ball.getWidth() / 2);
@@ -197,7 +193,7 @@ public class Switch extends CustomView {
 		
 	}
 
-	public void setChecked(boolean check) {
+	private void setChecked(boolean check) {
 		invalidate();
 		this.check = check;
 		this.eventCheck = check;

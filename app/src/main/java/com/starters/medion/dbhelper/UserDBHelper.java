@@ -6,19 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.starters.medion.contract.EventsContract;
+class UserDBHelper extends SQLiteOpenHelper{
 
-/**
- * Created by stephenpaul on 22/12/16.
- */
-
-public class UserDBHelper extends SQLiteOpenHelper{
-
-    public static final String DATABASE_NAME = "User.db";
-    public static final String USER_TABLE_NAME = "UserInfo";
-    public static final String USER_MOBILE_NUMBER = "number";
-    public static final String USER_PASSWORD = "password";
-    public static final String USER_VERIFIED = "verified";
+    private static final String DATABASE_NAME = "User.db";
+    private static final String USER_TABLE_NAME = "UserInfo";
+    private static final String USER_MOBILE_NUMBER = "number";
+    private static final String USER_PASSWORD = "password";
+    private static final String USER_VERIFIED = "verified";
     private static final String TEXT_TYPE = " TEXT";
     private Context context;
     private static final String COMMA_SEP = ",";
@@ -35,7 +29,7 @@ public class UserDBHelper extends SQLiteOpenHelper{
         return this.context;
 
     }
-    public void setContext(Context con){
+    private void setContext(Context con){
         this.context = con;
     }
     @Override
@@ -74,13 +68,11 @@ public class UserDBHelper extends SQLiteOpenHelper{
 
     public Cursor getData(String num) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from "+ USER_TABLE_NAME+" where number="+num+"", null );
-        return res;
+        return db.rawQuery( "select * from "+ USER_TABLE_NAME+" where number="+num+"", null );
     }
 
     public Cursor getListContents(){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor data = db.rawQuery("SELECT * from " + USER_TABLE_NAME, null);
-        return data;
+        return db.rawQuery("SELECT * from " + USER_TABLE_NAME, null);
     }
 }

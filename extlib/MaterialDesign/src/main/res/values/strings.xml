@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">MaterialDesign</string>
+    <string name="title">Title</string>
+    <string name="R">R</string>
+    <string name="action">ACTION</string>
+    <string name="cancel">Cancel</string>
+    <string name="accept">Accept</string>
+    <string name="G">G</string>
+    <string name="B">B</string>
 </resources>

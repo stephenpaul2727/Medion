@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/edit_admin_layout"
     android:background="@drawable/gradient_bg"
     >
 
     <TextView
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:text="Event Details"
-        android:id="@+id/details"
+        android:text="@string/eventDetails"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="5dp"
         android:textColor="#1b3966"
         android:textSize="25dp"
         android:fontFamily="sans-serif-medium"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        tools:ignore="RtlHardcoded" />
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,8 +34,8 @@
                 android:textColor="#292b2d"
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="5dp"
-                android:text="ID: "
-                />
+                android:text="@string/textview_id"
+                tools:ignore="RtlHardcoded" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -48,8 +46,7 @@
                 android:id = "@+id/eventid"
                 android:layout_marginRight="20dp"
                 android:layout_alignParentRight="true"
-                android:text="id"
-                />
+                tools:ignore="RtlHardcoded" />
         </TableRow>
         <TableRow>
             <TextView
@@ -61,9 +58,9 @@
                 android:layout_marginLeft="5dp"
                 android:id = "@+id/nameofevent"
                 android:textColor="#292b2d"
-                android:text="Name: "
+                android:text="@string/name"
                 android:layout_below="@+id/Idofevent"
-                />
+                tools:ignore="RtlHardcoded" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -72,7 +69,7 @@
                 android:id = "@+id/eventname"
                 android:textColor="#1b3966"
                 android:layout_below="@+id/eventid"
-                android:text="name"/>
+                tools:ignore="RtlHardcoded" />
         </TableRow>
         <TableRow>
             <TextView
@@ -84,9 +81,9 @@
                 android:id = "@+id/isAdmin"
                 android:textColor="#292b2d"
                 android:layout_marginLeft="5dp"
-                android:text="Authority: "
+                android:text="@string/auth"
                 android:layout_below="@+id/nameofevent"
-                />
+                tools:ignore="RtlHardcoded" />
 
 
             <TextView
@@ -98,7 +95,7 @@
                 android:layout_marginRight="20dp"
                 android:id = "@+id/eventadmin"
                 android:layout_below="@+id/eventname"
-                android:text="admin?"/>
+                tools:ignore="RtlHardcoded" />
         </TableRow>
         <TableRow>
             <TextView
@@ -110,8 +107,9 @@
                 android:fontFamily="sans-serif-light"
                 android:textColor="#292b2d"
                 android:layout_marginLeft="5dp"
-                android:text="Date: "
-                android:layout_below="@+id/isAdmin"/>
+                android:text="@string/date"
+                android:layout_below="@+id/isAdmin"
+                tools:ignore="RtlHardcoded" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -122,7 +120,7 @@
                 android:layout_marginRight="20dp"
                 android:id = "@+id/eventdate"
                 android:layout_below="@+id/eventadmin"
-                android:text="date"/>
+                tools:ignore="RtlHardcoded" />
         </TableRow>
         <TableRow>
             <TextView
@@ -134,8 +132,9 @@
                 android:textColor="#292b2d"
                 android:id = "@+id/timeevent"
                 android:layout_marginLeft="5dp"
-                android:text="Time: "
-                android:layout_below="@+id/dateevent"/>
+                android:text="@string/time"
+                android:layout_below="@+id/dateevent"
+                tools:ignore="RtlHardcoded" />
 
 
             <TextView
@@ -147,7 +146,7 @@
                 android:layout_marginRight="20dp"
                 android:id = "@+id/eventtime"
                 android:layout_below="@+id/eventdate"
-                android:text="time"/>
+                tools:ignore="RtlHardcoded" />
 
         </TableRow>
         <TableRow>
@@ -158,10 +157,10 @@
                 android:textStyle="bold"
                 android:fontFamily="sans-serif-light"
                 android:textColor="#292b2d"
-                android:id = "@+id/locationis"
                 android:layout_marginLeft="5dp"
-                android:text="Location: "
-                android:layout_below="@+id/timeevent"/>
+                android:text="@string/location"
+                android:layout_below="@+id/timeevent"
+                tools:ignore="RtlHardcoded" />
 
 
             <TextView
@@ -173,7 +172,8 @@
                 android:layout_marginRight="20dp"
                 android:id = "@+id/location"
                 android:layout_below="@+id/eventtime"
-                android:text="Pick place to get updated!"/>
+                android:text="@string/placeupdate"
+                tools:ignore="RtlHardcoded" />
         </TableRow>
     </TableLayout>
 
@@ -181,53 +181,60 @@
     <ImageButton
         android:layout_width="140dp"
         android:layout_height="140dp"
+        android:contentDescription="@string/cancel_event"
         android:layout_alignParentRight="true"
         android:id="@+id/edit_viewevent_cancelevent"
         android:layout_below="@+id/edit_viewevent_currentMembers"
         android:background="@drawable/cancelevent"
-         />
+        tools:ignore="RtlHardcoded" />
     <ImageButton
         android:layout_width="140dp"
         android:layout_height="140dp"
+        android:contentDescription="@string/finalize_event_admin"
         android:background="@drawable/finalize"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/edit_viewevent_addMembers"
-        android:id="@+id/edit_viewevent_finalizeevent" />
+        android:id="@+id/edit_viewevent_finalizeevent"
+        tools:ignore="RtlHardcoded" />
 
     <ImageButton
         android:layout_width="140dp"
         android:layout_height="140dp"
+        android:contentDescription="@string/view_places"
         android:background="@drawable/pickplace"
         android:layout_marginTop="32dp"
         android:layout_marginLeft="200dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/tablelayout"
         android:id="@+id/edit_viewevent_places"
-        />
+        tools:ignore="RtlHardcoded" />
 
     <ImageButton
         android:layout_marginTop="25dp"
         android:layout_width="140dp"
         android:layout_height="140dp"
+        android:contentDescription="@string/admin_add_members"
         android:layout_alignParentLeft="true"
         android:id="@+id/edit_viewevent_addMembers"
         android:background="@drawable/selectmembers"
         android:layout_below="@+id/tablelayout"
-        />
+        tools:ignore="RtlHardcoded" />
     <ImageButton
         android:layout_marginTop="25dp"
         android:layout_width="140dp"
         android:layout_height="140dp"
+        android:contentDescription="@string/view_members"
         android:layout_alignParentRight="true"
         android:id="@+id/edit_viewevent_currentMembers"
         android:background="@drawable/currentmembers"
         android:layout_below="@+id/tablelayout"
-        />
+        tools:ignore="RtlHardcoded" />
 
     <ImageButton
         android:layout_marginTop="0dp"
         android:layout_width="120dp"
         android:layout_height="120dp"
+        android:contentDescription="@string/view_places"
         android:id="@+id/edit_viewevent_finalplace"
         android:background="@drawable/finalplace"
         android:layout_below="@+id/edit_viewevent_places"

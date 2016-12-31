@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@drawable/gradient_bg">
 
@@ -22,8 +23,8 @@
                 android:textColor="#292b2d"
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="5dp"
-                android:text="Place Name: "
-                />
+                android:text="@string/eventPlaceName"
+                tools:ignore="RtlHardcoded" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -35,7 +36,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_alignParentRight="true"
 
-                />
+                tools:ignore="RtlHardcoded" />
         </TableRow>
         <TableRow>
             <TextView
@@ -47,9 +48,9 @@
                 android:layout_marginLeft="5dp"
                 android:id = "@+id/place_address"
                 android:textColor="#292b2d"
-                android:text="Is Place Open? :"
+                android:text="@string/place_placeopen"
                 android:layout_below="@+id/place_name"
-                />
+                tools:ignore="RtlHardcoded" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -58,7 +59,7 @@
                 android:id = "@+id/place_real_address"
                 android:textColor="#1b3966"
                 android:layout_below="@+id/place_real_name"
-                />
+                tools:ignore="RtlHardcoded" />
         </TableRow>
 
 
@@ -72,8 +73,9 @@
                 android:textColor="#292b2d"
                 android:id = "@+id/place_latlongs"
                 android:layout_marginLeft="5dp"
-                android:text="Place Latlongs:"
-                android:layout_below="@+id/place_address"/>
+                android:text="@string/latlongs"
+                android:layout_below="@+id/place_address"
+                tools:ignore="RtlHardcoded" />
 
 
             <TextView
@@ -85,7 +87,7 @@
                 android:layout_marginRight="20dp"
                 android:id = "@+id/place_real_latlongs"
                 android:layout_below="@+id/place_real_address"
-                />
+                tools:ignore="RtlHardcoded" />
 
         </TableRow>
         <TableRow>
@@ -96,10 +98,10 @@
                 android:textStyle="bold"
                 android:fontFamily="sans-serif-light"
                 android:textColor="#292b2d"
-                android:id = "@+id/ratingis"
                 android:layout_marginLeft="5dp"
-                android:text="Place Rating: "
-                android:layout_below="@+id/place_latlongs"/>
+                android:text="@string/place_ratings"
+                android:layout_below="@+id/place_latlongs"
+                tools:ignore="RtlHardcoded" />
 
 
             <TextView
@@ -111,7 +113,7 @@
                 android:layout_marginRight="20dp"
                 android:id = "@+id/place_real_ratings"
                 android:layout_below="@+id/place_real_latlongs"
-                />
+                tools:ignore="RtlHardcoded" />
         </TableRow>
     </TableLayout>
 
@@ -123,6 +125,6 @@
         android:background="#292b2d"
         android:textColor="#92e8a7"
         android:layout_below="@id/places_tablelayout"
-        android:text="Show On Map"
+        android:text="@string/showonmap"
         android:id="@+id/map_places"/>
 </RelativeLayout>

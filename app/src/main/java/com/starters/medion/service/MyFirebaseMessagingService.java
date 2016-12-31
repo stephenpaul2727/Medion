@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
-import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.starters.medion.MainActivity;
 import com.starters.medion.R;
@@ -16,11 +14,10 @@ import com.starters.medion.utils.NotificationUtils;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Map;
 
+@SuppressWarnings("ALL")
 public class MyFirebaseMessagingService extends FirebaseMessagingService{
     private static final String TAG = MyFirebaseMessagingService.class.getSimpleName();
 
@@ -30,7 +27,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService{
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.e(TAG, "From: " + remoteMessage.getFrom());
 
-        if (remoteMessage == null)
+        //noinspection ConstantConditions
+        if (remoteMessage ==null)
             return;
 
         // Check if message contains a notification payload.
@@ -66,6 +64,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService{
     }
 
     private void handleNotification(String message) {
+        //noinspection StatementWithEmptyBody
         if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
             // app is in foreground, broadcast the push message
             NotificationCompat.Builder builder = new  NotificationCompat.Builder(this)
@@ -76,8 +75,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService{
             manager.notify(0,builder.build());
 
         }else{
-
-
             // If the app is in background, firebase itself handles the notification
         }
     }
@@ -111,7 +108,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService{
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
 
                 // play notification sound
-                NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
+                @SuppressWarnings("UnusedAssignment") NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
 //                notificationUtils.playNotificationSound();
             } else {
                 // app is in background, show the notification in notification tray

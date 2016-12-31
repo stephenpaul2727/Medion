@@ -5,19 +5,16 @@ import com.gc.materialdesign.utils.Utils;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.view.ViewHelper;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
+
 import android.graphics.Paint;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.Bitmap.Config;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
 import android.util.AttributeSet;
 import android.view.animation.BounceInterpolator;
 import android.widget.ImageView;
@@ -33,12 +30,12 @@ public class ButtonFloat extends Button{
 	
 	
 	ImageView icon; // Icon of float button
-	Drawable drawableIcon;
+	private Drawable drawableIcon;
 	
-	public boolean isShow = false;
+	private boolean isShow = false;
 	
-	float showPosition;
-	float hidePosition;
+	private float showPosition;
+	private float hidePosition;
 	
 	
 	
@@ -156,7 +153,7 @@ public class ButtonFloat extends Button{
 		}
 	}
 
-	public Bitmap cropCircle(Bitmap bitmap) {
+	private Bitmap cropCircle(Bitmap bitmap) {
 	    Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
 	            bitmap.getHeight(), Config.ARGB_8888);
 	    Canvas canvas = new Canvas(output);
@@ -180,11 +177,11 @@ public class ButtonFloat extends Button{
 		return null;
 	}
 	
-	public void setRippleColor(int rippleColor) {
+	private void setRippleColor(int rippleColor) {
 		this.rippleColor = rippleColor;
 	}
 	
-	public void show(){
+	private void show(){
 		ObjectAnimator animator = ObjectAnimator.ofFloat(ButtonFloat.this, "y", showPosition);
 		animator.setInterpolator(new BounceInterpolator());
 		animator.setDuration(1500);

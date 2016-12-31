@@ -8,8 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -17,18 +15,10 @@ import com.starters.medion.MembersViewEvent;
 import com.starters.medion.R;
 import com.starters.medion.ViewEvent;
 import com.starters.medion.adapter.EventsAdapter;
-import com.starters.medion.contract.EventsContract;
 import com.starters.medion.contract.EventsContract.EventsEntry;
 import com.starters.medion.dbhelper.EventsDbhelper;
 import com.starters.medion.model.Event;
-//import com.starters.medion.utils.ContextGetter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * Created by Ashish on 12/1/2016.
- */
 public class ReadTask extends AsyncTask<Object, Event, Object>  {
 
     private Context context;
@@ -50,7 +40,7 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
 
         mDbHelper = new EventsDbhelper(context);
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        eventsAdapter = new EventsAdapter(context, R.layout.display_event_info);
+        eventsAdapter = new EventsAdapter(context);
 
 // Define a projection that specifies which columns from the database
 // you will actually use after this query.
@@ -63,16 +53,10 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
                 EventsEntry.COLUMN_NAME_LOCATION
         };
 
-// Filter results WHERE "title" = 'My Title'
-        String selection = EventsEntry.COLUMN_NAME_EVENTNAME + " = ?";
-        String[] selectionArgs = { "Fun Event" };
 
-// How you want the results sorted in the resulting Cursor
-        String sortOrder =
-                EventsEntry._ID + " DESC";
-       // EventsDbhelper db = new EventsDbhelper(this);
+
         Cursor c = mDbHelper.getListContents();
-        Cursor cursor = db.query(
+        db.query(
                 EventsEntry.TABLE_NAME,                     // The table to query
                 projection,                               // The columns to return
                 null,                                // The columns for the WHERE clause
@@ -81,11 +65,6 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
                 null,                                     // don't filter by row groups
                 null                                 // The sort order
         );
-        //c.moveToFirst();
-        //String eventName = c.getString(
-        //        c.getColumnIndexOrThrow(EventsEntry.COLUMN_NAME_EVENTNAME)
-        //);
-        //System.out.println("ENEJLKLKLK:"+eventName);
         listView = (ListView) activity.findViewById(R.id.displaylistview);
 
         while(c.moveToNext()){
@@ -165,7 +144,7 @@ public class ReadTask extends AsyncTask<Object, Event, Object>  {
                         if( c != null && !c.isClosed())
                             c.close();
                         mDbHelper.close();
-                    } catch(Exception ex) {}
+                    } catch(Exception ignored) {}
 
                 }
                 if(event.getAdmin().equals("ADMIN")) {

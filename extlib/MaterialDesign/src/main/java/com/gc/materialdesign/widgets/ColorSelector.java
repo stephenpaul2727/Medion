@@ -15,19 +15,20 @@ import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
-import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.RelativeLayout;
 
 public class ColorSelector extends android.app.Dialog implements OnValueChangedListener{
 	
-	int color = Color.BLACK;
-	Context context;
-	View colorView;
-	View view, backView;//background
+	private int color = Color.BLACK;
+	private Context context;
+	private View colorView;
+	private View view;
+	private View backView;//background
 	
-	OnColorSelectedListener onColorSelectedListener;
-	Slider red, green, blue;
+	private OnColorSelectedListener onColorSelectedListener;
+	private Slider red;
+	private Slider green;
+	private Slider blue;
 	
 
 	public ColorSelector(Context context,Integer color, OnColorSelectedListener onColorSelectedListener) {
@@ -54,8 +55,8 @@ public class ColorSelector extends android.app.Dialog implements OnValueChangedL
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.color_selector);
 	    
-	    view = (LinearLayout)findViewById(R.id.contentSelector);
-		backView = (RelativeLayout)findViewById(R.id.rootSelector);
+	    view = findViewById(R.id.contentSelector);
+		backView = findViewById(R.id.rootSelector);
 		backView.setOnTouchListener(new OnTouchListener() {
 			
 			@Override

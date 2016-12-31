@@ -9,22 +9,20 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gc.materialdesign.R;
-import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 
-public class ProgressDialog extends android.app.Dialog{
+class ProgressDialog extends android.app.Dialog{
 	
-	Context context;
-	View view;
-	View backView;
-	String title;
-	TextView titleTextView;
+	private Context context;
+	private View view;
+	private View backView;
+	private String title;
+	private TextView titleTextView;
 	
-	int progressColor = -1;
+	private int progressColor = -1;
 	
 	public ProgressDialog(Context context,String title) {
 		super(context, android.R.style.Theme_Translucent);
@@ -45,8 +43,8 @@ public class ProgressDialog extends android.app.Dialog{
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.progress_dialog);
 	    
-		view = (RelativeLayout)findViewById(R.id.contentDialog);
-		backView = (RelativeLayout)findViewById(R.id.dialog_rootView);
+		view = findViewById(R.id.contentDialog);
+		backView = findViewById(R.id.dialog_rootView);
 		backView.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
@@ -86,7 +84,7 @@ public class ProgressDialog extends android.app.Dialog{
 		return title;
 	}
 
-	public void setTitle(String title) {
+	private void setTitle(String title) {
 		this.title = title;
 		if(title == null)
 			titleTextView.setVisibility(View.GONE);

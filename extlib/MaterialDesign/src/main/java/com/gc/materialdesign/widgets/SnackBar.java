@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,19 +19,20 @@ import android.widget.TextView;
 import com.gc.materialdesign.R;
 import com.gc.materialdesign.views.ButtonFlat;
 
-public class SnackBar extends Dialog{
+@SuppressWarnings("ALL")
+class SnackBar extends Dialog{
 	
-	String text;
-	float textSize = 14;//Roboto Regular 14sp 
-	String buttonText;
-	View.OnClickListener onClickListener;
-	Activity activity;
-	View view;
-	ButtonFlat button;
-	int backgroundSnackBar = Color.parseColor("#333333");
-	int backgroundButton = Color.parseColor("#1E88E5");
+	private String text;
+	private float textSize = 14;//Roboto Regular 14sp
+	private String buttonText;
+	private View.OnClickListener onClickListener;
+	private Activity activity;
+	private View view;
+	private ButtonFlat button;
+	private int backgroundSnackBar = Color.parseColor("#333333");
+	private int backgroundButton = Color.parseColor("#1E88E5");
 	
-	OnHideListener onHideListener;
+	private OnHideListener onHideListener;
 	// Timer
 	private boolean mIndeterminate = false;
 	private int mTimer = 3 * 1000;
@@ -80,7 +82,7 @@ public class SnackBar extends Dialog{
 	}
 	
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
+	public boolean onTouchEvent(@NonNull MotionEvent event) {
 		return activity.dispatchTouchEvent(event);
 	}
 	
@@ -99,7 +101,7 @@ public class SnackBar extends Dialog{
 	}
 	
 	// Dismiss timer 
-	Thread dismissTimer = new Thread(new Runnable() {
+	private Thread dismissTimer = new Thread(new Runnable() {
 		
 		@Override
 		public void run() {
@@ -112,7 +114,7 @@ public class SnackBar extends Dialog{
 		}
 	});
 	
-	Handler handler = new Handler(new Handler.Callback() {
+	private Handler handler = new Handler(new Handler.Callback() {
 		
 		@Override
 		public boolean handleMessage(Message msg) {
@@ -125,7 +127,7 @@ public class SnackBar extends Dialog{
 	});
 	
 	/**
-	 * @author Jack Tony
+	 *
 	 */
 	@Override
 	public void dismiss() {
@@ -149,7 +151,7 @@ public class SnackBar extends Dialog{
 	}
 	
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
 		// TODO 自动生成的方法存根
 		 if (keyCode == KeyEvent.KEYCODE_BACK )  {
 			 dismiss();

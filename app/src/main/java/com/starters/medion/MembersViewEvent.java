@@ -5,14 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,19 +18,15 @@ import com.starters.medion.constants.config;
 import com.starters.medion.contract.EventsContract;
 import com.starters.medion.dbhelper.EventsDbhelper;
 import com.starters.medion.model.Delid;
-import com.starters.medion.model.Eid;
 
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
-
-import javax.net.ssl.HttpsURLConnection;
 
 public class MembersViewEvent extends AppCompatActivity{
 
@@ -49,7 +42,7 @@ public class MembersViewEvent extends AppCompatActivity{
     private EventsDbhelper mDbhelper;
     private ImageButton currentMembers;
     private String mem;
-    Delid delid;
+    private Delid delid;
     private String eventId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +66,6 @@ public class MembersViewEvent extends AppCompatActivity{
             String date = b.getString("date");
             String time = b.getString("time");
             String members = b.getString("members");
-            String locs = b.getString("latlongs");
 
             System.out.println("IDID:" + eventId);
             System.out.println("Name:" + eventName);
@@ -186,7 +178,7 @@ public class MembersViewEvent extends AppCompatActivity{
 
     }
 
-    public static String POST(String stringURL, Delid eid){
+    private static String POST(String stringURL, Delid eid){
         String result="";
         try {
             Log.d("POST","reached!");
@@ -252,8 +244,7 @@ public class MembersViewEvent extends AppCompatActivity{
 
         @Override
         protected void onPostExecute(String s) {
-            String res= s;
-            Toast.makeText(MembersViewEvent.this,res,Toast.LENGTH_LONG).show();
+            Toast.makeText(MembersViewEvent.this, s,Toast.LENGTH_LONG).show();
             EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
             SQLiteDatabase db = eventsDbhelper.getWritableDatabase();
             db.delete(EventsContract.EventsEntry.TABLE_NAME,EventsContract.EventsEntry.COLUMN_NAME_EVENTID+"=?",new String[]{eventId});

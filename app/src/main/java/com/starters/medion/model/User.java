@@ -1,8 +1,5 @@
 package com.starters.medion.model;
 
-/**
- * Created by KeerthiTejaNuthi on 11/28/16.
- */
 
 public class User {
     private String name;

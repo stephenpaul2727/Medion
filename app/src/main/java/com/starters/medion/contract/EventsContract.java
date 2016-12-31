@@ -2,9 +2,7 @@ package com.starters.medion.contract;
 
 import android.provider.BaseColumns;
 
-/**
- * Created by Ashish on 12/1/2016.
- */
+
 public final class EventsContract {
     private EventsContract(){}
 

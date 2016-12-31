@@ -1,8 +1,5 @@
 package com.starters.medion.model;
 
-/**
- * Created by KeerthiTejaNuthi on 12/2/16.
- */
 
 public class GeoCoordinates {
     private double latitude;

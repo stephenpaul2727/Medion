@@ -30,7 +30,7 @@ public abstract class Button extends CustomView {
 	OnClickListener onClickListener;
 	boolean clickAfterRipple = true;
 	int backgroundColor = Color.parseColor("#1E88E5");
-	TextView textButton;
+	private TextView textButton;
 
 	public Button(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -43,7 +43,7 @@ public abstract class Button extends CustomView {
 			rippleColor = makePressColor();
 	}
 
-	protected void setDefaultProperties() {
+	void setDefaultProperties() {
 		// Min size
 		setMinimumHeight(Utils.dpToPx(minHeight, getResources()));
 		setMinimumWidth(Utils.dpToPx(minWidth, getResources()));
@@ -115,7 +115,7 @@ public abstract class Button extends CustomView {
 		return true;
 	}
 
-	public Bitmap makeCircle() {
+	Bitmap makeCircle() {
 		Bitmap output = Bitmap.createBitmap(
 				getWidth() - Utils.dpToPx(6, getResources()), getHeight()
 						- Utils.dpToPx(7, getResources()), Config.ARGB_8888);
@@ -140,9 +140,9 @@ public abstract class Button extends CustomView {
 	/**
 	 * Make a dark color to ripple effect
 	 * 
-	 * @return
+	 *
 	 */
-	protected int makePressColor() {
+	int makePressColor() {
 		int r = (this.backgroundColor >> 16) & 0xFF;
 		int g = (this.backgroundColor >> 8) & 0xFF;
 		int b = (this.backgroundColor >> 0) & 0xFF;

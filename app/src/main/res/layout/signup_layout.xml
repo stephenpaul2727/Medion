@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
@@ -10,7 +9,6 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.starters.medion.SignUp"
-    android:id="@+id/Signup_view"
     android:background="@drawable/gradient_bg">
 
     <TextView
@@ -24,26 +22,17 @@
         android:textColor="#292b2d"
         android:textStyle="bold" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/Signup_name"
-        android:id="@+id/Signup_name"
-        android:layout_below="@+id/Signup_title"
-        android:fontFamily="verdana"
-        android:textColor="#292b2d"
-        android:textStyle="bold"
 
-        />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/Signup_edit_name"
-        android:layout_below="@+id/Signup_name"
+        android:hint="@string/hint_signup_name"
+        android:layout_below="@+id/Signup_title"
         android:fontFamily="verdana"
         android:textColor="#292b2d"
+        android:layout_marginTop="15dp"
         android:textStyle="bold"
 
         android:width="20dp"
@@ -51,80 +40,49 @@
 
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/Signup_email"
-        android:id="@+id/Signup_email"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/Signup_edit_name"
-        android:fontFamily="verdana"
-        android:textColor="#292b2d"
-        android:textStyle="bold"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/Signup_edit_email"
-        android:layout_below="@+id/Signup_email"
+        android:hint="@string/hint_signup_email"
+        android:layout_below="@+id/Signup_edit_name"
         android:fontFamily="verdana"
+        android:layout_marginTop="15dp"
         android:textColor="#292b2d"
         android:textStyle="bold"
 
         android:width="20dp"
         android:inputType="textEmailAddress" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/Signup_phonenumber"
-        android:id="@+id/Signup_phonenumber"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/Signup_edit_email"
-        android:fontFamily="verdana"
-        android:textColor="#292b2d"
-        android:textStyle="bold"
-        android:layout_centerVertical="true"
-         />
+
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/Signup_edit_phonenumber"
-        android:layout_below="@+id/Signup_phonenumber"
+        android:hint="@string/hint_signup_phone"
+        android:layout_below="@+id/Signup_edit_email"
         android:fontFamily="verdana"
+        android:layout_marginTop="15dp"
+
         android:textColor="#292b2d"
         android:textStyle="bold"
 
         android:width="20dp"
-        android:inputType="textEmailAddress" />
+        android:inputType="number" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/Signup_password"
-        android:id="@+id/Signup_password"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/Signup_edit_phonenumber"
-        android:fontFamily="verdana"
-        android:textColor="#292b2d"
-        android:textStyle="bold"
-
-        />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:hint="@string/hint_signup_password"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/Signup_edit_password"
-        android:layout_below="@+id/Signup_password"
+        android:layout_below="@+id/Signup_edit_phonenumber"
         android:fontFamily="verdana"
         android:textColor="#292b2d"
         android:textStyle="bold"
@@ -132,26 +90,15 @@
         android:width="20dp"
         android:inputType="textPassword" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/Signup_reenterpassword"
-        android:layout_marginTop="10dp"
-        android:id="@+id/Signup_reenterpassword"
-        android:layout_below="@+id/Signup_edit_password"
-        android:fontFamily="verdana"
-        android:textColor="#292b2d"
-        android:textStyle="bold"
 
-        />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="40dp"
-
+        android:layout_marginTop="15dp"
+        android:hint="@string/hint_signup_repassword"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/Signup_edit_reenterpassword"
-        android:layout_below="@+id/Signup_reenterpassword"
+        android:layout_below="@+id/Signup_edit_password"
         android:fontFamily="verdana"
         android:textColor="#292b2d"
         android:textStyle="bold"
@@ -165,11 +112,11 @@
     <Button
         android:layout_width="150dp"
         android:layout_height="50dp"
-        android:text="Register"
+        android:text="@string/register"
         android:id="@+id/Signup_register"
         android:layout_below="@+id/Signup_edit_reenterpassword"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:enabled="true"
         android:textSize="17dp"
         android:fontFamily="sans-serif-medium"

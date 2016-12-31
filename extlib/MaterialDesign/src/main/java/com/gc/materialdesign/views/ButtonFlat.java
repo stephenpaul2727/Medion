@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 public class ButtonFlat extends Button {
 	
-	TextView textButton;
+	private TextView textButton;
 
 	public ButtonFlat(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -34,7 +34,7 @@ public class ButtonFlat extends Button {
 	@Override
 	protected void setAttributes(AttributeSet attrs) {
 		// Set text button
-		String text = null;
+		String text;
 		int textResource = attrs.getAttributeResourceValue(ANDROIDXML,"text",-1);
 		if(textResource != -1){
 			text = getResources().getString(textResource);
@@ -89,7 +89,7 @@ public class ButtonFlat extends Button {
 	
 	/**
 	 * Make a dark color to ripple effect
-	 * @return
+	 *
 	 */
 	@Override
 	protected int makePressColor(){

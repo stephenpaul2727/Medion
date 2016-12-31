@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,6 +15,7 @@
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
+        android:contentDescription="@string/app_logo"
         android:id="@+id/ConnectStage_Logo"
         android:src="@drawable/applogo"
         android:layout_alignParentTop="true"
@@ -25,7 +25,7 @@
         android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:inputType="textPersonName|text"
-        android:hint="Enter your Phone Number here."
+        android:hint="@string/hint_main_phonenumber"
         android:ems="10"
         android:id="@+id/ConnectStage_Username"
         android:layout_below="@+id/ConnectStage_Logo"
@@ -43,12 +43,13 @@
         android:layout_alignLeft="@+id/ConnectStage_Username"
         android:layout_alignStart="@+id/ConnectStage_Username"
         android:textColor="#000000"
-        android:hint="Enter your password here" />
+        android:hint="@string/hint_main_password"
+        tools:ignore="RtlHardcoded" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Remember Me"
+        android:text="@string/main_rememberme"
         android:id="@+id/activity_main_Rememberme"
         android:checked="true"
         android:fontFamily="Verdana"
@@ -60,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="New User?"
+        android:text="@string/Newuser"
         android:id="@+id/ConnectStage_newuser"
         android:layout_marginTop="15dp"
         android:textColor="#ffffff"
@@ -72,7 +73,7 @@
 
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:text="Sign Up"
+        android:text="@string/Signup_title"
         android:id="@+id/ConnectStage_SignUp"
         android:background="#292b2d"
         android:textSize="17dp"
@@ -89,7 +90,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:text="Login"
+        android:text="@string/login"
         android:id="@+id/Connectstage_login"
         android:layout_marginTop="50px"
         android:textSize="17dp"

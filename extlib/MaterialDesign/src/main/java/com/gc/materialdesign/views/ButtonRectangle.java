@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 public class ButtonRectangle extends Button {
 	
-	TextView textButton;
+	private TextView textButton;
 	
 	int paddingTop,paddingBottom, paddingLeft, paddingRight;
 	
@@ -52,29 +52,8 @@ public class ButtonRectangle extends Button {
 			if (background != -1)
 				setBackgroundColor(background);
 		}
-		
-		// Set Padding
-		String value = attrs.getAttributeValue(ANDROIDXML,"padding");
-//		if(value != null){
-//			float padding = Float.parseFloat(value.replace("dip", ""));
-//			paddingBottom = Utils.dpToPx(padding, getResources());
-//			paddingLeft = Utils.dpToPx(padding, getResources());
-//			paddingRight = Utils.dpToPx(padding, getResources());
-//			paddingTop = Utils.dpToPx(padding, getResources());
-//		}else{
-//			value = attrs.getAttributeValue(ANDROIDXML,"paddingLeft");
-//			paddingLeft = (value == null) ? paddingLeft : (int) Float.parseFloat(value.replace("dip", ""));
-//			value = attrs.getAttributeValue(ANDROIDXML,"paddingTop");
-//			paddingTop = (value == null) ? paddingTop : (int) Float.parseFloat(value.replace("dip", ""));
-//			value = attrs.getAttributeValue(ANDROIDXML,"paddingRight");
-//			paddingRight = (value == null) ? paddingRight : (int) Float.parseFloat(value.replace("dip", ""));
-//			value = attrs.getAttributeValue(ANDROIDXML,"paddingBottom");
-//			paddingBottom = (value == null) ? paddingBottom : (int) Float.parseFloat(value.replace("dip", ""));
-//		}
-		
-		
-		// Set text button
-		String text = null;
+
+		String text;
 		int textResource = attrs.getAttributeResourceValue(ANDROIDXML,"text",-1);
 		if(textResource != -1){
 			text = getResources().getString(textResource);

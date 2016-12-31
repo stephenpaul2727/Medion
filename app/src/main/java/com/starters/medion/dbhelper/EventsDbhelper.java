@@ -4,17 +4,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.CalendarContract;
 import android.content.ContentValues;
 
 import com.starters.medion.contract.EventsContract.EventsEntry;
-/**
- * Created by Ashish on 12/1/2016.
- */
+
 public class EventsDbhelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 2;
     private Context context;
-    public static final String DATABASE_NAME = "Eventinf.db";
+    private static final String DATABASE_NAME = "Eventinf.db";
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ",";
     private static final String SQL_CREATE_ENTRIES =
@@ -41,7 +38,7 @@ public class EventsDbhelper extends SQLiteOpenHelper {
         return this.context;
 
     }
-    public void setContext(Context con){
+    private void setContext(Context con){
         this.context = con;
     }
     public void onCreate(SQLiteDatabase db){
@@ -70,8 +67,7 @@ public class EventsDbhelper extends SQLiteOpenHelper {
 
     public Cursor getData(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from "+EventsEntry.TABLE_NAME+" where eventid="+id, null );
-        return res;
+        return db.rawQuery( "select * from "+EventsEntry.TABLE_NAME+" where eventid="+id, null );
     }
 
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -84,8 +80,7 @@ public class EventsDbhelper extends SQLiteOpenHelper {
 
     public Cursor getListContents(){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor data = db.rawQuery("SELECT * from " + EventsEntry.TABLE_NAME, null);
-        return data;
+        return db.rawQuery("SELECT * from " + EventsEntry.TABLE_NAME, null);
     }
 
 

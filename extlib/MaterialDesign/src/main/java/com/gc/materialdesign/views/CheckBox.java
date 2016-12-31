@@ -12,6 +12,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,14 +21,14 @@ import android.widget.TextView;
 
 public class CheckBox extends CustomView {
 
-	int backgroundColor = Color.parseColor("#4CAF50");
+	private int backgroundColor = Color.parseColor("#4CAF50");
 
-	Check checkView;
+	private Check checkView;
 
-	boolean press = false;
-	boolean check = false;
+	private boolean press = false;
+	private boolean check = false;
 
-	OnCheckListener onCheckListener;
+	private OnCheckListener onCheckListener;
 
 	public CheckBox(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -35,7 +36,7 @@ public class CheckBox extends CustomView {
 	}
 
 	// Set atributtes of XML to View
-	protected void setAttributes(AttributeSet attrs) {
+    private void setAttributes(AttributeSet attrs) {
 
 		setBackgroundResource(R.drawable.background_checkbox);
 
@@ -80,7 +81,7 @@ public class CheckBox extends CustomView {
 
         // Adding text view to checkbox
         int textResource = attrs.getAttributeResourceValue(ANDROIDXML, "text", -1);
-        String text = null;
+        String text;
 
         if(textResource != -1) {
             text = getResources().getString(textResource);
@@ -146,8 +147,7 @@ public class CheckBox extends CustomView {
 		if (press) {
 			Paint paint = new Paint();
 			paint.setAntiAlias(true);
-			paint.setColor((check) ? makePressColor() : Color
-					.parseColor("#446D6D6D"));
+			paint.setColor(ContextCompat.getColor(getContext(), R.color.checkBoxColor));
 			canvas.drawCircle(getWidth() / 2, getHeight() / 2, getWidth() / 2,
 					paint);
 			invalidate();
@@ -164,9 +164,9 @@ public class CheckBox extends CustomView {
 	/**
 	 * Make a dark color to press effect
 	 *
-	 * @return
+	 *
 	 */
-	protected int makePressColor() {
+    private int makePressColor() {
 		int r = (this.backgroundColor >> 16) & 0xFF;
 		int g = (this.backgroundColor >> 8) & 0xFF;
 		int b = (this.backgroundColor >> 0) & 0xFF;
@@ -184,7 +184,7 @@ public class CheckBox extends CustomView {
 		changeBackgroundColor(color);
 	}
 
-	public void setChecked(boolean check) {
+	private void setChecked(boolean check) {
 		invalidate();
 		this.check = check;
 		setPressed(false);
@@ -203,7 +203,7 @@ public class CheckBox extends CustomView {
 	}
 
 	// Indicate step in check animation
-	int step = 0;
+    private int step = 0;
 
 	// View that contains checkbox
 	class Check extends View {

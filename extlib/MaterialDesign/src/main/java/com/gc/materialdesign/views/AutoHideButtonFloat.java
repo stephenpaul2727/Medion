@@ -14,7 +14,7 @@ import com.nineoldandroids.view.ViewPropertyAnimator;
  * This widget uses NineOldAndroid to animate the view so you're gonna need to include it in your project
  */
 public class AutoHideButtonFloat extends ButtonFloat implements AbsListView.OnScrollListener {
-    ListView listView;
+    private ListView listView;
     private boolean floatHiding = false, floatShowing = false;
     private int mLastFirstVisibleItem;
     private View view = this;

@@ -1,19 +1,13 @@
 package com.starters.medion;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 
-import java.io.IOException;
-import java.util.Locale;
 import android.content.pm.PackageManager;
-import android.location.Address;import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -22,53 +16,37 @@ import android.util.Log;
 import android.view.View;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.location.ActivityRecognition;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.PlaceBuffer;
-import com.google.android.gms.location.places.ui.PlacePicker;
 
 import com.gc.materialdesign.views.ButtonRectangle;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.starters.medion.model.EventMedian;
 
 import org.json.JSONObject;
 
-/**
- * Created by stephenpaul on 15/11/16.
- */
 
 public class PlacesMap extends AppCompatActivity  {
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 9;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 10;
     int PLACE_REQUEST = 1;
-    TextView placename;
-    TextView placeaddress;
-    TextView placelatlongs;
+    private TextView placename;
+    private TextView placeaddress;
+    private TextView placelatlongs;
     private static final int GOOGLE_API_CLIENT_ID = 0;
-    TextView placeratings;
+    private TextView placeratings;
     TextView placepricelevel;
     TextView placephone;
-    Double latitude;
-    Double longitude;
-    String place_id;
+    private Double latitude;
+    private Double longitude;
+    private String place_id;
     Location mLastLocation;
     LatLngBounds.Builder bounds;
     GoogleApiClient mGoogleApiClient;
@@ -84,21 +62,23 @@ public class PlacesMap extends AppCompatActivity  {
         placeratings = (TextView) findViewById(R.id.place_real_ratings);
         ButtonRectangle map_button = (ButtonRectangle) findViewById(R.id.map_places);
                 String s = getIntent().getExtras().getString("latlong");
-                String[] latilongi = s.split("/");
+        try
+        {
+            assert s != null;
+            String[] latilongi = s.split("/");
                 latitude = Double.parseDouble(latilongi[0]);
                 longitude = Double.parseDouble(latilongi[1]);
                 place_id = latilongi[2];
                 String [] placedetais = place_id.split("!");
-                System.out.println("name ="+placedetais[0]);
-                System.out.println("rating="+placedetais[1]);
-                System.out.println("open?"+placedetais[2]);
-                placename.setText(placedetais[0].toString());
-                placeratings.setText(placedetais[1].toString());
+                placename.setText(placedetais[0]);
+                placeratings.setText(placedetais[1]);
                 placelatlongs.setText(latitude+","+longitude);
-                placeaddress.setText(placedetais[2].toString());
-                System.out.println("place id is: "+place_id+"you don't know");
-                System.out.println("latitude="+latitude);
-                System.out.println("longitude="+longitude);
+                placeaddress.setText(placedetais[2]);
+        }
+        catch(Exception e)
+        {
+            Toast.makeText(this,R.string.splitexception,Toast.LENGTH_LONG).show();
+        }
 
 
         checkpermission();
@@ -119,7 +99,7 @@ public class PlacesMap extends AppCompatActivity  {
     }
 
 
-    public void checkpermission() {
+    private void checkpermission() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -144,8 +124,7 @@ public class PlacesMap extends AppCompatActivity  {
     }
 
 
-    public static String POST(String stringURL, EventMedian eventMedian) {
-        InputStream inputStream = null;
+    private static String POST(String stringURL, EventMedian eventMedian) {
         String result = "";
         try {
 

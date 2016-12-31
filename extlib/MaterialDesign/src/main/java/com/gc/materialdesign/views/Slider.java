@@ -1,5 +1,6 @@
 package com.gc.materialdesign.views;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -120,7 +121,7 @@ public class Slider extends CustomView {
                 if ((event.getX() <= getWidth() && event.getX() >= 0)) {
                     press = true;
                     // calculate value
-                    int newValue = 0;
+                    int newValue;
                     float division = (ball.xFin - ball.xIni) / (max - min);
                     if (event.getX() > ball.xFin) {
                         newValue = max;
@@ -180,7 +181,7 @@ public class Slider extends CustomView {
     /**
      * Make a dark color to press effect
      *
-     * @return
+     *
      */
     protected int makePressColor() {
         int r = (this.backgroundColor >> 16) & 0xFF;
@@ -249,7 +250,7 @@ public class Slider extends CustomView {
     }
 
     // Set atributtes of XML to View
-    protected void setAttributes(AttributeSet attrs) {
+    private void setAttributes(AttributeSet attrs) {
 
         setBackgroundResource(R.drawable.background_transparent);
 
@@ -349,6 +350,7 @@ public class Slider extends CustomView {
                     android.R.color.transparent));
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);

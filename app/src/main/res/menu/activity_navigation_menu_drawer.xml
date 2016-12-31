@@ -20,11 +20,11 @@
             <!--android:title="Tools" />-->
     </group>
 
-    <item android:title="Extra Options">
+    <item android:title="@string/extraOptions">
         <menu>
             <item
                 android:id="@+id/home"
-                android:title="Home"/>
+                android:title="@string/home"/>
         </menu>
     </item>
 

@@ -15,43 +15,39 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.widget.Toast;
 
-/**
- * Created by walia on 11/18/2016.
- */
 
 
 public class TrackGPS extends Service implements LocationListener {
 
 
-    private final Context mContext;
-    Activity activity;
+    private Context mContext;
+    private Activity activity;
 
     // flag for GPS status
-    boolean isGPSEnabled = false;
+    private boolean isGPSEnabled = false;
     private static final int MY_PERMISSIONS_AFL = 9;
     private static final int MY_PERMISSIONS_ACL = 11;
 
     // flag for network status
-    boolean isNetworkEnabled = false;
+    private boolean isNetworkEnabled = false;
 
-    boolean canGetLocation = false;
+    private boolean canGetLocation = false;
 
-    Location location; // location
-    double latitude; // latitude
-    double longitude; // longitude
+    private Location location; // location
+    private double latitude; // latitude
+    private double longitude; // longitude
 
     // The minimum distance to change Updates in meters
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
 
     // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 60; // 1 minute
 
     // Declaring a Location Manager
-    protected LocationManager locationManager;
+    private LocationManager locationManager;
+
 
     public TrackGPS(Context context, Activity activity) {
         this.mContext = context;
@@ -60,11 +56,14 @@ public class TrackGPS extends Service implements LocationListener {
         getLocation();
     }
 
+    public TrackGPS()
+    {}
+
     public boolean canGetLocation() {
         return this.canGetLocation;
     }
 
-    public Location getLocation() {
+    private Location getLocation() {
         try {
             locationManager = (LocationManager) mContext
                     .getSystemService(LOCATION_SERVICE);
@@ -128,7 +127,7 @@ public class TrackGPS extends Service implements LocationListener {
     }
 
 
-    public void checkPermission()
+    private void checkPermission()
     {
 
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -186,7 +185,7 @@ public class TrackGPS extends Service implements LocationListener {
         return longitude;
     }
 
-    public void showSettingsAlert(){
+    private void showSettingsAlert(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
 
         // Setting Dialog Title

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dialog_rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:text="Title"
+            android:text="@string/title"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#000" />
 
@@ -34,14 +35,13 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical" >
 
                 <TextView
                     android:id="@+id/message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"
                     android:textColor="#000"
                     android:textSize="18sp" />
             </LinearLayout>
@@ -53,13 +53,14 @@
             android:layout_alignBottom="@id/message_scrollView"
             android:layout_marginTop="24dp"
             android:gravity="right"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            tools:ignore="RtlHardcoded">
 
             <com.gc.materialdesign.views.ButtonFlat
                 android:id="@+id/button_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cancel"                
+                android:text="@string/cancel"
                 android:background="#000000"
                 android:visibility="gone" />
 
@@ -67,7 +68,7 @@
                 android:id="@+id/button_accept"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Accept"
+                android:text="@string/accept"
                 android:background="#1E88E5" />
         </LinearLayout>
     </RelativeLayout>

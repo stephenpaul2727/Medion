@@ -1,13 +1,10 @@
 package com.starters.medion;
 
-/**
- * Created by stephenpaul on 03/11/16.
- */
+
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 

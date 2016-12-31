@@ -9,29 +9,28 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gc.materialdesign.R;
 import com.gc.materialdesign.views.ButtonFlat;
 
-public class Dialog extends android.app.Dialog{
+class Dialog extends android.app.Dialog{
 	
-	Context context;
-	View view;
-	View backView;
-	String message;
-	TextView messageTextView;
-	String title;
-	TextView titleTextView;
+	private Context context;
+	private View view;
+	private View backView;
+	private String message;
+	private TextView messageTextView;
+	private String title;
+	private TextView titleTextView;
 	
-	ButtonFlat buttonAccept;
-	ButtonFlat buttonCancel;
+	private ButtonFlat buttonAccept;
+	private ButtonFlat buttonCancel;
 	
-	String buttonCancelText;
+	private String buttonCancelText;
 	
-	View.OnClickListener onAcceptButtonClickListener;
-	View.OnClickListener onCancelButtonClickListener;
+	private View.OnClickListener onAcceptButtonClickListener;
+	private View.OnClickListener onCancelButtonClickListener;
 	
 	
 	public Dialog(Context context,String title, String message) {
@@ -57,8 +56,8 @@ public class Dialog extends android.app.Dialog{
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.dialog);
 	    
-		view = (RelativeLayout)findViewById(R.id.contentDialog);
-		backView = (RelativeLayout)findViewById(R.id.dialog_rootView);
+		view = findViewById(R.id.contentDialog);
+		backView = findViewById(R.id.dialog_rootView);
 		backView.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
@@ -120,7 +119,7 @@ public class Dialog extends android.app.Dialog{
 		return message;
 	}
 
-	public void setMessage(String message) {
+	private void setMessage(String message) {
 		this.message = message;
 		messageTextView.setText(message);
 	}
@@ -137,7 +136,7 @@ public class Dialog extends android.app.Dialog{
 		return title;
 	}
 
-	public void setTitle(String title) {
+	private void setTitle(String title) {
 		this.title = title;
 		if(title == null)
 			titleTextView.setVisibility(View.GONE);

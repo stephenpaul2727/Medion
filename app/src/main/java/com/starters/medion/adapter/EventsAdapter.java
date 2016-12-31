@@ -1,6 +1,7 @@
 package com.starters.medion.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,20 +10,17 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import com.starters.medion.R;
 import com.starters.medion.model.Event;
 
-/**
- * Created by Ashish on 12/5/2016.
- */
+
 public class EventsAdapter extends ArrayAdapter {
 
-    List list = new ArrayList();
+    private List list = new ArrayList();
 
-    public EventsAdapter(Context context, int resource) {
-        super(context, resource);
+    public EventsAdapter(Context context) {
+        super(context, R.layout.display_event_info);
     }
 
     public void add(Event object){
@@ -39,8 +37,9 @@ public class EventsAdapter extends ArrayAdapter {
         return this.list.get(position);
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         View row = convertView;
         EventsHolder eventsHolder;
         if(row==null){
@@ -57,9 +56,15 @@ public class EventsAdapter extends ArrayAdapter {
             eventsHolder = (EventsHolder) row.getTag();
         }
         Event event = (Event) getItem(position);
-        eventsHolder.t_eventame.setText(event.getEventName().toString()+"~( "+event.getAdmin().toString()+" )");
-        eventsHolder.t_date.setText(event.getEventDate().toString());
-        eventsHolder.t_time.setText(event.getEventTime().toString());
+        try{
+            assert event != null;
+            eventsHolder.t_eventame.setText(event.getEventName() +"~( "+ event.getAdmin() +" )");
+        eventsHolder.t_date.setText(event.getEventDate());
+        eventsHolder.t_time.setText(event.getEventTime());}
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
 
 
         return row;

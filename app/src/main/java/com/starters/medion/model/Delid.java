@@ -1,9 +1,5 @@
 package com.starters.medion.model;
 
-/**
- * Created by stephenpaul on 25/12/16.
- */
-
 public class Delid {
     private String id;
 

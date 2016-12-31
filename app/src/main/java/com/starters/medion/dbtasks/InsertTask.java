@@ -5,13 +5,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 
-import com.starters.medion.contract.EventsContract;
 import com.starters.medion.contract.EventsContract.EventsEntry;
 import com.starters.medion.dbhelper.EventsDbhelper;
-//import com.starters.medion.utils.ContextGetter;
-/**
- * Created by Ashish on 12/1/2016.
- */
+
 public class InsertTask extends AsyncTask {
     private Context context;
 
@@ -44,7 +40,7 @@ public class InsertTask extends AsyncTask {
         values.put(EventsEntry.COLUMN_NAME_ADMIN,params[6].toString());
         values.put(EventsEntry.COLUMN_NAME_LOCATION, "BLAH");
 // Insert the new row, returning the primary key value of the new row
-        long newRowId = db.insert(EventsEntry.TABLE_NAME, null, values);
+        db.insert(EventsEntry.TABLE_NAME, null, values);
         return null;
     }
 }

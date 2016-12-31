@@ -1,7 +1,5 @@
 package com.starters.medion;
 
-import android.*;
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -10,30 +8,26 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonRectangle;
-import com.gc.materialdesign.widgets.Dialog;
 import com.starters.medion.constants.config;
 import com.starters.medion.contract.EventsContract;
-import com.starters.medion.dbtasks.InsertTask;
 import com.starters.medion.model.Delid;
 import com.starters.medion.model.Eid;
 import com.starters.medion.model.Event;
@@ -43,16 +37,12 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.ResourceBundle;
-
-import javax.net.ssl.HttpsURLConnection;
 
 public class ViewEvent extends AppCompatActivity {
 
@@ -60,13 +50,13 @@ public class ViewEvent extends AppCompatActivity {
     private TextView eventnameview;
     private TextView eventdate;
     private TextView eventadmin;
-    public HashMap<String,String> myMap;
+    private HashMap<String,String> myMap;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 0;
     private static final int MY_PERMISSIONS_REQUEST_WRITE_CONTACTS = 2;
     private TextView eventime;
     private TextView eventmembers;
     private String finlatlongs;
-    StringBuilder sb = new StringBuilder();
+    private StringBuilder sb = new StringBuilder();
     private TextView location;
     private Event event;
     private EventsDbhelper mdbhelper;
@@ -74,14 +64,14 @@ public class ViewEvent extends AppCompatActivity {
     private ImageButton finalplace;
     private ImageButton finalizeEvent;
     public ButtonRectangle saveButton;
-    public ImageButton membersButton;
+    private ImageButton membersButton;
     private ImageButton currentMembers;
     private ImageButton cancelEvent;
     private ImageButton requestPlaces;
     private String [] newMemberList;
-    public ListView contact_list = null;
-    public ArrayList<String> contactsarray = new ArrayList<String>();
-    public ArrayList<String> contactsarray2 = new ArrayList<String>();
+    private ListView contact_list = null;
+    private ArrayList<String> contactsarray = new ArrayList<>();
+    private ArrayList<String> contactsarray2 = new ArrayList<>();
     private String eventId;
     private String mem;
     @Override
@@ -105,7 +95,6 @@ public class ViewEvent extends AppCompatActivity {
             String eventAdmin=b.getString("admin");
             String date = b.getString("date");
             String time = b.getString("time");
-            String latlongs = b.getString("latlongs");
             String members = b.getString("members");
             System.out.println("IDID:" + eventId);
             System.out.println("Name:" + eventName);
@@ -113,15 +102,6 @@ public class ViewEvent extends AppCompatActivity {
             System.out.println("date:" + date);
             System.out.println("time:" + time);
             System.out.println("members:" + members);
-
-//            eventid.setText(eventId);
-//            eventnameview.setText(eventName);
-//            eventdate.setText(date);
-//            eventime.setText(time);
-//            eventmembers.setText(members);
-//            eventadmin.setText(eventAdmin);
-//            location.setText(latlongs);
-
         }
 
             mdbhelper = new EventsDbhelper(this);
@@ -164,7 +144,7 @@ public class ViewEvent extends AppCompatActivity {
                 if( rs != null && !rs.isClosed())
                     rs.close();
                     mdbhelper.close();
-            } catch(Exception ex) {}
+            } catch(Exception ignored) {}
 
 
 
@@ -285,7 +265,7 @@ public class ViewEvent extends AppCompatActivity {
 
     }
 
-    public void checkContactPermission()
+    private void checkContactPermission()
     {
         if (ContextCompat.checkSelfPermission(this,
                 android.Manifest.permission.READ_CONTACTS)
@@ -304,7 +284,7 @@ public class ViewEvent extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == MY_PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 System.out.println("populating contacts list");
@@ -312,7 +292,7 @@ public class ViewEvent extends AppCompatActivity {
             }
             else
             {
-                Toast.makeText(this,"until you give permissions, this app cannot function properly",Toast.LENGTH_LONG);
+                Toast.makeText(this,"until you give permissions, this app cannot function properly",Toast.LENGTH_LONG).show();
             }
             return;
         }
@@ -321,28 +301,30 @@ public class ViewEvent extends AppCompatActivity {
     }
 
 
-    public void populateContactList()
+    private void populateContactList()
     {
-        myMap = new HashMap<String,String>();
+        myMap = new HashMap<>();
 
 
         ContentResolver resolver = this.getContentResolver();
         Cursor cursor =resolver.query(ContactsContract.Contacts.CONTENT_URI,null,null,null,null);
         try {
 
+            assert cursor != null;
             while (cursor.moveToNext()) {
                 String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
                 String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
 
                 Cursor phoneCursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " =?", new String[]{id}, null);
+                assert phoneCursor != null;
                 while (phoneCursor.moveToNext()) {
                     String phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
                     phoneNumber = phoneNumber.replaceAll("\\s+", "");
                     phoneNumber = phoneNumber.replaceAll("[^a-zA-Z0-9]", "");
                     int count = 0;
-                    for (int i = 0; i < newMemberList.length; i++) {
-                        if (newMemberList[i].equals(phoneNumber)) {
+                    for (String aNewMemberList : newMemberList) {
+                        if (aNewMemberList.equals(phoneNumber)) {
                             count++;
                             System.out.println("insi");
                             break;
@@ -361,18 +343,19 @@ public class ViewEvent extends AppCompatActivity {
         }
         catch(Exception e)
         {
+            Toast.makeText(this,R.string.dbexception1,Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
         finally{
             try {
                 if( cursor != null && !cursor.isClosed())
                     cursor.close();
-            } catch(Exception ex) {}
+            } catch(Exception ignored) {}
 
         }
     }
 
-    public static String POST(String stringURL, Eid eid){
+    private static String POST(String stringURL, Eid eid){
         String result="";
         try {
             Log.d("POST","reached!");
@@ -412,7 +395,7 @@ public class ViewEvent extends AppCompatActivity {
         return result;
     }
 
-    public static String POST(String stringURL, Event event) {
+    private static String POST(String stringURL, Event event) {
         String result = "";
         try {
 
@@ -460,10 +443,10 @@ public class ViewEvent extends AppCompatActivity {
     }
 
 
-    public void showDialogListView(View view)
+    private void showDialogListView(View view)
     {
         contact_list = new ListView(this);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.contact_list,R.id.contacts,contactsarray2);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.contact_list, R.id.contacts, contactsarray2);
         contact_list.setAdapter(adapter);
         contact_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -477,7 +460,7 @@ public class ViewEvent extends AppCompatActivity {
                 System.out.println("contact is:"+phone[1]);
                 contactsarray.add(phone[1]);
                 try{
-                sb.append(phone[1]+",");}
+                sb.append(phone[1]).append(",");}
                 catch(ArrayIndexOutOfBoundsException ee)
                 {
                     Toast.makeText(ViewEvent.this,"Click again Please!",Toast.LENGTH_LONG).show();
@@ -517,7 +500,7 @@ public class ViewEvent extends AppCompatActivity {
         }
     }
 
-    public static String POST(String stringURL, Delid eid){
+    private static String POST(String stringURL, Delid eid){
         String result="";
         try {
             Log.d("POST","reached!");
@@ -648,6 +631,7 @@ public class ViewEvent extends AppCompatActivity {
             }
             else {
                 String[] ho =res.split(" ");
+                //noinspection StatementWithEmptyBody,StatementWithEmptyBody
                 if(ho[0].equals("Successfully"))
                 {
                 System.out.println("inside postexectue: " + res);
@@ -660,7 +644,8 @@ public class ViewEvent extends AppCompatActivity {
                 Intent mesintent = new Intent(ViewEvent.this, Home.class);
                 startActivity(mesintent);
             }
-            else{}
+            else{//do nothing.
+                    }
             }
         }
     }

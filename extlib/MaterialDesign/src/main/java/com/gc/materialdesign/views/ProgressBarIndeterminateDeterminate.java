@@ -10,9 +10,9 @@ import android.util.AttributeSet;
 
 public class ProgressBarIndeterminateDeterminate extends ProgressBarDeterminate {
 	
-	boolean firstProgress = true;
-	boolean runAnimation = true;
-	ObjectAnimator animation;
+	private boolean firstProgress = true;
+	private boolean runAnimation = true;
+	private ObjectAnimator animation;
 	
 	
 

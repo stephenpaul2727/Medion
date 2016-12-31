@@ -12,16 +12,16 @@ import android.view.MotionEvent;
 
 public class LayoutRipple extends CustomView {
 
-	int background;
-	float rippleSpeed = 10f;
-	int rippleSize = 3;
+	private int background;
+	private float rippleSpeed = 10f;
+	private int rippleSize = 3;
 
-	OnClickListener onClickListener;
-	int backgroundColor = Color.parseColor("#FFFFFF");
+	private OnClickListener onClickListener;
+	private int backgroundColor = Color.parseColor("#FFFFFF");
 
-	Integer rippleColor;
-	Float xRippleOrigin;
-	Float yRippleOrigin;
+	private Integer rippleColor;
+	private Float xRippleOrigin;
+	private Float yRippleOrigin;
 
 	public LayoutRipple(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -29,7 +29,7 @@ public class LayoutRipple extends CustomView {
 	}
 
 	// Set atributtes of XML to View
-	protected void setAttributes(AttributeSet attrs) {
+	private void setAttributes(AttributeSet attrs) {
 
 		// Set background Color
 		// Color by resource
@@ -78,8 +78,9 @@ public class LayoutRipple extends CustomView {
 
 	// ### RIPPLE EFFECT ###
 
-	float x = -1, y = -1;
-	float radius = -1;
+	private float x = -1;
+	private float y = -1;
+	private float radius = -1;
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -133,7 +134,7 @@ public class LayoutRipple extends CustomView {
 		return true;
 	}
 
-	public Bitmap makeCircle() {
+	private Bitmap makeCircle() {
 		Bitmap output = Bitmap.createBitmap(getWidth(), getHeight(),
 				Config.ARGB_8888);
 		Canvas canvas = new Canvas(output);
@@ -171,9 +172,9 @@ public class LayoutRipple extends CustomView {
 	/**
 	 * Make a dark color to ripple effect
 	 * 
-	 * @return
+	 *
 	 */
-	protected int makePressColor() {
+	private int makePressColor() {
 		int r = (this.backgroundColor >> 16) & 0xFF;
 		int g = (this.backgroundColor >> 8) & 0xFF;
 		int b = (this.backgroundColor >> 0) & 0xFF;
@@ -188,7 +189,7 @@ public class LayoutRipple extends CustomView {
 		onClickListener = l;
 	}
 
-	public void setRippleColor(int rippleColor) {
+	private void setRippleColor(int rippleColor) {
 		this.rippleColor = rippleColor;
 	}
 
