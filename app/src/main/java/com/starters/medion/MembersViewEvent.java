@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.starters.medion.constants.config;
 import com.starters.medion.contract.EventsContract;
 import com.starters.medion.dbhelper.EventsDbhelper;
@@ -39,6 +40,7 @@ public class MembersViewEvent extends AppCompatActivity{
     private ImageButton cancelEvent;
     private TextView memlocs;
     private ImageButton pickPlace;
+    private ProgressBarCircularIndeterminate progbarMember;
     private EventsDbhelper mDbhelper;
     private ImageButton currentMembers;
     private String mem;
@@ -57,6 +59,7 @@ public class MembersViewEvent extends AppCompatActivity{
         pickPlace = (ImageButton) findViewById(R.id.members_pickplace);
         cancelEvent = (ImageButton)findViewById(R.id.cantcome);
         currentMembers = (ImageButton)findViewById(R.id.members_addMembers);
+        progbarMember = (ProgressBarCircularIndeterminate)findViewById(R.id.progressBarMember);
 
         Bundle b = getIntent().getExtras();
         if(b != null) {
@@ -143,6 +146,8 @@ public class MembersViewEvent extends AppCompatActivity{
                             public void onClick(DialogInterface dialog, int which) {
                                 SharedPreferences prefer = getApplicationContext().getSharedPreferences(config.SHARED_PREF, 0);
                                 String regId = prefer.getString("regId", null);
+                                Toast.makeText(MembersViewEvent.this,"Removing you from group. Please wait",Toast.LENGTH_SHORT).show();
+                                progbarMember.setVisibility(View.VISIBLE);
                                 new HttpAsyncTask().execute(regId+"!"+eventId,"https://whispering-everglades-62915.herokuapp.com/serv/delmember");
 
                             }
@@ -245,6 +250,7 @@ public class MembersViewEvent extends AppCompatActivity{
         @Override
         protected void onPostExecute(String s) {
             Toast.makeText(MembersViewEvent.this, s,Toast.LENGTH_LONG).show();
+            progbarMember.setVisibility(View.INVISIBLE);
             EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
             SQLiteDatabase db = eventsDbhelper.getWritableDatabase();
             db.delete(EventsContract.EventsEntry.TABLE_NAME,EventsContract.EventsEntry.COLUMN_NAME_EVENTID+"=?",new String[]{eventId});

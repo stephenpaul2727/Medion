@@ -76,7 +76,7 @@
         android:text="@string/Signup_title"
         android:id="@+id/ConnectStage_SignUp"
         android:background="#292b2d"
-        android:textSize="17dp"
+        android:textSize="12sp"
         android:layout_marginTop="15dp"
         android:textColor="#92e8a7"
         android:fontFamily="sans-serif-medium"
@@ -93,7 +93,7 @@
         android:text="@string/login"
         android:id="@+id/Connectstage_login"
         android:layout_marginTop="50px"
-        android:textSize="17dp"
+        android:textSize="12sp"
         android:textColor="#92e8a7"
         android:textAllCaps="false"
         android:fontFamily="sans-serif-medium"
@@ -101,4 +101,15 @@
         android:background="#292b2d"
         android:layout_below="@+id/activity_main_Rememberme"
         android:layout_centerHorizontal="true" />
+
+    <com.gc.materialdesign.views.ProgressBarCircularIndeterminate
+        android:id="@+id/progressBarMain"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="#292b2d"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/Connectstage_login"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"/>
+
 </RelativeLayout>

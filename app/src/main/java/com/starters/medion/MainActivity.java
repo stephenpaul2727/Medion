@@ -12,6 +12,8 @@ import android.view.View.OnClickListener;
 import android.content.Intent;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.starters.medion.model.GeoCoordinates;
 import com.starters.medion.model.UserEvent;
 import com.starters.medion.service.TrackGPS;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private String pass;
     private String res;
     private String eventId;
+    private ProgressBarCircularIndeterminate progbarmain;
     private android.widget.CheckBox cb;
 
 
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         addSignupClickListener();
         userName = (EditText) findViewById(R.id.ConnectStage_Username);
         password = (EditText) findViewById(R.id.ConnectStage_Password);
+        progbarmain =(ProgressBarCircularIndeterminate)findViewById(R.id.progressBarMain);
 
 //        displayFirebaseRegId();
 //        LocalBroadcastManager.getInstance(this).registerReceiver(
@@ -133,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
                                          else {
                                              username = userName.getText().toString();
                                              pass = password.getText().toString();
+                                             Toast.makeText(MainActivity.this,"Loggin in. Please wait!",Toast.LENGTH_SHORT).show();
+                                             progbarmain.setVisibility(View.VISIBLE);
                                              new LoginAsyncTask().execute(username, pass);
 //                                         Intent intent = new Intent(getApplicationContext(),Home.class);
 //                                         startActivity(intent);
@@ -212,7 +218,8 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                Toast.makeText(MainActivity.this,"Successfully logged in",Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this,"Successfully logged in",Toast.LENGTH_SHORT).show();
+                progbarmain.setVisibility(View.INVISIBLE);
                 Intent intent = new Intent(getApplicationContext(),Home.class);
                 startActivity(intent);
             }

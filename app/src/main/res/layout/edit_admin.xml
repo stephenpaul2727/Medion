@@ -15,7 +15,7 @@
         android:id="@+id/edit_admin_save"
         android:background="#292b2d"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="30dp"
         android:layout_below="@+id/edit_admin_addMembers"
         android:textColor="#92e8a7"
          />
@@ -74,5 +74,14 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/edit_admin_event_name"
         tools:ignore="RtlHardcoded" />
+
+    <com.gc.materialdesign.views.ProgressBarCircularIndeterminate
+        android:id="@+id/progressBarCircularIndeterminate"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="#292b2d"
+        android:layout_below="@+id/edit_admin_save"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"/>
 
 </RelativeLayout>

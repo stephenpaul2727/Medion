@@ -35,6 +35,7 @@ import android.widget.Toast;
 import java.io.FileInputStream;
 
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.starters.medion.dbtasks.InsertTask;
 import com.starters.medion.model.Eid;
 import com.starters.medion.model.Event;
@@ -65,6 +66,7 @@ public class EditAdmin extends Fragment {
     private int RESULT_LOAD_IMG =1;
     private String decodableImage;
     private int waiter = 0;
+    private ProgressBarCircularIndeterminate progBar;
     private String tempDate;
     private String tempTime;
     private TrackGPS trackGPS;
@@ -112,6 +114,7 @@ public class EditAdmin extends Fragment {
         imageButton = (ImageButton) view.findViewById(R.id.edit_imagebutton);
         saveButton = (ButtonRectangle) view.findViewById(R.id.edit_admin_save);
         membersButton = (ImageButton) view.findViewById(R.id.edit_admin_addMembers);
+        progBar =(ProgressBarCircularIndeterminate) view.findViewById(R.id.progressBarCircularIndeterminate);
 
 
 
@@ -120,6 +123,8 @@ public class EditAdmin extends Fragment {
             public void onClick(View v) {
                 if(v==membersButton)
                 {
+                    Toast.makeText(getActivity(),"Please wait! accessing your contacts!",Toast.LENGTH_SHORT).show();
+                    progBar.setVisibility(View.VISIBLE);
                     checkContactPermission();
                     showDialogListView(v);
                 }
@@ -197,8 +202,9 @@ public class EditAdmin extends Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(getActivity(),"your lat is: "+trackGPS.getLatitude()+" your long is: "+trackGPS.getLongitude(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),"Location retrieved! Please wait!",Toast.LENGTH_LONG).show();
                 System.out.println("the user phone number is retrieved and it is:"+userphonenum);
+                progBar.setVisibility(View.VISIBLE);
                 new EditAdmin.HttpAsyncTask().execute(eventname.getText().toString(),home.getDate(),home.getTime(),members,"https://whispering-everglades-62915.herokuapp.com/api/notifyMembers",Double.toString(trackGPS.getLatitude())+","+Double.toString(trackGPS.getLongitude())+","+userphonenum);
 
             }
@@ -325,7 +331,9 @@ public class EditAdmin extends Fragment {
         builder.setPositiveButton("OK",null);
         builder.setView(contact_list);
         AlertDialog dialog = builder.create();
+        progBar.setVisibility(View.INVISIBLE);
         dialog.show();
+
 
     }
 
@@ -459,6 +467,8 @@ public class EditAdmin extends Fragment {
             int count = args.length;
             if(count < 3){
                 return POST(args[1], eid);
+
+
             }else {
                 event = new Event();
                 event.setEventName(args[0]);
@@ -477,6 +487,7 @@ public class EditAdmin extends Fragment {
             System.out.println("inside postexecture"+result);
             if(!result.isEmpty()) {
                 eventId = result;
+                progBar.setVisibility(View.INVISIBLE);
                 InsertTask insertTask = new InsertTask(getContext());
                 insertTask.execute("", eventId, eventname.getText().toString(), home.getDate(), home.getTime(), members, "ADMIN", null);
                 Toast.makeText(getActivity().getApplicationContext(), "Event Created!", Toast.LENGTH_LONG).show();

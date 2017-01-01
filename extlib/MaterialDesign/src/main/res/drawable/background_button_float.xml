@@ -10,7 +10,7 @@
         android:top="1dp"
         android:right="1dp">
         <shape android:shape="oval" >
-            <solid android:color="#1E88E5" />
+            <solid android:color="#454647" />
         </shape>
     </item>
 

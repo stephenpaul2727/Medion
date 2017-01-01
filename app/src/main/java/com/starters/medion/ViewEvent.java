@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.starters.medion.constants.config;
 import com.starters.medion.contract.EventsContract;
 import com.starters.medion.model.Delid;
@@ -66,6 +67,7 @@ public class ViewEvent extends AppCompatActivity {
     public ButtonRectangle saveButton;
     private ImageButton membersButton;
     private ImageButton currentMembers;
+    private ProgressBarCircularIndeterminate progbaradminview;
     private ImageButton cancelEvent;
     private ImageButton requestPlaces;
     private String [] newMemberList;
@@ -86,6 +88,7 @@ public class ViewEvent extends AppCompatActivity {
         eventadmin = (TextView)findViewById(R.id.eventadmin);
         location = (TextView)findViewById(R.id.location);
         currentMembers = (ImageButton) findViewById(R.id.edit_viewevent_currentMembers);
+        progbaradminview = (ProgressBarCircularIndeterminate)findViewById(R.id.progressBaradminview);
 
 
         Bundle b = getIntent().getExtras();
@@ -165,6 +168,8 @@ public class ViewEvent extends AppCompatActivity {
                 Integer temp = Integer.parseInt(eventid.getText().toString());
                 eid = new Eid();
                 eid.setId(temp);
+                Toast.makeText(ViewEvent.this,"Please wait.Calculating distances!",Toast.LENGTH_LONG).show();
+                progbaradminview.setVisibility(View.VISIBLE);
                 new HttpAsyncTask().execute("https://whispering-everglades-62915.herokuapp.com/api/calcMedian");
 
             }
@@ -216,8 +221,9 @@ public class ViewEvent extends AppCompatActivity {
                     Toast.makeText(ViewEvent.this,"Pick a Place First to finalize the event!",Toast.LENGTH_LONG).show();
                 }
                 else{
-
-                finlatlongs =location.getText().toString();
+                    Toast.makeText(ViewEvent.this,"Please Wait Finalizing Event!",Toast.LENGTH_LONG).show();
+                    progbaradminview.setVisibility(View.VISIBLE);
+                    finlatlongs =location.getText().toString();
                 new DelAsyncTask().execute("https://whispering-everglades-62915.herokuapp.com/api/finEvent");}
             }
         });
@@ -248,6 +254,8 @@ public class ViewEvent extends AppCompatActivity {
                 cancelbuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(ViewEvent.this,"Deleting Event. Please Wait!",Toast.LENGTH_LONG).show();
+                        progbaradminview.setVisibility(View.VISIBLE);
                         new DelAsyncTask().execute("https://whispering-everglades-62915.herokuapp.com/serv/delevent",eventId);
                     }
                 });
@@ -483,6 +491,8 @@ public class ViewEvent extends AppCompatActivity {
                 db.update(EventsContract.EventsEntry.TABLE_NAME, cv, eventId,null);
                 db.close();
                 evehelp.close();
+                Toast.makeText(ViewEvent.this,"Please wait. Notifying new members",Toast.LENGTH_LONG).show();
+                progbaradminview.setVisibility(View.VISIBLE);
                 new HttpAsyncTask().execute(eventid.getText().toString(),eventnameview.getText().toString(),eventdate.getText().toString(),eventime.getText().toString(),sb.toString(),"https://whispering-everglades-62915.herokuapp.com/api/notifyNewMembers");
 
             }
@@ -570,12 +580,14 @@ public class ViewEvent extends AppCompatActivity {
         protected void onPostExecute(String result) {
             System.out.println("inside postexecture" + res);
             if (res.equals("New Members Notified")) {
+                progbaradminview.setVisibility(View.INVISIBLE);
                 Toast.makeText(getApplicationContext(), "New members added and Notified!", Toast.LENGTH_LONG).show();
             } else {
                 if (res.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Please retry pick places!", Toast.LENGTH_LONG).show();
                     return;
                 }
+                progbaradminview.setVisibility(View.INVISIBLE);
                 finlatlongs = res;
                 String[] parts = res.split(",");
                 EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
@@ -624,10 +636,8 @@ public class ViewEvent extends AppCompatActivity {
             if(res.equals("Event Finalized!"))
             {
                 Toast.makeText(ViewEvent.this,res,Toast.LENGTH_LONG).show();
-                finalizeEvent.setVisibility(View.INVISIBLE);
-                membersButton.setVisibility(View.INVISIBLE);
-                cancelEvent.setVisibility(View.INVISIBLE);
-                requestPlaces.setVisibility(View.INVISIBLE);
+                progbaradminview.setVisibility(View.INVISIBLE);
+
             }
             else {
                 String[] ho =res.split(" ");
@@ -636,7 +646,8 @@ public class ViewEvent extends AppCompatActivity {
                 {
                 System.out.println("inside postexectue: " + res);
                 Toast.makeText(ViewEvent.this, res, Toast.LENGTH_LONG).show();
-                EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
+                    progbaradminview.setVisibility(View.INVISIBLE);
+                    EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
                 SQLiteDatabase db = eventsDbhelper.getWritableDatabase();
                 db.delete(EventsContract.EventsEntry.TABLE_NAME, EventsContract.EventsEntry.COLUMN_NAME_EVENTID + "=?", new String[]{eventId});
                 db.close();

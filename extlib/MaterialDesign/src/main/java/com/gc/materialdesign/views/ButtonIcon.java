@@ -2,7 +2,7 @@ package com.gc.materialdesign.views;
 
 import com.gc.materialdesign.utils.Utils;
 
-import android.R;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -15,9 +15,9 @@ public class ButtonIcon extends ButtonFloat {
 	public ButtonIcon(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		try {
-			setBackground(new ColorDrawable(getResources().getColor(R.color.transparent)));
+			setBackground(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
 		} catch (NoSuchMethodError e) {
-			setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.transparent)));
+			setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
 		}
 		rippleSpeed = Utils.dpToPx(2, getResources());
 		rippleSize = Utils.dpToPx(5, getResources());

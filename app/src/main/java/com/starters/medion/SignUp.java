@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import android.widget.Button;
+
+import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.starters.medion.constants.config;
 import com.starters.medion.model.User;
 
@@ -32,6 +34,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     private String password;
     private String rePassword;
     private String fcmToken;
+    private ProgressBarCircularIndeterminate progbarsignup;
     private User user;
     private Button signUpButton;
 
@@ -47,6 +50,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         etPhone = (EditText) findViewById(R.id.Signup_edit_phonenumber);
         etPassword = (EditText) findViewById(R.id.Signup_edit_password);
         etRePassword = (EditText) findViewById(R.id.Signup_edit_reenterpassword);
+        progbarsignup = (ProgressBarCircularIndeterminate)findViewById(R.id.progressBarsignup);
 
         signUpButton = (Button) findViewById(R.id.Signup_register);
         Log.d("InsideONCREATE", "Before Connecting");
@@ -64,6 +68,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                 if (!validate())
                     Toast.makeText(getBaseContext(), "Please fill All Fields or Make sure your Password matches", Toast.LENGTH_LONG).show();
                 else
+                    Toast.makeText(SignUp.this,"Registering you! please wait",Toast.LENGTH_LONG).show();
+                    progbarsignup.setVisibility(View.VISIBLE);
                     new HttpAsyncTask().execute(name, email, phone, password, "https://whispering-everglades-62915.herokuapp.com/api/addUser");
 //                    new HttpAsyncTask().execute(name, email, phone, password, "http://149.161.150.186:8080/api/addUser");
             }
@@ -175,6 +181,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         @Override
         protected void onPostExecute(String result) {
             Toast.makeText(getBaseContext(), "You have signed up!", Toast.LENGTH_LONG).show();
+            progbarsignup.setVisibility(View.INVISIBLE);
             Intent intent = new Intent(SignUp.this,MainActivity.class);
             startActivity(intent);
         }

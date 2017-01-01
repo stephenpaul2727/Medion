@@ -16,7 +16,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18dp"
+                android:textSize="12sp"
                 android:fontFamily="sans-serif-light"
                 android:textStyle="bold"
                 android:id = "@+id/place_name"
@@ -29,7 +29,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18dp"
+                android:textSize="12sp"
                 android:textColor="#1b3966"
                 android:layout_marginTop="15dp"
                 android:id = "@+id/place_real_name"
@@ -42,7 +42,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18dp"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 android:fontFamily="sans-serif-light"
                 android:layout_marginLeft="5dp"
@@ -54,7 +54,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18dp"
+                android:textSize="12sp"
                 android:layout_marginRight="20dp"
                 android:id = "@+id/place_real_address"
                 android:textColor="#1b3966"
@@ -67,7 +67,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18dp"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 android:fontFamily="sans-serif-light"
                 android:textColor="#292b2d"
@@ -82,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:textSize="10dp"
+                android:textSize="10sp"
                 android:textColor="#1b3966"
                 android:layout_marginRight="20dp"
                 android:id = "@+id/place_real_latlongs"
@@ -94,7 +94,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18dp"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 android:fontFamily="sans-serif-light"
                 android:textColor="#292b2d"
@@ -108,7 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:textSize="18dp"
+                android:textSize="12sp"
                 android:textColor="#1b3966"
                 android:layout_marginRight="20dp"
                 android:id = "@+id/place_real_ratings"
