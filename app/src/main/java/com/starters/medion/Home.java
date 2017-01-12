@@ -16,6 +16,7 @@ import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.*;
@@ -83,6 +84,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ((ViewGroup)view.getParent()).removeAllViews();
                 FragmentManager fragmentManager = getFragmentManager();
                 android.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#b7d6e5\">" +"Plan an event"+"</font>"));

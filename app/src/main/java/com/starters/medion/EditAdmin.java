@@ -28,12 +28,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.FileInputStream;
 
+import com.gc.materialdesign.views.Button;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.starters.medion.dbtasks.InsertTask;
@@ -50,6 +52,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.zip.Inflater;
 
 
 import static android.app.Activity.RESULT_OK;
@@ -77,12 +80,16 @@ public class EditAdmin extends Fragment {
     private Home home;
     private ButtonRectangle finalizeEvent;
     private Eid eid;
+    private LinearLayout layoutToAdd;
     private String eventId;
     private String members;
     private String userphonenum=null;
     private ImageButton datepicker;
     private View view;
     private ImageButton timepicker;
+    private android.widget.Button next;
+    private EditText eventName;
+
 
     public interface HomeListener
     {
@@ -93,7 +100,7 @@ public class EditAdmin extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         if(getView()!=null) {
             ViewGroup parent = (ViewGroup) getView().getParent();
@@ -108,6 +115,7 @@ public class EditAdmin extends Fragment {
 
         }
 
+
         datepicker = (ImageButton) view.findViewById(R.id.edit_admin_select_date);
         timepicker= (ImageButton) view.findViewById(R.id.edit_admin_select_time);
         eventname = (EditText)view.findViewById(R.id.edit_admin_event_name);
@@ -115,6 +123,7 @@ public class EditAdmin extends Fragment {
         saveButton = (ButtonRectangle) view.findViewById(R.id.edit_admin_save);
         membersButton = (ImageButton) view.findViewById(R.id.edit_admin_addMembers);
         progBar =(ProgressBarCircularIndeterminate) view.findViewById(R.id.progressBarCircularIndeterminate);
+
 
 
 

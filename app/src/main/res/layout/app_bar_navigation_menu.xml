@@ -47,7 +47,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             materialdesign:animate="true"
-            android:background="#9ad3de"
+            android:background="#292b2d"
             android:id="@+id/plusButton"
             materialdesign:iconDrawable="@drawable/ic_action_new"
             android:layout_marginRight="24dp"

@@ -22,11 +22,11 @@
     <string name="view_places">Image for admin/member to view selected place after finalizing the event.</string>
     <string name="member_cancel">Image for member to cancel his registration for an event.</string>
     <string name="admin_add_members">Image for admin to add more members to an existing group.</string>
-    <string name="hint_signup_name"><font size="15">Enter a valid name with length more than 6</font></string>
-    <string name="hint_signup_email"><font size="15">Enter a valid Email</font></string>
-    <string name="hint_signup_phone"><font size="15">Enter a valid phone number without country extensions.</font></string>
-    <string name="hint_signup_password"><font size="15">Enter a valid password with length more than 6</font></string>
-    <string name="hint_signup_repassword"><font size="15">Re-enter the password.</font></string>
+    <string name="hint_signup_name"><font size="15">Name</font></string>
+    <string name="hint_signup_email"><font size="15">Email</font></string>
+    <string name="hint_signup_phone"><font size="15">PhoneNumber</font></string>
+    <string name="hint_signup_password"><font size="15">Password</font></string>
+    <string name="hint_signup_repassword"><font size="15">Re-enter password</font></string>
     <string name="label_trackgps">Track gps service</string>
     <string name="dbexception1">No records found!</string>
     <string name="splitexception">Error parsing information.</string>
@@ -55,6 +55,7 @@
     <string name="location">Location: </string>
     <string name="register">Register</string>
     <string name="placeupdate">Pick place to get location updated.</string>
+    <string name="decision_askpermission">Please turn on location and give app permission to function properly</string>
 
 
 </resources>

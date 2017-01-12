@@ -226,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
             else
             {
                 Toast.makeText(MainActivity.this,"Invalid Login Details",Toast.LENGTH_LONG).show();
+                progbarmain.setVisibility(View.INVISIBLE);
             }
         }
 
