@@ -27,17 +27,11 @@ import javax.net.ssl.HttpsURLConnection;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private BroadcastReceiver mRegistrationBroadcastReceiver;
-    public static String fcmToken = null;
-    private static GeoCoordinates geoCoordinates;
-    private TrackGPS trackGPS;
-    private UserEvent userEvent;
     private EditText userName;
     private EditText password;
     private String username;
     private String pass;
     private String res;
-    private String eventId;
     private ProgressBarCircularIndeterminate progbarmain;
     private android.widget.CheckBox cb;
 
@@ -53,74 +47,9 @@ public class MainActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.ConnectStage_Password);
         progbarmain =(ProgressBarCircularIndeterminate)findViewById(R.id.progressBarMain);
 
-//        displayFirebaseRegId();
-//        LocalBroadcastManager.getInstance(this).registerReceiver(
-//                mMessageReceiver, new IntentFilter("intentKey"));
     }
 
-//    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            // Get extra data included in the Intent
-//            String message = intent.getStringExtra("key");
-//            Log.e("mm", message);
-//            int notifyID=1;
-//            NotificationManager notify = (NotificationManager) getSystemService(context.NOTIFICATION_SERVICE);
-//            String[] parts = message.split(",");
-//
-//            if(parts[0].equals("EventCreated")) {
-//                System.out.println("ENTERED EVENT CREATED");
-//
-//                NotificationCompat.Builder mBuilder =
-//                        new NotificationCompat.Builder(getApplicationContext())
-//                                .setSmallIcon(R.drawable.appimage)
-//                                .setContentTitle("Medion")
-//                                .setContentText("New Event "+parts[2]+" created");
-//                notify.notify(notifyID,mBuilder.build());
-//                Toast.makeText(getApplicationContext(), "You have been Added to an Event", Toast.LENGTH_LONG).show();
-//                eventId = parts[1];
-//                InsertTask insert = new InsertTask(getApplicationContext());
-//                insert.execute("",parts[1],parts[2],parts[3],parts[4],parts[5],"MEMBER","");
-//                eventId = parts[1];
-//
-//                trackGPS = new TrackGPS(MainActivity.this);
-//                if (trackGPS.canGetLocation()) {
-////                            geoCoordinates.setLatitude(trackGPS.getLatitude());
-////                            geoCoordinates.setLongitude(trackGPS.getLongitude());
-//                    System.out.println("LOCATION"+trackGPS.getLongitude());
-//                    Toast.makeText(MainActivity.this,"Your lat is: "+trackGPS.getLatitude()+" your long is: "+trackGPS.getLongitude(),Toast.LENGTH_LONG).show();
-////                    new MainActivity.HttpAsyncTask().execute(parts[1], fcmToken, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()),"http://149.161.150.243:8080/api/addUserEvent");
-//                    new MainActivity.HttpAsyncTask().execute(parts[1], fcmToken, String.valueOf(trackGPS.getLatitude()), String.valueOf(trackGPS.getLongitude()), "https://whispering-everglades-62915.herokuapp.com/api/addUserEvent");
-//                }
-//            }else if(parts[0].equals("MedionCalculated")){
-//
-//                System.out.println("inside medion..!");
-//                String latitude = parts[1];
-//                String [] resu = parts[2].split("/");
-//                String longitude = resu[0];
-//                String place_id = resu[1];
-//                String evid = parts[3];
-//                EventsDbhelper eventsDbhelper = new EventsDbhelper(getApplicationContext());
-//                SQLiteDatabase db = eventsDbhelper.getWritableDatabase();
-//                ContentValues contentValues = new ContentValues();
-//                contentValues.put(EventsContract.EventsEntry.COLUMN_NAME_LOCATION,latitude+","+longitude);
-//                db.update(EventsContract.EventsEntry.TABLE_NAME,contentValues,evid,null);
-////                db.execSQL("Update " + EventsContract.EventsEntry.TABLE_NAME+" set "+EventsContract.EventsEntry.COLUMN_NAME_LOCATION+"="+parts[1]+","+parts[2]+" where "+EventsContract.EventsEntry.COLUMN_NAME_EVENTID+"="+evid, null);
-//                Intent mesintent=new Intent(MainActivity.this,PlacesMap.class);
-//                mesintent.putExtra("latlong",latitude+"/"+longitude+"/"+place_id);
-//                startActivity(mesintent);
-//
-//            }else if(parts[0].equals("FinalPlace")){
-//                String latitude = parts[1];
-//                String longitude = parts[2];
-//                Intent msgfinal = new Intent(MainActivity.this,Home.class);
-//                msgfinal.putExtra("ll",latitude+"/"+longitude);
-//                startActivity(msgfinal);
-//            }
-//
-//        }
-//    };
-
+    //adding event listener to login button
     private void addLoginClickListener()
     {
         Button login = (Button) findViewById(R.id.Connectstage_login);
@@ -139,9 +68,8 @@ public class MainActivity extends AppCompatActivity {
                                              pass = password.getText().toString();
                                              Toast.makeText(MainActivity.this,"Loggin in. Please wait!",Toast.LENGTH_SHORT).show();
                                              progbarmain.setVisibility(View.VISIBLE);
+                                             //starting asynctask to post request to server
                                              new LoginAsyncTask().execute(username, pass);
-//                                         Intent intent = new Intent(getApplicationContext(),Home.class);
-//                                         startActivity(intent);
                                          }
                                      }
                                  }
@@ -149,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
+    //adding functionality for sign up button
     private void addSignupClickListener()
     {
         Button signup = (Button) findViewById(R.id.ConnectStage_SignUp);
@@ -167,48 +96,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-//    private void displayFirebaseRegId() {
-//        SharedPreferences pref = getApplicationContext().getSharedPreferences(config.SHARED_PREF, 0);
-//        String regId = pref.getString("regId", null);
-//        fcmToken = regId;
-//        Log.e(TAG, "Firebase reg id: " + regId);
-//
-//    }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//
-//        // register GCM registration complete receiver
-//        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-//                new IntentFilter(config.REGISTRATION_COMPLETE));
-//
-//        // register new push message receiver
-//        // by doing this, the activity will be notified each time a new message arrives
-//        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-//                new IntentFilter(config.PUSH_NOTIFICATION));
-//
-//        // clear the notification area when the app is opened
-//        NotificationUtils.clearNotifications(getApplicationContext());
-//    }
-//
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
-//    }
-
+    //Login async task to send the username and password to the server
     private class LoginAsyncTask extends AsyncTask<String, Void, String> {
 
         @Override
         protected void onPostExecute(String s) {
-//            Toast.makeText(MainActivity.this,"Successfully sent login details to server",Toast.LENGTH_LONG).show();
             if(res.equals("Valid User"))
             {
                     String FILENAME = "login_details_file";
                     String string = username;
 
                     try {
+                        //creating and writing username to the file login_details_file in private mode.
                         FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
                         fos.write(string.getBytes());
                         fos.close();
@@ -219,7 +118,9 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 Toast.makeText(MainActivity.this,"Successfully logged in",Toast.LENGTH_SHORT).show();
+                //progress bar set to invisible.
                 progbarmain.setVisibility(View.INVISIBLE);
+                //if successfully logged in , control redirects to homepage.
                 Intent intent = new Intent(getApplicationContext(),Home.class);
                 startActivity(intent);
             }
@@ -233,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
+                //passing username and password as get request to verify they exist in the server db.
                 res = GET("https://whispering-everglades-62915.herokuapp.com/api/login?name="+params[0]+"&pass="+params[1]);
 
             return res ;
@@ -240,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    //function to send get request to the server
     private static String GET(String stringURL) {
         String result = "";
         try {
@@ -258,31 +161,13 @@ public class MainActivity extends AppCompatActivity {
             connection.setReadTimeout(5000);
             connection.connect();
             System.out.println(connection.getResponseMessage());
-//            OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
-//
-//            // 3. build jsonObject
-//           JSONObject json = new JSONObject();
-//            json.put("username",myuser);
-//            json.put("password",mypass);
-//
-//            // 4. convert JSONObject to JSON to String and send json content
-//            out.write(json.toString());
-//            out.flush();
-//            out.close();
-
             BufferedReader in = new BufferedReader(new InputStreamReader(
                     connection.getInputStream()));
             String inputLine;
             while ((inputLine = in.readLine()) != null)
                 result = inputLine;
             in.close();
-//            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-//
-//            while (in.readLine() != null) {
-//                System.out.println(in);
-//            }
             System.out.println("\nsuccessfully sent login details.");
-//            in.close();
         } catch (Exception e) {
             Log.d("InputStream", e.getLocalizedMessage());
         }

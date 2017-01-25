@@ -25,7 +25,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 
-public class SignUp extends AppCompatActivity implements View.OnClickListener {
+public class SignUp extends AppCompatActivity {
 
     private EditText etName, etEmail, etPhone, etPassword, etRePassword;
     private String name;
@@ -70,32 +70,15 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                 else
                     Toast.makeText(SignUp.this,"Registering you! please wait",Toast.LENGTH_LONG).show();
                     progbarsignup.setVisibility(View.VISIBLE);
+                    //the details of the signup page sent to the server to store info in server db.
                     new HttpAsyncTask().execute(name, email, phone, password, "https://whispering-everglades-62915.herokuapp.com/api/addUser");
-//                    new HttpAsyncTask().execute(name, email, phone, password, "http://149.161.150.186:8080/api/addUser");
             }
         });
     }
 
 
 
-    @Override
-    public void onClick(View view) {
 
-        Log.d("InsideButton", "Before Connecting");
-        name = etName.getText().toString();
-        email = etEmail.getText().toString();
-        phone = etPhone.getText().toString();
-        password = etPassword.getText().toString();
-        rePassword = etRePassword.getText().toString();
-
-        switch (view.getId()){
-            case R.id.Signup_register:
-                if (!validate())
-                    Toast.makeText(getBaseContext(), "Please fill All Fields or Make sure your Password matches", Toast.LENGTH_LONG).show();
-                new HttpAsyncTask().execute(name, email, phone, password, "http://149.161.149.223:8080/Medion/api/addTheUser");
-                break;
-        }
-    }
 
     private boolean validate() {
         if(etName.getText().toString().trim().equals(""))
@@ -114,6 +97,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
             return true;
     }
 
+    //post request to post new user information to postgres on server
     private static String POST(String stringURL, User user) {
         String result = "";
         try {
@@ -160,6 +144,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         return result;
     }
 
+
+
     private class HttpAsyncTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -169,6 +155,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
             user.setEmail(args[1]);
             user.setPhone(args[2]);
             user.setPassword(args[3]);
+            //accessing shared preferences to retrieve the user reg_id of FCM.
             SharedPreferences prefer = getApplicationContext().getSharedPreferences(config.SHARED_PREF, 0);
             String regId = prefer.getString("regId", null);
             fcmToken = regId;
@@ -182,6 +169,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         protected void onPostExecute(String result) {
             Toast.makeText(getBaseContext(), "You have signed up!", Toast.LENGTH_LONG).show();
             progbarsignup.setVisibility(View.INVISIBLE);
+            //After the signing up is done. control redirects to the main activity.
             Intent intent = new Intent(SignUp.this,MainActivity.class);
             startActivity(intent);
         }

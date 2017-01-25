@@ -91,6 +91,7 @@ public class EditAdmin extends Fragment {
     private EditText eventName;
 
 
+    //interfaces to communicate with the activities
     public interface HomeListener
     {
         public String getDate();
@@ -127,6 +128,7 @@ public class EditAdmin extends Fragment {
 
 
 
+        //event listener code for membersButton
         membersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,7 +136,9 @@ public class EditAdmin extends Fragment {
                 {
                     Toast.makeText(getActivity(),"Please wait! accessing your contacts!",Toast.LENGTH_SHORT).show();
                     progBar.setVisibility(View.VISIBLE);
+                    //check whether the user has provisioned the contacts access permission
                     checkContactPermission();
+                    //display the list of contacts.
                     showDialogListView(v);
                 }
             }
@@ -142,18 +146,20 @@ public class EditAdmin extends Fragment {
 
 
 
-
+        //Groups image handling code
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(v==imageButton)
                 {
+                    //opens gallery of the user to set a group photo
                     Intent gallery_opener = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivity(gallery_opener);
                 }
             }
         });
 
+        //opens the date picker dialog on clicking selectdate button
         datepicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,6 +170,7 @@ public class EditAdmin extends Fragment {
                 }
             }
         });
+        //opens the time picker dialog on clicking select time button
         timepicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,13 +183,10 @@ public class EditAdmin extends Fragment {
         });
 
 
+        //handling the event of clicking save button
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                System.out.println(eventname.getText());
-                System.out.println(home.getDate()+"vvv"+home.getTime());
-
 
                 ArrayList<String> mem = new ArrayList<>();
                 for(int i=0; i<contactsarray.size(); i++) {
@@ -191,19 +195,17 @@ public class EditAdmin extends Fragment {
 
                 members = TextUtils.join(",", mem);
 
+                //getting the current location of the admin
                 trackGPS = new TrackGPS(getContext(),getActivity());
                 if (trackGPS.canGetLocation()) {
 
                     System.out.println("LOCATION"+trackGPS.getLongitude());
                 }
-
-                System.out.println(trackGPS.getLatitude());
-                System.out.println(trackGPS.getLongitude());
-
                 try {
                     FileInputStream f = getActivity().openFileInput("login_details_file");
                     BufferedReader br = new BufferedReader( new InputStreamReader(f));
                     String line;
+                    //acesssing login_details_file to get the user phone number
                     while((line = br.readLine())!=null)
                     {
                         userphonenum = line;
@@ -212,8 +214,9 @@ public class EditAdmin extends Fragment {
                     e.printStackTrace();
                 }
                 Toast.makeText(getActivity(),"Location retrieved! Please wait!",Toast.LENGTH_LONG).show();
-                System.out.println("the user phone number is retrieved and it is:"+userphonenum);
+                //set progress bar to visible until the server responds.
                 progBar.setVisibility(View.VISIBLE);
+                //starting asynctask to send event details along with user's lat long and phone number
                 new EditAdmin.HttpAsyncTask().execute(eventname.getText().toString(),home.getDate(),home.getTime(),members,"https://whispering-everglades-62915.herokuapp.com/api/notifyMembers",Double.toString(trackGPS.getLatitude())+","+Double.toString(trackGPS.getLongitude())+","+userphonenum);
 
             }
@@ -222,6 +225,7 @@ public class EditAdmin extends Fragment {
         return view;
     }
 
+    //setting date to class variables when communicated to Home.class
     public void setTempDate(String x)
     {
 
@@ -230,12 +234,14 @@ public class EditAdmin extends Fragment {
     }
 
 
+    //setting time to class variables when communicated to Home.class
     public void setTempTime(String y)
     {
         tempTime =y;
     }
 
 
+    //Attaching home activity to this fragment class
     @Override
     public void onAttach(Context context) {
 
@@ -278,6 +284,7 @@ public class EditAdmin extends Fragment {
         }
     }
 
+    //checking contact permission to verify whether read_contacts is enabled otherwise ask user.
     private void checkContactPermission()
     {
         if (ContextCompat.checkSelfPermission(getActivity(),
@@ -292,6 +299,7 @@ public class EditAdmin extends Fragment {
         }
         else
         {
+            //populating contacts_list
             populateContactList();
 
         }
@@ -315,6 +323,7 @@ public class EditAdmin extends Fragment {
 
     }
 
+    //show a dialog with contact_list items being displayed.
     private void showDialogListView(View view)
     {
         contact_list = new ListView(getActivity());
@@ -334,7 +343,7 @@ public class EditAdmin extends Fragment {
                 Toast.makeText(getActivity(), contactstxt.getText().toString(),Toast.LENGTH_LONG).show();
             }
         });
-
+        //Alert builder to display the list with ok button.
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setCancelable(true);
         builder.setPositiveButton("OK",null);
@@ -347,6 +356,7 @@ public class EditAdmin extends Fragment {
     }
 
 
+    //populating items in contactsarray2
     private void populateContactList()
     {
         myMap = new HashMap<>();
@@ -378,7 +388,6 @@ public class EditAdmin extends Fragment {
             Toast.makeText(getActivity(),R.string.dbexception1,Toast.LENGTH_LONG).show();
         }
     }
-
 
 
     private static String POST(String stringURL, Eid eid){
@@ -421,6 +430,7 @@ public class EditAdmin extends Fragment {
         return null;
     }
 
+    //post request to server to send the newly created event details
     private static String POST(String stringURL, Event event) {
         String result = "";
         try {
@@ -498,8 +508,12 @@ public class EditAdmin extends Fragment {
                 eventId = result;
                 progBar.setVisibility(View.INVISIBLE);
                 InsertTask insertTask = new InsertTask(getContext());
+                //opening sqlite db to sotre the event details in the events table.
                 insertTask.execute("", eventId, eventname.getText().toString(), home.getDate(), home.getTime(), members, "ADMIN", null);
                 Toast.makeText(getActivity().getApplicationContext(), "Event Created!", Toast.LENGTH_LONG).show();
+                //redirecting control to the Home class
+                Intent intent = new Intent(getActivity(), Home.class);
+                startActivity(intent);
             }
             else {
                 Toast.makeText(getActivity(),"Network problem please press SAVE again.!",Toast.LENGTH_LONG).show();

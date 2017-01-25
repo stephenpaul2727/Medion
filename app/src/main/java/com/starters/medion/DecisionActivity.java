@@ -37,6 +37,7 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 
+/*This class is the welcome activity. Decides whether the app has to go to login page or home page*/
 public class DecisionActivity extends AppCompatActivity {
 
     private static String fcmToken = null;
@@ -73,6 +74,7 @@ public class DecisionActivity extends AppCompatActivity {
 
             switch (parts[0]) {
                 case "EventCreated": {
+                    //handling the fcm notification of event creation on members side
                     System.out.println("ENTERED EVENT CREATED");
 
                     NotificationCompat.Builder mBuilder =
@@ -111,6 +113,7 @@ public class DecisionActivity extends AppCompatActivity {
                     break;
                 }
                 case "MedionCalculated": {
+                    //handles the fcm notification of median calculation with place's latitude and longitude
                     NotificationCompat.Builder mBuilder =
                             new NotificationCompat.Builder(getApplicationContext())
                                     .setSmallIcon(R.drawable.app_xxhdpi)
@@ -149,6 +152,7 @@ public class DecisionActivity extends AppCompatActivity {
                     break;
                 }
                 case "Event with id": {
+                    //handling fcm notification to display the newly added member info on his phone.
                     NotificationCompat.Builder mBuilder =
                             new NotificationCompat.Builder(getApplicationContext())
                                     .setSmallIcon(R.drawable.app_xxhdpi)
@@ -163,6 +167,7 @@ public class DecisionActivity extends AppCompatActivity {
                     break;
                 }
                 case "Member with Phone": {
+                    //handling fcm notification to display the deleted member to admin.
                     NotificationCompat.Builder mBuilder =
                             new NotificationCompat.Builder(getApplicationContext())
                                     .setSmallIcon(R.drawable.app_xxhdpi)
@@ -205,6 +210,7 @@ public class DecisionActivity extends AppCompatActivity {
                     break;
                 }
                 default: {
+                    //fcm notification message to receive the finalized event info from admin.
                     NotificationCompat.Builder mBuilder =
                             new NotificationCompat.Builder(getApplicationContext())
                                     .setSmallIcon(R.drawable.app_xxhdpi)
@@ -228,8 +234,10 @@ public class DecisionActivity extends AppCompatActivity {
         }
     };
 
+    //Checking fine_location permission
     private void checkPermission()
     {
+
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
 
@@ -244,6 +252,7 @@ public class DecisionActivity extends AppCompatActivity {
                     mMessageReceiver, new IntentFilter("intentKey"));
 
             try {
+                //opening file login_details_file( if doesn't exist) will be sent to login page. otherwise control redirects to homepage.
                 FileInputStream f =openFileInput("login_details_file");
                 intent = new Intent(this, Home.class);
                 startActivity(intent);
@@ -290,7 +299,7 @@ public class DecisionActivity extends AppCompatActivity {
 
 
     }
-
+    //displaying the firebase reg id while starting the application
     private void displayFirebaseRegId() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences(config.SHARED_PREF, 0);
         String regId = pref.getString("regId", null);
@@ -300,7 +309,7 @@ public class DecisionActivity extends AppCompatActivity {
 
     }
 
-
+    //location information of the members sent as post request to spring server(Heroku)
     private static String POST(String stringURL, UserEvent userEvent) {
         String result = "";
         try {
@@ -353,6 +362,7 @@ public class DecisionActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... args) {
+            //creating a new userevent on the serverdb when a group is created with the member number.
             userEvent = new UserEvent();
             userEvent.setEventId(Integer.parseInt(args[0]));
             userEvent.setUserFcmToken(args[1]);
