@@ -19,10 +19,10 @@ Dynamic Android Application which suggests restaurants in the vicinity of all th
 - If not satisfied, request a new restaurant. 
 
 ## Required Environment
-> Android KitKat or higher SDK 
-> Android OS on Mobile Device.
-> Allow App to access Contacts, Location.
-> Turn Off Screen Overlay.
+> Android KitKat or higher SDK  
+> Android OS on Mobile Device.  
+> Allow App to access Contacts, Location.  
+> Turn Off Screen Overlay.  
 
 ## Future Improvements
 - Enhanced UI Design.
